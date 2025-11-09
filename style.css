@@ -441,28 +441,32 @@ nav {
   margin-bottom: 25px;
 }
 
+/* === KOREKCE GALERIE NA MOBILU === */
+
 .gallery-grid {
-  display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  display: grid !important;
+  gap: 14px !important;
+  justify-content: center !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* === Responsivní galerie === */
 @media (max-width: 768px) {
   .gallery-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 420px) {
   .gallery-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
   }
 }
 
+/* Styly fotek (tvůj design) */
 .gallery-grid img {
   width: 100%;
   aspect-ratio: 4/3;
@@ -478,6 +482,7 @@ nav {
   transform: scale(1.05);
   box-shadow: 0 0 20px var(--brand);
 }
+
 
 /* === Lightbox === */
 .lightbox {
