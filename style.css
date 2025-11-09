@@ -447,10 +447,16 @@ nav {
   display: grid !important;
   gap: 14px !important;
   justify-content: center !important;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* základní adaptivní grid */
   width: 100%;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
+}
+/* Na tabletech a menších obrazovkách */
+@media (max-width: 1024px) {
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
