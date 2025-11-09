@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Primary brand color (světlý režim) -->
+  <meta name="theme-color" content="#e5006a" media="(prefers-color-scheme: light)">
+  <!-- Dark theme color -->
+  <meta name="theme-color" content="#1a1020" media="(prefers-color-scheme: dark)">
+
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="BOREL — fotogalerie, minihra a zábava v neonově-růžovém stylu.">
+  <meta name="robots" content="index,follow">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="BOREL">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="BOREL">
+  <meta property="og:description" content="Fotogalerie, minihra a neon budoucnosti.">
+  <meta property="og:image" content="foto/logo.jpg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <title>BOREL</title>
+  <link rel="stylesheet" href="style.css?v=201" />
+</head>
+<body>
+    <header>
+  <div class="title-wrap">
+    <img src="foto/logo.jpg" alt="Logo" class="logo">
+    <h1>
+        <span>B</span><span>O</span><span>R</span><span>E</span><span>L</span>
+    </h1>
+
+  </div>
+
+  <nav>
+    <a href="index.html">Domů</a>
+    <a href="fotogalerie.html">Fotogalerie</a>
+    <a href="minihra.html">Minihra</a>
+  </nav>
+<button class="menu-toggle" aria-label="Menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+<button class="theme-toggle" aria-label="Přepnout režim"><span class="icon">🌙</span></button>
+</header>
+
+    <main>
+        <section class="widget">
+            <h2>Nejnovější fotografie</h2>
+            <div class="widget-gallery" id="widgetGallery">
+                <!-- Fotky zde vloží JS dynamicky -->
+            </div>
+        </section>
+    </main>
+<div class="info-box">
+  Vlastním vlastní politickou stranu.
+</div>
+
+    <footer>
+        <span>&copy; Vítek Ambrož</span>
+    </footer>
+    <script src="theme.js?v=1"></script>
+    <script src="main.js?v=200"></script>
+</body>
+</html>
