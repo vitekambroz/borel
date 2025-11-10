@@ -1,5 +1,9 @@
 {
   "version": 1,
-  "include": ["/", "/fotogalerie", "/minihra"],
-  "exclude": ["/*"]
+  "routes": [
+    { "pattern": "/", "serve": "/index.html" },
+    { "pattern": "/fotogalerie", "serve": "/fotogalerie.html" },
+    { "pattern": "/minihra", "serve": "/minihra.html" },
+    { "pattern": "/*", "serve": "/index.html" }
+  ]
 }
