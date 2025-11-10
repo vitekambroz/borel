@@ -1,8 +1,3 @@
 /fotogalerie      /fotogalerie.html   200
 /minihra          /minihra.html       200
-
-# Volitelné zkrášlení: jen JEDNOSMĚRNĚ z .html na hezkou URL
-# (když nechceš, tuhle řádku vynech – ale když ji dáš, MUSÍ být až po těch 200)
-/:page.html       /:page              301
-
 /*                 /index.html         200
