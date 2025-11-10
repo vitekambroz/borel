@@ -1,4 +1,4 @@
-const CACHE_NAME = "borel-cache-v8";
+const CACHE_NAME = "borel-cache-v11";
 const urlsToCache = [
   '/',
   '/fotogalerie',
