@@ -1,4 +1,4 @@
-// === BOREL - Galerie (verze s hash podporou) ===
+// === BOREL – Galerie (vylepšená verze 2025) ===
 
 const galleryPhotos = [
   'foto1.jpg','foto2.jpg','foto3.jpg','foto4.jpg','foto5.jpg',
@@ -14,118 +14,125 @@ const galleryPhotos = [
 
 let currentImageIndex = 0;
 
-document.addEventListener('DOMContentLoaded', () => {
-  const grid = document.getElementById('galleryGrid');
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightboxImg');
-  const counter = document.getElementById('lightboxCounter');
-  const btnClose = document.querySelector('.close');
-  const btnPrev = document.querySelector('.prev');
-  const btnNext = document.querySelector('.next');
+document.addEventListener("DOMContentLoaded", () => {
+  const grid = document.getElementById("galleryGrid");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightboxImg");
+  const counter = document.getElementById("lightboxCounter");
+  const btnClose = document.querySelector(".close");
+  const btnPrev = document.querySelector(".prev");
+  const btnNext = document.querySelector(".next");
+
+  if (!grid) {
+    console.warn("⚠️ #galleryGrid nebyl nalezen – skript přeskočen.");
+    return;
+  }
 
   // === 1) Vygenerování náhledů ===
-galleryPhotos.forEach((src, index) => {
-const wrapper = document.createElement('div');
-wrapper.className = 'img-wrapper shimmer'; // 🔥 shimmer kontejner
+  galleryPhotos.forEach((src, index) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "img-wrapper shimmer"; // efekt shimmeru
 
-const img = document.createElement('img');
-img.src = 'foto/thumbnails/' + src;
-img.alt = 'Fotka ' + (index + 1);
-img.loading = 'lazy';
-img.decoding = 'async';
-img.dataset.index = index;
-img.classList.add('lazy-fade');
+    const img = document.createElement("img");
+    img.src = `foto/thumbnails/${src}`;
+    img.alt = `Fotka ${index + 1}`;
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.dataset.index = index;
+    img.classList.add("lazy-fade");
 
-// Když se obrázek načte, odstraníme shimmer a přidáme animaci
-img.addEventListener('load', () => {
-  wrapper.classList.remove('shimmer');
-  img.classList.add('loaded');
-});
+    // Po načtení zruší shimmer
+    img.addEventListener("load", () => {
+      wrapper.classList.remove("shimmer");
+      img.classList.add("loaded");
+    });
 
-img.addEventListener('click', () => openLightbox(index, true));
+    // Otevření lightboxu
+    img.addEventListener("click", () => openLightbox(index, true));
 
-wrapper.appendChild(img);
-grid.appendChild(wrapper);
+    wrapper.appendChild(img);
+    grid.appendChild(wrapper);
 
-// ✅ Přednačtení velké verze
-const preload = new Image();
-preload.src = 'foto/' + src;
-});
+    // Přednačtení velké verze
+    const preload = new Image();
+    preload.src = `foto/${src}`;
+  });
 
   // === 2) Otevření lightboxu ===
   function openLightbox(index, pushHash = false) {
-    currentImageIndex = index;
-    lightboxImg.src = 'foto/' + galleryPhotos[index];
-    counter.textContent = `${index + 1} / ${galleryPhotos.length}`;
-    lightbox.classList.add('show');
-    document.body.style.overflow = 'hidden';
+    if (!lightbox || !lightboxImg) return;
 
-    if (pushHash) {
-      history.replaceState(null, '', `#${index + 1}`);
-    }
+    currentImageIndex = index;
+    lightboxImg.src = `foto/${galleryPhotos[index]}`;
+    counter.textContent = `${index + 1} / ${galleryPhotos.length}`;
+    lightbox.classList.add("show");
+    document.body.style.overflow = "hidden";
+
+    if (pushHash) history.replaceState(null, "", `#${index + 1}`);
   }
 
   // === 3) Zavření ===
   function closeLightbox() {
-    lightbox.classList.remove('show');
-    document.body.style.overflow = 'auto';
-    history.replaceState(null, '', ' ');
+    if (!lightbox) return;
+    lightbox.classList.remove("show");
+    document.body.style.overflow = "auto";
+    history.replaceState(null, "", " ");
   }
 
-// === 4) Přepínání s animací (fade + slide) ===
-function changeSlide(dir) {
-  const nextIndex = (currentImageIndex + dir + galleryPhotos.length) % galleryPhotos.length;
-  const nextSrc   = 'foto/' + galleryPhotos[nextIndex];
+  // === 4) Přepínání s animací (fade + slide) ===
+  function changeSlide(dir) {
+    if (!lightboxImg) return;
 
-  const outClass = dir > 0 ? 'is-exiting-left'  : 'is-exiting-right';
-  const inClass  = dir > 0 ? 'is-entering-right': 'is-entering-left';
+    const nextIndex = (currentImageIndex + dir + galleryPhotos.length) % galleryPhotos.length;
+    const nextSrc = `foto/${galleryPhotos[nextIndex]}`;
+    const outClass = dir > 0 ? "is-exiting-left" : "is-exiting-right";
+    const inClass  = dir > 0 ? "is-entering-right" : "is-entering-left";
 
-  // 1) přednačti další obrázek, ať přechod necuká
-  const preload = new Image();
-  preload.src = nextSrc;
+    // Přednačti další obrázek
+    const preload = new Image();
+    preload.src = nextSrc;
 
-  // 2) animace „ven“
-  lightboxImg.classList.add(outClass);
+    // Animace ven
+    lightboxImg.classList.add(outClass);
 
-  lightboxImg.addEventListener('transitionend', function onOut(e) {
-    if (e.propertyName !== 'opacity') return; // čekáme na dokončení opacity
-    lightboxImg.removeEventListener('transitionend', onOut);
+    lightboxImg.addEventListener("transitionend", function onOut(e) {
+      if (e.propertyName !== "opacity") return;
+      lightboxImg.removeEventListener("transitionend", onOut);
 
-    // 3) výměna src + start „dovnitř“
-    lightboxImg.src = nextSrc;
-    lightboxImg.classList.remove(outClass);
-    lightboxImg.classList.add(inClass);
+      // Výměna src a animace dovnitř
+      lightboxImg.src = nextSrc;
+      lightboxImg.classList.remove(outClass);
+      lightboxImg.classList.add(inClass);
 
-    // 4) nechej prohlížeč nadechnout a pak vrať do výchozího stavu → animace proběhne
-    requestAnimationFrame(() => {
-      lightboxImg.classList.remove(inClass);
-    });
+      // Po jednom frame zase odstraníme „inClass“
+      requestAnimationFrame(() => {
+        lightboxImg.classList.remove(inClass);
+      });
 
-    // 5) info a URL hash
-    currentImageIndex = nextIndex;
-    counter.textContent = `${currentImageIndex + 1} / ${galleryPhotos.length}`;
-    history.replaceState(null, '', `#${currentImageIndex + 1}`);
-  }, { once: true });
-}
+      currentImageIndex = nextIndex;
+      counter.textContent = `${currentImageIndex + 1} / ${galleryPhotos.length}`;
+      history.replaceState(null, "", `#${currentImageIndex + 1}`);
+    }, { once: true });
+  }
 
   // === 5) Ovládání ===
-  btnClose?.addEventListener('click', closeLightbox);
-  btnPrev?.addEventListener('click', () => changeSlide(-1));
-  btnNext?.addEventListener('click', () => changeSlide(1));
+  btnClose?.addEventListener("click", closeLightbox);
+  btnPrev?.addEventListener("click", () => changeSlide(-1));
+  btnNext?.addEventListener("click", () => changeSlide(1));
 
-  document.addEventListener('keydown', (e) => {
-    if (!lightbox.classList.contains('show')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') changeSlide(-1);
-    if (e.key === 'ArrowRight') changeSlide(1);
+  document.addEventListener("keydown", (e) => {
+    if (!lightbox?.classList.contains("show")) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") changeSlide(-1);
+    if (e.key === "ArrowRight") changeSlide(1);
   });
 
-  lightbox.addEventListener('click', (e) => {
+  lightbox?.addEventListener("click", (e) => {
     if (e.target === lightbox) closeLightbox();
   });
 
-  // === 6) Při načtení – pokud je v URL hash (#číslo), otevři danou fotku ===
-  const hash = window.location.hash.replace('#', '');
+  // === 6) Automatické otevření podle #hash ===
+  const hash = window.location.hash.replace("#", "");
   const num = parseInt(hash, 10);
   if (!isNaN(num) && num >= 1 && num <= galleryPhotos.length) {
     openLightbox(num - 1, false);
