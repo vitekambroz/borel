@@ -539,27 +539,119 @@ nav {
   overflow: hidden;
   cursor: pointer;
 }
-
-/* shimmer efekt – světelný přechod */
-.widget-photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(255,255,255,0.25) 45%,
-    rgba(255,255,255,0.4) 50%,
-    transparent 55%
-  );
-  transform: translateX(-100%);
-  animation: shimmerMove 4s infinite;
+/* === Shimmer + Fade-in + Neon Glow + Breathing === */
+.img-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  aspect-ratio: 4/3;
+  transition: box-shadow 0.5s ease;
 }
 
+/* Shimmer animace před načtením */
+.shimmer {
+  background: linear-gradient(
+    110deg,
+    rgba(255,255,255,0.05) 8%,
+    rgba(255,255,255,0.18) 18%,
+    rgba(255,255,255,0.05) 33%
+  );
+  background-size: 200% 100%;
+  animation: shimmerMove 1.3s linear infinite;
+}
 @keyframes shimmerMove {
-  0%   { transform: translateX(-100%); }
-  50%  { transform: translateX(100%); }
-  100% { transform: translateX(100%); }
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+
+/* Fade-in efekt obrázku */
+.img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  opacity: 0;
+  transform: scale(1);
+  transition: opacity 0.7s ease, transform 0.6s ease;
+}
+
+.img-wrapper img.loaded {
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+/* Efekt rozsvícení shimmeru při načtení */
+.img-wrapper.glow-in {
+  animation: neonGlow 0.9s ease forwards;
+}
+
+/* Neonové rozsvícení po načtení */
+@keyframes neonGlow {
+  0% {
+    box-shadow: 0 0 0 rgba(229, 0, 106, 0);
+    background: rgba(255,255,255,0.05);
+  }
+  40% {
+    box-shadow: 0 0 25px rgba(229, 0, 106, 0.6),
+                0 0 45px rgba(255, 150, 255, 0.4);
+    background: rgba(255,255,255,0.08);
+  }
+  100% {
+    box-shadow: 0 0 12px rgba(229, 0, 106, 0.25);
+    background: transparent;
+  }
+}
+
+/* Po načtení – aktivuje se breathing neon pulz */
+.img-wrapper img.loaded {
+  animation: neonBreath 5s ease-in-out infinite alternate;
+}
+
+/* Dýchající neonová záře kolem obrázku */
+@keyframes neonBreath {
+  0% {
+    box-shadow:
+      0 0 10px rgba(229, 0, 106, 0.3),
+      0 0 20px rgba(255, 150, 255, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(255, 0, 180, 0.5),
+      0 0 40px rgba(200, 100, 255, 0.3);
+  }
+  100% {
+    box-shadow:
+      0 0 10px rgba(229, 0, 106, 0.3),
+      0 0 20px rgba(255, 150, 255, 0.2);
+  }
+}
+
+/* Hover – lehké přiblížení */
+.img-wrapper img.loaded:hover {
+  transform: scale(1.05);
+  filter: brightness(1.08);
+}
+
+/* Pokud se obrázek nepodaří načíst */
+.img-wrapper.broken {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255,0,100,0.1),
+    rgba(255,0,100,0.1) 10px,
+    rgba(255,255,255,0.05) 10px,
+    rgba(255,255,255,0.05) 20px
+  );
+}
+.img-wrapper.broken::after {
+  content: "⚠️";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.3);
+  font-size: 1.6rem;
 }
 
 /* Hover efekt – záře a drobný pohyb dopředu */
