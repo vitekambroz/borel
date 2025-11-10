@@ -67,7 +67,12 @@
     <footer>
         <span>&copy; Vítek Ambrož</span>
     </footer>
+    <script>
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+    }
+    </script>
     <script src="theme.js?v=2"></script>
-    <script src="main.js?v=201"></script>
+    <script src="gallery.js?v=301"></script>
 </body>
 </html>
