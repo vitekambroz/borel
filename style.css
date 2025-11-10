@@ -242,21 +242,118 @@ nav a::before {
   pointer-events: none;
 }
 
-/* === Přepínač režimu a menu === */
+/* =========================================================
+   PŘEPÍNAČ REŽIMU (DAY/NIGHT TOGGLE)
+   ========================================================= */
 .theme-toggle {
-  width: 40px;
-  height: 40px;
-  border: none;
+  position: relative;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  background: var(--glass);
-  font-size: 1.2rem;
+  border: none;
   cursor: pointer;
-  transition: transform .2s, box-shadow .2s;
+  background: radial-gradient(circle at 30% 30%, #fff, #ffe6f0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--brand);
+  box-shadow:
+    0 0 6px rgba(229, 0, 106, 0.2),
+    inset 0 0 6px rgba(255, 255, 255, 0.4);
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease,
+    background 0.6s ease,
+    color 0.5s ease;
+  overflow: hidden;
 }
+
 .theme-toggle:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 10px var(--brand);
+  box-shadow:
+    0 0 10px rgba(255, 100, 200, 0.4),
+    0 0 20px rgba(255, 182, 212, 0.3);
 }
+
+/* Jemný světelný gradient v light režimu */
+.theme-toggle::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #ffb6c1,
+    #ffe0f3,
+    #ffd6ec,
+    #ffc4e0,
+    #ffb6c1
+  );
+  opacity: 0.5;
+  filter: blur(10px);
+  animation: rotateGlow 8s linear infinite;
+  z-index: 0;
+}
+
+/* Ikona */
+.theme-toggle .icon {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.6s ease, opacity 0.4s ease;
+}
+
+/* Animace přepnutí */
+.theme-toggle.switching .icon {
+  transform: rotate(360deg) scale(1.3);
+  opacity: 0.7;
+}
+
+/* === Tmavý režim – výraznější neon === */
+html.theme-dark .theme-toggle {
+  background: radial-gradient(circle at 70% 70%, #2a0042, #16001e);
+  color: #ffb8ff;
+  box-shadow:
+    0 0 12px rgba(255, 0, 255, 0.45),
+    inset 0 0 12px rgba(255, 255, 255, 0.15);
+}
+
+html.theme-dark .theme-toggle::before {
+  background: conic-gradient(
+    from 0deg,
+    #ff00ff,
+    #ff33cc,
+    #a600ff,
+    #ff66ff,
+    #ff00ff
+  );
+  filter: blur(6px);
+  opacity: 0.6;
+}
+
+html.theme-dark .theme-toggle:hover {
+  box-shadow:
+    0 0 20px rgba(255, 150, 255, 0.6),
+    0 0 35px rgba(255, 0, 255, 0.3);
+}
+
+/* === PŘECHODOVÝ FLASH PŘI ZMĚNĚ TÉMATU === */
+body.theme-flash::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,150,255,0.4), transparent 70%);
+  animation: themeFlash 0.5s ease;
+  pointer-events: none;
+  z-index: 999;
+}
+
+@keyframes themeFlash {
+  0% { opacity: 0; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.3); }
+}
+
 
 /* Ikona menu pro mobily */
 .menu-toggle {
@@ -490,7 +587,73 @@ nav {
   box-shadow: 0 0 20px var(--brand);
 }
 
-/* === Lightbox === */
+/* =========================================================
+   LAZY LOAD + SHIMMER EFFECT
+   ========================================================= */
+
+/* Každý obrázek má svůj kontejner */
+.img-wrapper {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Skeleton shimmer (běží, dokud se obrázek nenačte) */
+.shimmer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerMove 1.6s linear infinite;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+/* Tmavý režim shimmeru */
+html.theme-dark .shimmer::before {
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+}
+
+@keyframes shimmerMove {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Lazy fade efekt po načtení */
+.lazy-fade {
+  opacity: 0;
+  transform: scale(0.97);
+  filter: blur(6px);
+  transition: opacity 0.6s ease, transform 0.6s ease, filter 0.6s ease;
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+.lazy-fade.loaded {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+/* =========================================================
+   LIGHTBOX
+   ========================================================= */
 .lightbox {
   display: none;
   position: fixed;
@@ -508,21 +671,65 @@ nav {
   border-radius: 12px;
   box-shadow: 0 0 20px var(--brand);
   object-fit: contain;
+  transition: opacity .35s ease, transform .35s ease;
+  opacity: 1;
+  transform: none;
 }
+.lightbox img.is-exiting-left  { opacity: 0; transform: translateX(-24px); }
+.lightbox img.is-exiting-right { opacity: 0; transform: translateX( 24px); }
+
+/* nový obrázek se „vynoří“ z opačné strany */
+.lightbox img.is-entering-left  { opacity: 0; transform: translateX(-24px); }
+.lightbox img.is-entering-right { opacity: 0; transform: translateX( 24px); }
 
 .lightbox .close {
   position: absolute;
   top: 20px;
-  right: 25px;
-  font-size: 28px;
-  background: var(--glass);
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
-  padding: 6px 12px;
-  cursor: pointer;
+  background: rgba(255, 255, 255, 0.08);
   color: var(--text);
-  border: none;
+  font-size: 1.8rem;
+  font-weight: bold;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform-origin: center center;
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 0 10px rgba(255, 0, 100, 0.2);
 }
-.lightbox .close:hover { background: var(--brand); color: white; }
+
+/* Hover efekt – rotace a záře */
+.lightbox .close:hover {
+  background: var(--brand);
+  color: #fff;
+  transform: rotate(180deg) scale(1.1);
+  box-shadow: 0 0 20px var(--brand), 0 0 40px var(--brand);
+}
+
+/* Volitelně jemná animace při načtení lightboxu */
+@keyframes glowIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+    box-shadow: 0 0 0px var(--brand);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 15px var(--brand);
+  }
+}
+
+.lightbox.active .close {
+  animation: glowIn 0.4s ease forwards;
+}
 
 .lightbox-nav {
   position: absolute;
@@ -801,5 +1008,3 @@ html.theme-dark #mute {
   pointer-events: none;
   line-height: 1.5;
 }
-
-

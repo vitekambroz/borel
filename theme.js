@@ -1,45 +1,54 @@
 // === BOREL THEME MANAGER ===
-// Přepínání světlý/tmavý režim + neonové body v pozadí
+// Světlý / tmavý režim + neonové body v pozadí + animovaný přepínač
 
 (function() {
   const STORAGE_KEY = "borel-theme";
   const root = document.documentElement;
   const btn = document.querySelector(".theme-toggle");
+  const icon = btn?.querySelector(".icon");
   const canvas = document.getElementById("particles");
   const ctx = canvas?.getContext("2d");
   let W, H, dots = [];
 
-  // --- Inicializace tématu ---
+  // === Inicializace motivu ===
   const saved = localStorage.getItem(STORAGE_KEY);
   const initial = saved || "light";
   setTheme(initial);
 
+  // === Kliknutí na přepínač ===
   if (btn) {
     btn.addEventListener("click", () => {
+      btn.classList.add("switching"); // aktivuj animaci
+      setTimeout(() => btn.classList.remove("switching"), 600);
+
       const next = root.classList.contains("theme-dark") ? "light" : "dark";
       setTheme(next);
       localStorage.setItem(STORAGE_KEY, next);
-      resize(); // přepočítat barvy neonů
+      resizeParticles(); // přepočítej barvy neonů
+
+      // jemný blik efekt pozadí
+      document.body.classList.add("theme-flash");
+      setTimeout(() => document.body.classList.remove("theme-flash"), 500);
     });
   }
 
+  // === Nastavení tématu ===
   function setTheme(mode) {
-    root.classList.toggle("theme-dark", mode === "dark");
-    if (btn) {
-      btn.querySelector(".icon").textContent = mode === "dark" ? "☀️" : "🌙";
-    }
+    const dark = mode === "dark";
+    root.classList.toggle("theme-dark", dark);
+    if (icon) icon.textContent = dark ? "🌙" : "🌞";
   }
 
-  // --- Fade-in efekt ---
+  // === Fade-in efekt při načtení ===
   window.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("loaded");
   });
 
-  // === Neonové body ===
+  // === Neonové body v pozadí ===
   if (canvas && ctx) {
-    window.addEventListener("resize", resize);
-    resize();
-    draw();
+    window.addEventListener("resize", resizeParticles);
+    resizeParticles();
+    drawParticles();
   }
 
   function getParticleColors() {
@@ -49,7 +58,7 @@
       : ["rgba(229,0,106,0.4)", "rgba(0,180,255,0.3)"];  // light barvy
   }
 
-  function resize() {
+  function resizeParticles() {
     W = canvas.width = window.innerWidth;
     H = canvas.height = window.innerHeight;
     dots.length = 0;
@@ -66,7 +75,7 @@
     }
   }
 
-  function draw() {
+  function drawParticles() {
     ctx.clearRect(0, 0, W, H);
     for (const d of dots) {
       ctx.beginPath();
@@ -75,16 +84,17 @@
       ctx.shadowBlur = 12;
       ctx.shadowColor = d.c;
       ctx.fill();
+
       d.x += d.vx;
       d.y += d.vy;
       if (d.x < 0 || d.x > W) d.vx *= -1;
       if (d.y < 0 || d.y > H) d.vy *= -1;
     }
-    requestAnimationFrame(draw);
+    requestAnimationFrame(drawParticles);
   }
 })();
 
-// === Hamburger menu s přepínáním a animací ✕ ===
+// === HAMBURGER MENU (✕ animace) ===
 const menuToggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('header nav');
 

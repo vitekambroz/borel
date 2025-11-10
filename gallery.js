@@ -24,15 +24,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnNext = document.querySelector('.next');
 
   // === 1) Vygenerování náhledů ===
-  galleryPhotos.forEach((src, index) => {
-    const img = document.createElement('img');
-    img.src = 'foto/thumbnails/' + src;
-    img.alt = 'Fotka ' + (index + 1);
-    img.loading = 'lazy';
-    img.dataset.index = index;
-    img.addEventListener('click', () => openLightbox(index, true));
-    grid.appendChild(img);
-  });
+galleryPhotos.forEach((src, index) => {
+const wrapper = document.createElement('div');
+wrapper.className = 'img-wrapper shimmer'; // 🔥 shimmer kontejner
+
+const img = document.createElement('img');
+img.src = 'foto/thumbnails/' + src;
+img.alt = 'Fotka ' + (index + 1);
+img.loading = 'lazy';
+img.decoding = 'async';
+img.dataset.index = index;
+img.classList.add('lazy-fade');
+
+// Když se obrázek načte, odstraníme shimmer a přidáme animaci
+img.addEventListener('load', () => {
+  wrapper.classList.remove('shimmer');
+  img.classList.add('loaded');
+});
+
+img.addEventListener('click', () => openLightbox(index, true));
+
+wrapper.appendChild(img);
+grid.appendChild(wrapper);
+
+// ✅ Přednačtení velké verze
+const preload = new Image();
+preload.src = 'foto/' + src;
+});
 
   // === 2) Otevření lightboxu ===
   function openLightbox(index, pushHash = false) {
@@ -54,13 +72,41 @@ document.addEventListener('DOMContentLoaded', () => {
     history.replaceState(null, '', ' ');
   }
 
-  // === 4) Přepínání ===
-  function changeSlide(dir) {
-    currentImageIndex = (currentImageIndex + dir + galleryPhotos.length) % galleryPhotos.length;
-    lightboxImg.src = 'foto/' + galleryPhotos[currentImageIndex];
+// === 4) Přepínání s animací (fade + slide) ===
+function changeSlide(dir) {
+  const nextIndex = (currentImageIndex + dir + galleryPhotos.length) % galleryPhotos.length;
+  const nextSrc   = 'foto/' + galleryPhotos[nextIndex];
+
+  const outClass = dir > 0 ? 'is-exiting-left'  : 'is-exiting-right';
+  const inClass  = dir > 0 ? 'is-entering-right': 'is-entering-left';
+
+  // 1) přednačti další obrázek, ať přechod necuká
+  const preload = new Image();
+  preload.src = nextSrc;
+
+  // 2) animace „ven“
+  lightboxImg.classList.add(outClass);
+
+  lightboxImg.addEventListener('transitionend', function onOut(e) {
+    if (e.propertyName !== 'opacity') return; // čekáme na dokončení opacity
+    lightboxImg.removeEventListener('transitionend', onOut);
+
+    // 3) výměna src + start „dovnitř“
+    lightboxImg.src = nextSrc;
+    lightboxImg.classList.remove(outClass);
+    lightboxImg.classList.add(inClass);
+
+    // 4) nechej prohlížeč nadechnout a pak vrať do výchozího stavu → animace proběhne
+    requestAnimationFrame(() => {
+      lightboxImg.classList.remove(inClass);
+    });
+
+    // 5) info a URL hash
+    currentImageIndex = nextIndex;
     counter.textContent = `${currentImageIndex + 1} / ${galleryPhotos.length}`;
     history.replaceState(null, '', `#${currentImageIndex + 1}`);
-  }
+  }, { once: true });
+}
 
   // === 5) Ovládání ===
   btnClose?.addEventListener('click', closeLightbox);
