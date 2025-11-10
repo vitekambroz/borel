@@ -3,55 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BOREL – Test routeru</title>
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background: #100016;
-      color: #f8cfff;
-      text-align: center;
-      margin: 0;
-      padding: 80px 20px;
-    }
-    h1 {
-      color: #ff4fcf;
-      text-shadow: 0 0 20px #ff66ff;
-    }
-    a {
-      display: inline-block;
-      margin: 16px;
-      padding: 12px 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 100, 255, 0.3);
-      border-radius: 12px;
-      text-decoration: none;
-      color: #ffe6ff;
-      font-weight: bold;
-      transition: all 0.3s ease;
-    }
-    a:hover {
-      background: #ff4fcf;
-      color: white;
-      box-shadow: 0 0 20px #ff66ff;
-    }
-    .status {
-      margin-top: 40px;
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-  </style>
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Primary brand color (světlý režim) -->
+  <meta name="theme-color" content="#e5006a" media="(prefers-color-scheme: light)">
+  <!-- Dark theme color -->
+  <meta name="theme-color" content="#1a1020" media="(prefers-color-scheme: dark)">
+
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="BOREL — fotogalerie, minihra a zábava v neonově-růžovém stylu.">
+  <meta name="robots" content="index,follow">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="BOREL">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="BOREL">
+  <meta property="og:description" content="Fotogalerie, minihra a neon budoucnosti.">
+  <meta property="og:image" content="foto/logo.jpg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <title>BOREL</title>
+  <link rel="stylesheet" href="style.css?v=302" />
 </head>
 <body>
-  <h1>🧪 Test routování BOREL</h1>
-  <p>Klikni na odkazy níže a ověř, že tě **nepřesměruje na fotogalerie.html**:</p>
+    <header>
+  <div class="title-wrap">
+    <img src="foto/logo.jpg" alt="Logo" class="logo">
+    <h1>
+        <span>B</span><span>O</span><span>R</span><span>E</span><span>L</span>
+    </h1>
 
-  <a href="/">🏠 Domů (/)</a>
-  <a href="/fotogalerie">📸 Fotogalerie (/fotogalerie)</a>
-  <a href="/minihra">🎮 Minihra (/minihra)</a>
+  </div>
 
-  <p class="status">
-    Pokud všechny odkazy fungují bez chyby <strong>404</strong> nebo „příliš mnoho přesměrování“,<br>
-    Cloudflare konečně čte tvůj <code>routes.json</code> správně 🎉
-  </p>
+<nav>
+  <a href="/">Domů</a>
+  <a href="/fotogalerie">Fotogalerie</a>
+  <a href="/minihra">Minihra</a>
+</nav>
+
+<button class="menu-toggle" aria-label="Menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+<button class="theme-toggle" aria-label="Přepnout režim"><span class="icon">🌙</span></button>
+</header>
+
+    <main>
+        <section class="widget">
+            <h2>Nejnovější fotografie</h2>
+            <div class="widget-gallery" id="widgetGallery">
+                <!-- Fotky zde vloží JS dynamicky -->
+            </div>
+        </section>
+    </main>
+<div class="info-box">
+  Vlastním vlastní politickou stranu.
+</div>
+
+    <footer>
+        <span>&copy; Vítek Ambrož</span>
+    </footer>
+    <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('✅ Service worker registrován:', reg.scope))
+        .catch(err => console.warn('❌ Chyba při registraci SW:', err));
+    });
+  }
+    </script>
+    <script src="theme.js?v=2"></script>
+    <script src="main.js?v=201"></script>
 </body>
 </html>
