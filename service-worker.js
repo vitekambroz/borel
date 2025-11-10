@@ -1,13 +1,14 @@
-const CACHE_NAME = "borel-cache-v1";
-const ASSETS = [
-  "/", // hlavní stránka
-  "/index.html",
-  "/fotogalerie.html",
-  "/minihra.html",
-  "/style.css",
-  "/main.js",
-  "/gallery.js",
-  "/minihra.js",
+const CACHE_NAME = "borel-cache-v8";
+const urlsToCache = [
+  '/',
+  '/fotogalerie',
+  '/minihra',
+  '/style.css',
+  '/main.js',
+  '/gallery.js',
+  '/minihra.js',
+  '/logo.png',
+  '/manifest.json',
   "/theme.js",
   "/icon-192.png",
   "/icon-512.png"
@@ -17,7 +18,9 @@ const ASSETS = [
 self.addEventListener("install", event => {
   console.log("📦 Instalace service workeru...");
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME)
+    .then(cache => cache.addAll(urlsToCache))
+    .catch(err => console.warn("Chyba při cacheování:", err))
   );
 });
 
@@ -25,26 +28,25 @@ self.addEventListener("install", event => {
 self.addEventListener("activate", event => {
   console.log("🔁 Aktivace service workeru...");
   event.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+    caches.keys().then(keys => 
+      Promise.all(
+      keys
+      .filter(k => k !== CACHE_NAME)
+      .map(k => caches.delete(key))
     ))
   );
 });
 
 // === Odpověď z cache nebo síť ===
 self.addEventListener("fetch", event => {
-  const { request } = event;
-  if (request.method !== "GET") return;
-
   event.respondWith(
-    caches.match(request).then(cached => {
-      if (cached) return cached;
-      return fetch(request).then(resp => {
-        // volitelně ukládej nové věci do cache
-        const clone = resp.clone();
-        caches.open(CACHE_NAME).then(c => c.put(request, clone));
-        return resp;
-      }).catch(() => caches.match("/index.html"));
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request).catch(() => {
+        // fallback – kdyby uživatel byl offline
+        if (event.request.mode === "navigate") {
+          return caches.match("/");
+        }
+      });
     })
   );
 });
