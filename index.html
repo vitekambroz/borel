@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BOREL – Test routeru</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #100016;
+      color: #f8cfff;
+      text-align: center;
+      margin: 0;
+      padding: 80px 20px;
+    }
+    h1 {
+      color: #ff4fcf;
+      text-shadow: 0 0 20px #ff66ff;
+    }
+    a {
+      display: inline-block;
+      margin: 16px;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 100, 255, 0.3);
+      border-radius: 12px;
+      text-decoration: none;
+      color: #ffe6ff;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    a:hover {
+      background: #ff4fcf;
+      color: white;
+      box-shadow: 0 0 20px #ff66ff;
+    }
+    .status {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 Test routování BOREL</h1>
+  <p>Klikni na odkazy níže a ověř, že tě **nepřesměruje na fotogalerie.html**:</p>
+
+  <a href="/">🏠 Domů (/)</a>
+  <a href="/fotogalerie">📸 Fotogalerie (/fotogalerie)</a>
+  <a href="/minihra">🎮 Minihra (/minihra)</a>
+
+  <p class="status">
+    Pokud všechny odkazy fungují bez chyby <strong>404</strong> nebo „příliš mnoho přesměrování“,<br>
+    Cloudflare konečně čte tvůj <code>routes.json</code> správně 🎉
+  </p>
+</body>
+</html>
