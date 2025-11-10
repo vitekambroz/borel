@@ -64,6 +64,15 @@
     <footer>
         <span>&copy; Vítek Ambrož</span>
     </footer>
+    <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('✅ Service worker registrován:', reg.scope))
+        .catch(err => console.warn('❌ Chyba při registraci SW:', err));
+    });
+  }
+    </script>
     <script src="theme.js?v=2"></script>
     <script src="minihra.js?v=200"></script>
 </body>
