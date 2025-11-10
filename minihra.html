@@ -1,37 +1,64 @@
 <!DOCTYPE html>
 <html lang="cs">
+<!DOCTYPE html>
+<html lang="cs">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="mobile-web-app-capable" content="yes">
 
-  <!-- Primary brand color (světlý režim) -->
+  <!-- 🌈 Barvy pro motiv -->
   <meta name="theme-color" content="#e5006a" media="(prefers-color-scheme: light)">
-  <!-- Dark theme color -->
   <meta name="theme-color" content="#1a1020" media="(prefers-color-scheme: dark)">
-
   <meta name="color-scheme" content="light dark">
-  <meta name="description" content="BOREL — fotogalerie, minihra a zábava v neonově-růžovém stylu.">
-  <meta name="robots" content="index,follow">
 
-  <!-- Open Graph -->
-  <meta property="og:site_name" content="BOREL">
+  <!-- 🔍 SEO -->
+  <title>Fotogalerie – BOREL</title>
+  <meta name="description" content="BOREL – Fotogalerie s neonovým stylem a jemnými efekty načítání.">
+  <meta name="robots" content="index, follow">
+
+  <!-- 🧩 Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="BOREL">
-  <meta property="og:description" content="Fotogalerie, minihra a neon budoucnosti.">
-  <meta property="og:image" content="foto/logo.jpg">
+  <meta property="og:title" content="BOREL – Fotogalerie">
+  <meta property="og:description" content="Prohlédni si neonovou fotogalerii projektu BOREL.">
+  <meta property="og:image" content="https://borel.cz/foto/logo.jpg">
+  <meta property="og:site_name" content="BOREL">
 
-  <!-- Fonts -->
+  <!-- 🛡️ Bezpečná Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      img-src 'self' data: blob:;
+      script-src 'self';
+      style-src 'self' 'unsafe-inline';
+      font-src 'self' https://fonts.gstatic.com;
+      connect-src 'self';
+      worker-src 'self';
+      manifest-src 'self';
+    ">
+
+  <!-- 🖋️ Google Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
+<!-- 🧩 Favicons -->
+ <link rel="manifest" href="/manifest.json">
+<!-- SVG favicon (moderní prohlížeče) -->
+<link rel="icon" type="image/svg+xml" href="/logo.svg">
+
+<!-- ICO fallback (pro starší prohlížeče, Windows a některé mobilní webview) -->
+<link rel="alternate icon" type="image/x-icon" href="/favicon.ico">
+
+<!-- Apple touch ikona (když si někdo přidá stránku na plochu v iOS) -->
+<link rel="apple-touch-icon" href="/icon-512.png">
   <title>Minihra - BOREL</title>
-  <link rel="stylesheet" href="style.css?v=302" />
+  <!-- 🎨 Styl -->
+  <link rel="stylesheet" href="/style.css?v=211" />
 </head>
+
 <body>
 <header>
   <div class="title-wrap">
-    <img src="foto/logo.jpg" alt="Logo" class="logo">
+    <img src="logo.png" alt="Logo" class="logo">
     <h1>
         <span>B</span><span>O</span><span>R</span><span>E</span><span>L</span>
     </h1>
@@ -73,7 +100,7 @@
     });
   }
     </script>
-    <script src="theme.js?v=2"></script>
-    <script src="minihra.js?v=200"></script>
+    <script src="theme.js?v=3"></script>
+    <script src="minihra.js?v=201"></script>
 </body>
 </html>

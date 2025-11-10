@@ -138,3 +138,11 @@ document.addEventListener("DOMContentLoaded", () => {
     openLightbox(num - 1, false);
   }
 });
+// === Připojení ovládacích tlačítek ===
+document.addEventListener("DOMContentLoaded", () => {
+  const btnPrev = document.querySelector(".prev");
+  const btnNext = document.querySelector(".next");
+
+  if (btnPrev) btnPrev.addEventListener("click", () => changeSlide(-1));
+  if (btnNext) btnNext.addEventListener("click", () => changeSlide(1));
+});

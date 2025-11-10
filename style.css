@@ -654,15 +654,6 @@ nav {
   font-size: 1.6rem;
 }
 
-/* Hover efekt – záře a drobný pohyb dopředu */
-.widget-photo.hovered {
-  transform: scale(1.06);
-  box-shadow:
-    0 0 18px var(--brand),
-    0 0 28px rgba(255, 150, 255, 0.5);
-}
-
-
 /* === Galerie stránka === */
 .gallery-page {
   padding: 30px 5vw 140px;

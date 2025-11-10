@@ -2,25 +2,40 @@
   "name": "BOREL",
   "short_name": "BOREL",
   "description": "Fotogalerie, minihra a neon budoucnosti.",
-  "start_url": "/index.html",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffe6f0",
   "theme_color": "#e5006a",
   "icons": [
     {
+      "src": "icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "maskable any"
+    },
+    {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable any"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable any"
     },
     {
       "src": "favicon.ico",
       "sizes": "48x48 32x32 16x16",
       "type": "image/x-icon"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "685x685",
+      "type": "image/png"
     }
   ]
 }
