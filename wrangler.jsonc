@@ -3,28 +3,16 @@
   "name": "borel",
   "compatibility_date": "2025-11-11",
 
-  // === 📦 Statické soubory ===
-  "assets": {
-    "directory": "./",                // Root složka projektu (HTML, CSS, JS)
-    "not_found_handling": "404-page", // Pokud nenajde stránku → zobrazí 404.html (pokud máš)
-    "html_handling": "auto-trailing-slash" // automaticky přidává / pro čisté URL
-  },
+  // === 🌐 Statické soubory ===
+  "pages_build_output_dir": ".", // slouží jako root pro HTML, CSS, JS, manifest atd.
 
   // === ⚙️ Cloudflare Pages Functions ===
-  "pages_build_output_dir": ".", // užitečné pro kompatibilitu starších buildů
-  "functions": "./functions",    // složka pro _redirect-www.js
+  "pages": {
+    "functions": "./functions" // složka pro _redirect-www.js nebo [[path]].js
+  },
 
   // === 🌍 Prostředí ===
   "vars": {
     "ENVIRONMENT": "production"
-  },
-
-  // === 🧠 Optimalizace ===
-  "observability": {
-    "enabled": false // vypne interní logování do konzole při běhu
-  },
-
-  // === 🧰 Workers mode ===
-  "usage_model": "bundled", // efektivnější nasazení bez jednotlivých worker requestů
-  "keep_vars": true         // zachová ENV proměnné mezi buildy
+  }
 }
