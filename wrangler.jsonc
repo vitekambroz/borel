@@ -2,14 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
   "name": "borel",
   "compatibility_date": "2025-11-11",
-
-  // === 🌐 Statické soubory ===
-  "pages_build_output_dir": ".", // root projektu, kde jsou HTML/CSS/JS
-
-  // === ⚙️ Pages Functions ===
-  "functions": "./functions", // složka pro _redirect-www.js nebo [[path]].js
-
-  // === 🌍 Prostředí ===
+  "pages_build_output_dir": ".",
   "vars": {
     "ENVIRONMENT": "production"
   }
