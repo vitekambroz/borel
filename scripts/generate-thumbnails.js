@@ -1,40 +1,53 @@
 import fs from "fs";
 import path from "path";
-import sharp from "sharp";
+import sharp from "sharp"; // npm install sharp
 
 const originalsDir = path.resolve("foto/originals");
 const thumbnailsDir = path.resolve("foto/thumbnails");
 const size = 800; // max šířka miniatury v px
 
-async function generateThumbnails() {
+// zajisti, že výstupní složka existuje
+if (!fs.existsSync(thumbnailsDir)) {
+  fs.mkdirSync(thumbnailsDir, { recursive: true });
+}
+
+const files = fs
+  .readdirSync(originalsDir)
+  .filter(f => /\.(jpe?g|png|webp|avif)$/i.test(f));
+
+if (files.length === 0) {
+  console.log("❌ Ve složce 'foto/originals' nebyly nalezeny žádné obrázky.");
+  process.exit(0);
+}
+
+let created = 0;
+let skipped = 0;
+console.log(`🖼️  Nalezeno ${files.length} originálních fotek.\n`);
+
+const start = Date.now();
+
+for (const file of files) {
+  const inputPath = path.join(originalsDir, file);
+  const outputPath = path.join(thumbnailsDir, file);
+
+  if (fs.existsSync(outputPath)) {
+    skipped++;
+    continue;
+  }
+
   try {
-    // vytvoř složku, pokud neexistuje
-    if (!fs.existsSync(thumbnailsDir)) {
-      fs.mkdirSync(thumbnailsDir, { recursive: true });
-    }
+    await sharp(inputPath)
+      .rotate() // ✅ respektuje EXIF rotaci
+      .resize({ width: size, withoutEnlargement: true })
+      .jpeg({ quality: 80 })
+      .toFile(outputPath);
 
-    // načti všechny obrázky ve složce originals
-    const files = fs.readdirSync(originalsDir).filter(f =>
-      /\.(jpe?g|png|webp|avif)$/i.test(f)
-    );
-
-    for (const file of files) {
-      const inputPath = path.join(originalsDir, file);
-      const outputPath = path.join(thumbnailsDir, file);
-
-      // přeskoč, pokud už thumbnail existuje
-      if (fs.existsSync(outputPath)) continue;
-
-      // vytvoř miniaturu
-      await sharp(inputPath)
-        .resize({ width: size, withoutEnlargement: true })
-        .jpeg({ quality: 80 })
-        .toFile(outputPath);
-    }
-  } catch {
-    // tichý fallback (žádné console.log ani chyby ven)
+    created++;
+    console.log(`📸 Vygenerováno: ${file}`);
+  } catch (err) {
+    console.error(`❌ Chyba při zpracování ${file}:`, err.message);
   }
 }
 
-// spusť hlavní funkci
-generateThumbnails();
+const duration = ((Date.now() - start) / 1000).toFixed(1);
+console.log(`\n✅ Hotovo! ${created} nových miniatur, ${skipped} přeskočeno. ⏱️ ${duration}s`);

@@ -1,0 +1,43 @@
+# ==========================
+# 📦 NODE & BUILD CACHE
+# ==========================
+node_modules/
+dist/
+.cache/
+.build/
+functions/.cache/
+.env
+
+# ==========================
+# 💻 IDE & OS SOUBORY
+# ==========================
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
+
+# ==========================
+# 🧠 VÝVOJOVÉ SKRIPTY
+# ==========================
+scripts/
+generate-thumbnails.bat
+package.json
+package-lock.json
+wrangler.toml
+wrangler.yaml
+wrangler.json
+wrangler.jsonc
+.github/
+
+# ==========================
+# 🖼️ FOTKY – originály nechci deployovat
+# ==========================
+foto/originals/
+# ale miniatury se deploynou:
+# foto/thumbnails/ (ponecháno)
+
+# ==========================
+# ⚙️ LOKÁLNÍ POMOCNÉ SOUBORY
+# ==========================
+*.bak
+*.tmp
