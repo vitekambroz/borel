@@ -1,5 +1,3 @@
-// === BOREL – Galerie (vylepšená verze 2025) ===
-
 const galleryPhotos = [
   'foto1.jpg','foto2.jpg','foto3.jpg','foto4.jpg','foto5.jpg',
   'foto6.jpg','foto7.jpg','foto8.jpg','foto9.jpg','foto10.jpg',
@@ -31,13 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // === 1) Vygenerování náhledů ===
   galleryPhotos.forEach((src, index) => {
     const wrapper = document.createElement("div");
-    wrapper.className = "img-wrapper shimmer"; // efekt shimmeru
+    wrapper.className = "img-wrapper shimmer";
 
     const img = document.createElement("img");
-    img.src = `foto/thumbnails/${src}`;
+    img.dataset.src = `foto/thumbnails/${src}`; // lazy načítání pomocí IntersectionObserver
     img.alt = `Fotka ${index + 1}`;
-    img.loading = "lazy";
-    img.decoding = "async";
     img.dataset.index = index;
     img.classList.add("lazy-fade");
 
@@ -52,13 +48,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     wrapper.appendChild(img);
     grid.appendChild(wrapper);
-
-    // Přednačtení velké verze
-    const preload = new Image();
-    preload.src = `foto/${src}`;
   });
 
-  // === 2) Otevření lightboxu ===
+  // === 2) Lazy-load pomocí IntersectionObserver ===
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        const src = img.dataset.src;
+        if (src) {
+          img.src = src;
+          img.removeAttribute("data-src");
+        }
+        obs.unobserve(img);
+      }
+    });
+  }, {
+    rootMargin: "100px", // začni načítat trochu dřív
+    threshold: 0.1
+  });
+
+  document.querySelectorAll(".lazy-fade").forEach(img => observer.observe(img));
+
+  // === 3) Otevření lightboxu ===
   function openLightbox(index, pushHash = false) {
     if (!lightbox || !lightboxImg) return;
 
@@ -71,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (pushHash) history.replaceState(null, "", `#${index + 1}`);
   }
 
-  // === 3) Zavření ===
+  // === 4) Zavření ===
   function closeLightbox() {
     if (!lightbox) return;
     lightbox.classList.remove("show");
@@ -79,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     history.replaceState(null, "", " ");
   }
 
-  // === 4) Přepínání s animací (fade + slide) ===
+  // === 5) Přepínání s animací (fade + slide) ===
   function changeSlide(dir) {
     if (!lightboxImg) return;
 
@@ -88,23 +100,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const outClass = dir > 0 ? "is-exiting-left" : "is-exiting-right";
     const inClass  = dir > 0 ? "is-entering-right" : "is-entering-left";
 
-    // Přednačti další obrázek
     const preload = new Image();
     preload.src = nextSrc;
 
-    // Animace ven
     lightboxImg.classList.add(outClass);
 
     lightboxImg.addEventListener("transitionend", function onOut(e) {
       if (e.propertyName !== "opacity") return;
       lightboxImg.removeEventListener("transitionend", onOut);
 
-      // Výměna src a animace dovnitř
       lightboxImg.src = nextSrc;
       lightboxImg.classList.remove(outClass);
       lightboxImg.classList.add(inClass);
 
-      // Po jednom frame zase odstraníme „inClass“
       requestAnimationFrame(() => {
         lightboxImg.classList.remove(inClass);
       });
@@ -115,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, { once: true });
   }
 
-  // === 5) Ovládání ===
+  // === 6) Ovládání ===
   btnClose?.addEventListener("click", closeLightbox);
   btnPrev?.addEventListener("click", () => changeSlide(-1));
   btnNext?.addEventListener("click", () => changeSlide(1));
@@ -131,18 +139,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === lightbox) closeLightbox();
   });
 
-  // === 6) Automatické otevření podle #hash ===
+  // === 7) Otevři podle #hash ===
   const hash = window.location.hash.replace("#", "");
   const num = parseInt(hash, 10);
   if (!isNaN(num) && num >= 1 && num <= galleryPhotos.length) {
     openLightbox(num - 1, false);
   }
-});
-// === Připojení ovládacích tlačítek ===
-document.addEventListener("DOMContentLoaded", () => {
-  const btnPrev = document.querySelector(".prev");
-  const btnNext = document.querySelector(".next");
-
-  if (btnPrev) btnPrev.addEventListener("click", () => changeSlide(-1));
-  if (btnNext) btnNext.addEventListener("click", () => changeSlide(1));
 });
