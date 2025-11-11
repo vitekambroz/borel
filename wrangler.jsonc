@@ -4,12 +4,10 @@
   "compatibility_date": "2025-11-11",
 
   // === 🌐 Statické soubory ===
-  "pages_build_output_dir": ".", // slouží jako root pro HTML, CSS, JS, manifest atd.
+  "pages_build_output_dir": ".", // root projektu, kde jsou HTML/CSS/JS
 
-  // === ⚙️ Cloudflare Pages Functions ===
-  "pages": {
-    "functions": "./functions" // složka pro _redirect-www.js nebo [[path]].js
-  },
+  // === ⚙️ Pages Functions ===
+  "functions": "./functions", // složka pro _redirect-www.js nebo [[path]].js
 
   // === 🌍 Prostředí ===
   "vars": {
