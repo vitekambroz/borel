@@ -4,13 +4,13 @@ compatibility_date = "2025-01-01"
 
 # ========== 🌐 Webové soubory ==========
 [site]
-bucket = "./code"               # veřejné HTML, CSS, JS, obrázky, manifest, sitemap, robots...
+bucket = "./"               # veřejné HTML, CSS, JS, obrázky, manifest, sitemap, robots...
 entry-point = "functions"       # složka s Cloudflare Functions (např. přesměrování)
 
 # ========== ⚙️ Build konfigurace ==========
 [build]
 command = ""                    # žádný build krok (čistý statický web)
-watch_dir = "./code"            # sleduj změny v této složce (pro lokální náhledy)
+watch_dir = "./"            # sleduj změny v této složce (pro lokální náhledy)
 
 # ========== 🚀 Prostředí ==========
 [env.production]
