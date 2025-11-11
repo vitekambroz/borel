@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!lightbox || !lightboxImg) return;
 
     currentImageIndex = index;
-    lightboxImg.src = `foto/${galleryPhotos[index]}`;
+    lightboxImg.src = `foto/originals/${galleryPhotos[index]}`;
     counter.textContent = `${index + 1} / ${galleryPhotos.length}`;
     lightbox.classList.add("show");
     document.body.style.overflow = "hidden";
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!lightboxImg) return;
 
     const nextIndex = (currentImageIndex + dir + galleryPhotos.length) % galleryPhotos.length;
-    const nextSrc = `foto/${galleryPhotos[nextIndex]}`;
+    const nextSrc = `foto/originals/${galleryPhotos[nextIndex]}`;
     const outClass = dir > 0 ? "is-exiting-left" : "is-exiting-right";
     const inClass  = dir > 0 ? "is-entering-right" : "is-entering-left";
 

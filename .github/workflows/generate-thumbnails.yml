@@ -18,27 +18,29 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: 🟩 Setup Node.js
+      - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: 📦 Install Sharp
-        run: |
-          npm install sharp
+      - name: 📦 Install dependencies
+        run: npm ci
 
       - name: 🖼️ Generate missing thumbnails
-        run: |
-          node scripts/generate-thumbnails.js
+        run: npm run generate-thumbnails
 
-      - name: 🧠 Check for changes
+      - name: 🧠 Commit & push if changes detected
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
+
+          # Zjisti, jestli se něco změnilo ve složce thumbnails
           if [[ -n "$(git status --porcelain foto/thumbnails)" ]]; then
             git add foto/thumbnails
-            git commit -m "🖼️ Auto-generate thumbnails [skip ci]"
+            git commit -m "🖼️ Auto-generated new thumbnails [skip ci]"
             git push
           else
-            echo "✅ No new thumbnails to commit"
+            echo "✅ No new thumbnails generated."
           fi

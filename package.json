@@ -1,0 +1,15 @@
+{
+  "name": "borel",
+  "version": "1.0.0",
+  "description": "BOREL — moderní neonový web s galerií, minihrou a automatickým generováním miniatur.",
+  "type": "module",
+  "license": "MIT",
+
+  "scripts": {
+    "generate-thumbnails": "node scripts/generate-thumbnails.js"
+  },
+
+  "dependencies": {
+    "sharp": "^0.33.3"
+  }
+}
