@@ -1,0 +1,12 @@
+# Node / build cache
+node_modules/
+dist/
+.cache/
+.build/
+functions/.cache/
+
+# OS a IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.env

@@ -1,4 +1,4 @@
-const CACHE_NAME = "borel-cache-v12";
+const CACHE_NAME = "borel-cache-v13";
 const urlsToCache = [
   '/',
   '/fotogalerie',
@@ -16,17 +16,16 @@ const urlsToCache = [
 
 // === Instalace SW a cacheování statických souborů ===
 self.addEventListener("install", event => {
-  console.log("📦 Instalace service workeru...");
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-    .then(cache => cache.addAll(urlsToCache))
-    .catch(err => console.warn("Chyba při cacheování:", err))
-  );
+  event.waitUntil((async () => {
+    try {
+      const cache = await caches.open(CACHE_NAME);
+      await cache.addAll(urlsToCache);
+    } catch {}
+  })());
 });
 
 // === Aktivace SW, mazání starých verzí ===
 self.addEventListener("activate", event => {
-  console.log("🔁 Aktivace service workeru...");
   event.waitUntil(
     caches.keys().then(keys => 
       Promise.all(

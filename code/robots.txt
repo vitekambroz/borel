@@ -1,0 +1,6 @@
+# robots.txt for https://www.borel.cz
+User-agent: *
+Allow: /
+
+# Sitemap – důležité pro indexování
+Sitemap: https://www.borel.cz/sitemap.xml
