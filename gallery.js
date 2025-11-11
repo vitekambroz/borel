@@ -21,10 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnPrev = document.querySelector(".prev");
   const btnNext = document.querySelector(".next");
 
-  if (!grid) {
-    console.warn("⚠️ #galleryGrid nebyl nalezen – skript přeskočen.");
-    return;
-  }
+  if (!grid) return;
 
   // === 1) Vygenerování náhledů ===
   galleryPhotos.forEach((src, index) => {
@@ -32,18 +29,16 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.className = "img-wrapper shimmer";
 
     const img = document.createElement("img");
-    img.dataset.src = `foto/thumbnails/${src}`; // lazy načítání pomocí IntersectionObserver
+    img.dataset.src = `foto/thumbnails/${src}`;
     img.alt = `Fotka ${index + 1}`;
     img.dataset.index = index;
     img.classList.add("lazy-fade");
 
-    // Po načtení zruší shimmer
     img.addEventListener("load", () => {
       wrapper.classList.remove("shimmer");
       img.classList.add("loaded");
     });
 
-    // Otevření lightboxu
     img.addEventListener("click", () => openLightbox(index, true));
 
     wrapper.appendChild(img);
@@ -64,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }, {
-    rootMargin: "100px", // začni načítat trochu dřív
+    rootMargin: "100px",
     threshold: 0.1
   });
 
@@ -91,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     history.replaceState(null, "", " ");
   }
 
-  // === 5) Přepínání s animací (fade + slide) ===
+  // === 5) Přepínání s animací ===
   function changeSlide(dir) {
     if (!lightboxImg) return;
 
@@ -124,18 +119,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // === 6) Ovládání ===
-  btnClose?.addEventListener("click", closeLightbox);
-  btnPrev?.addEventListener("click", () => changeSlide(-1));
-  btnNext?.addEventListener("click", () => changeSlide(1));
+  if (btnClose) btnClose.addEventListener("click", closeLightbox);
+  if (btnPrev)  btnPrev.addEventListener("click", () => changeSlide(-1));
+  if (btnNext)  btnNext.addEventListener("click", () => changeSlide(1));
 
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener("keydown", e => {
     if (!lightbox?.classList.contains("show")) return;
     if (e.key === "Escape") closeLightbox();
     if (e.key === "ArrowLeft") changeSlide(-1);
     if (e.key === "ArrowRight") changeSlide(1);
   });
 
-  lightbox?.addEventListener("click", (e) => {
+  lightbox?.addEventListener("click", e => {
     if (e.target === lightbox) closeLightbox();
   });
 

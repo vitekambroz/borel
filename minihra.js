@@ -29,7 +29,7 @@ deathSound.volume = 0.8;
 const levelUpSound = new Audio('sounds/levelup.mp3');
 levelUpSound.volume = 0.7;
 
-birdImg.onload = function () {
+birdImg.onload = () => {
   reset();
   requestAnimationFrame(loop);
 };
@@ -50,34 +50,37 @@ let level = 1;
 let levelPulse = 0;
 let flashTimer = 0;
 
-document.getElementById('score').textContent =
-  'Skóre: 0 | Nejlepší: ' + bestScore;
+const scoreBox = document.getElementById('score');
+const msgBox = document.getElementById('centerMsg');
+const restartBtn = document.getElementById('restart');
+const muteBtn = document.getElementById('mute');
+
+scoreBox.textContent = `Skóre: 0 | Nejlepší: ${bestScore}`;
 
 const SPAWN_EVERY_MS = 1200;
 const PIPE_SPEED = 2;
 
-document.getElementById('restart').addEventListener('click', reset);
+restartBtn.addEventListener('click', reset);
 
-// === Tlačítko pro ztlumení (HTML verze) ===
-const muteBtn = document.getElementById('mute');
+// === Tlačítko pro ztlumení ===
 let isMuted = false;
-
 if (muteBtn) {
-  muteBtn.onclick = () => {
+  muteBtn.addEventListener('click', () => {
     isMuted = !isMuted;
     muteBtn.textContent = isMuted ? '🔇' : '🔊';
-  };
+  });
 }
 
 // === Ovládání ===
 function flap() {
   if (!running && !gameOver) {
     running = true;
-    document.getElementById('centerMsg').style.display = 'none';
+    msgBox.style.display = 'none';
   }
   if (gameOver) return;
   bird.vy = jump;
 }
+
 window.addEventListener('keydown', (e) => {
   if (e.code === 'Space') {
     e.preventDefault();
@@ -85,21 +88,14 @@ window.addEventListener('keydown', (e) => {
   }
 });
 cvs.addEventListener('mousedown', flap);
-cvs.addEventListener(
-  'touchstart',
-  (e) => {
-    e.preventDefault();
-    flap();
-  },
-  { passive: false }
-);
+cvs.addEventListener('touchstart', (e) => { e.preventDefault(); flap(); }, { passive: false });
 cvs.addEventListener('touchend', (e) => e.preventDefault(), { passive: false });
 
 // === Spawn trubek ===
 function spawnPipe() {
   const minMargin = 80;
-  const baseGap = 170; // menší základní mezera
-  const gap = Math.max(baseGap, Math.floor(H * 0.26)); // jen lehce menší mezery
+  const baseGap = 170;
+  const gap = Math.max(baseGap, Math.floor(H * 0.26));
   const randomFactor = 0.4;
   const maxTop = H - minMargin - gap;
   const midTop = (minMargin + maxTop) / 2;
@@ -110,12 +106,7 @@ function spawnPipe() {
 
 // === Kolize ===
 function intersect(a, b) {
-  return !(
-    a.x + a.w < b.x ||
-    a.x > b.x + b.w ||
-    a.y + a.h < b.y ||
-    a.y > b.y + b.h
-  );
+  return !(a.x + a.w < b.x || a.x > b.x + b.w || a.y + a.h < b.y || a.y > b.y + b.h);
 }
 
 // === Update ===
@@ -130,15 +121,11 @@ function update(dt, deltaMs) {
       spawnTimer = 0;
     }
 
-    // === Obtížnost až do levelu 200 ===
     const maxLevel = 200;
     const levelProgress = Math.min(score, maxLevel);
-    let speed;
-    if (levelProgress <= 100) {
-      speed = PIPE_SPEED + (levelProgress / 100) * 6;
-    } else {
-      speed = PIPE_SPEED + 6 + ((levelProgress - 100) / 100) * 6;
-    }
+    const speed = levelProgress <= 100
+      ? PIPE_SPEED + (levelProgress / 100) * 6
+      : PIPE_SPEED + 6 + ((levelProgress - 100) / 100) * 6;
 
     for (let i = pipes.length - 1; i >= 0; i--) {
       pipes[i].x -= speed * dt;
@@ -158,8 +145,7 @@ function update(dt, deltaMs) {
           }
         }
 
-        document.getElementById('score').textContent =
-          'Skóre: ' + score + ' | Nejlepší: ' + bestScore;
+        scoreBox.textContent = `Skóre: ${score} | Nejlepší: ${bestScore}`;
       }
 
       if (pipes[i].x + pipeWidth < -10) pipes.splice(i, 1);
@@ -171,14 +157,8 @@ function update(dt, deltaMs) {
       const topRect = { x: p.x, y: 0, w: pipeWidth, h: p.top };
       const botRect = { x: p.x, y: p.bottom, w: pipeWidth, h: H - p.bottom };
       const inset = 6;
-      const birdRect = {
-        x: bird.x - bird.w / 2 + inset,
-        y: bird.y - bird.h / 2 + inset,
-        w: bird.w - inset * 2,
-        h: bird.h - inset * 2,
-      };
-      if (intersect(birdRect, topRect) || intersect(birdRect, botRect))
-        endGame();
+      const birdRect = { x: bird.x - bird.w / 2 + inset, y: bird.y - bird.h / 2 + inset, w: bird.w - inset * 2, h: bird.h - inset * 2 };
+      if (intersect(birdRect, topRect) || intersect(birdRect, botRect)) endGame();
     }
 
     if (levelPulse > 0) levelPulse -= 0.05 * dt;
@@ -209,16 +189,14 @@ function endGame() {
     localStorage.setItem('bestScore', bestScore);
   }
 
-  document.getElementById('centerMsg').style.display = 'block';
-  document.getElementById('centerMsg').innerHTML =
-    '💀 Prohrál/a jsi<br>Skóre: <b>' +
-    score +
-    '</b><br>Nejlepší: <b>' +
-    bestScore +
-    '</b><br><small>Klikni Restart</small>';
+  msgBox.style.display = 'block';
+  msgBox.replaceChildren();
+  msgBox.insertAdjacentHTML(
+    'afterbegin',
+    `💀 Prohrál/a jsi<br>Skóre: <b>${score}</b><br>Nejlepší: <b>${bestScore}</b><br><small>Klikni Restart</small>`
+  );
 
-  document.getElementById('score').textContent =
-    'Skóre: ' + score + ' | Nejlepší: ' + bestScore;
+  scoreBox.textContent = `Skóre: ${score} | Nejlepší: ${bestScore}`;
 }
 
 // === Reset ===
@@ -235,45 +213,41 @@ function reset() {
   levelPulse = 0;
   flashTimer = 0;
 
-  document.getElementById('score').textContent =
-    'Skóre: 0 | Nejlepší: ' + bestScore;
-  document.getElementById('centerMsg').style.display = 'block';
-  document.getElementById('centerMsg').innerHTML =
-    'Stiskni mezerník nebo klikni pro start';
+  scoreBox.textContent = `Skóre: 0 | Nejlepší: ${bestScore}`;
+  msgBox.style.display = 'block';
+  msgBox.replaceChildren();
+  msgBox.textContent = 'Stiskni mezerník nebo klikni pro start';
 }
 
 // === Kreslení ===
 function draw() {
   ctx.clearRect(0, 0, W, H);
-
-  // === Barevný záblesk při přechodu na nový level ===
   if (flashTimer > 0) {
     const alpha = Math.min(0.6, flashTimer / 300);
     const gradient = ctx.createLinearGradient(0, 0, W, H);
-    gradient.addColorStop(0, 'rgba(255,255,0,' + alpha + ')');
-    gradient.addColorStop(1, 'rgba(255,105,180,' + alpha + ')');
+    gradient.addColorStop(0, `rgba(255,255,0,${alpha})`);
+    gradient.addColorStop(1, `rgba(255,105,180,${alpha})`);
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, W, H);
   }
 
-  // === Pozadí podle denní doby ===
   let topColor, bottomColor;
   const progress = level / 100;
   if (progress < 0.1) {
-    topColor = `hsl(330, 70%, ${70 - progress * 50}%)`;
-    bottomColor = `hsl(200, 80%, ${85 - progress * 30}%)`;
+    topColor = `hsl(330,70%,${70 - progress * 50}%)`;
+    bottomColor = `hsl(200,80%,${85 - progress * 30}%)`;
   } else if (progress < 0.3) {
-    topColor = `hsl(195, 80%, ${75 - (progress - 0.1) * 50}%)`;
-    bottomColor = `hsl(210, 90%, ${90 - (progress - 0.1) * 30}%)`;
+    topColor = `hsl(195,80%,${75 - (progress - 0.1) * 50}%)`;
+    bottomColor = `hsl(210,90%,${90 - (progress - 0.1) * 30}%)`;
   } else if (progress < 0.6) {
-    topColor = `hsl(200, 90%, ${85 - (progress - 0.3) * 20}%)`;
-    bottomColor = `hsl(210, 95%, ${95 - (progress - 0.3) * 10}%)`;
+    topColor = `hsl(200,90%,${85 - (progress - 0.3) * 20}%)`;
+    bottomColor = `hsl(210,95%,${95 - (progress - 0.3) * 10}%)`;
   } else if (progress < 0.8) {
-    topColor = `hsl(${30 + (progress - 0.6) * 150}, 80%, ${70 - (progress - 0.6) * 20}%)`;
-    bottomColor = `hsl(${10 + (progress - 0.6) * 150}, 80%, ${60 - (progress - 0.6) * 20}%)`;
+    topColor = `hsl(${30 + (progress - 0.6) * 150},80%,${70 - (progress - 0.6) * 20}%)`;
+    bottomColor = `hsl(${10 + (progress - 0.6) * 150},80%,${60 - (progress - 0.6) * 20}%)`;
   } else {
-    topColor = `hsl(240, 60%, ${20 + (progress - 0.8) * 5}%)`;
-    bottomColor = `hsl(260, 70%, ${15 + (progress - 0.8) * 10}%)`;
+    topColor = `hsl(240,60%,${20 + (progress - 0.8) * 5}%)`;
+    bottomColor = `hsl(260,70%,${15 + (progress - 0.8) * 10}%)`;
   }
 
   const bgGradient = ctx.createLinearGradient(0, 0, 0, H);
@@ -282,14 +256,12 @@ function draw() {
   ctx.fillStyle = bgGradient;
   ctx.fillRect(0, 0, W, H);
 
-  // === Zem ===
   const groundHeight = 80;
   ctx.fillStyle = '#ded895';
   ctx.fillRect(0, H - groundHeight, W, groundHeight);
   ctx.fillStyle = '#3ec73e';
   ctx.fillRect(0, H - groundHeight, W, 20);
 
-  // === Trubky ===
   for (const p of pipes) {
     const pipeColor = '#3bb300';
     const pipeBorder = '#2a8c00';
@@ -305,7 +277,6 @@ function draw() {
     ctx.fillRect(p.x - 3, p.bottom, pipeWidth + 6, 20);
   }
 
-  // === Pták ===
   if (birdImg.complete && birdImg.naturalWidth !== 0) {
     ctx.save();
     let angle = Math.max(-0.3, Math.min(0.3, bird.vy / 20));
@@ -316,7 +287,6 @@ function draw() {
     ctx.restore();
   }
 
-  // === Obtížnost ===
   let color;
   if (level <= 30) color = '#3eea3e';
   else if (level <= 60) color = '#f39c12';
@@ -327,7 +297,7 @@ function draw() {
   ctx.shadowColor = 'rgba(0,0,0,0.6)';
   ctx.shadowBlur = 4;
   ctx.fillStyle = color;
-  ctx.fillText('Obtížnost: ' + level, 12, 54);
+  ctx.fillText(`Obtížnost: ${level}`, 12, 54);
   ctx.shadowBlur = 0;
 }
 

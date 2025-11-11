@@ -1,4 +1,3 @@
-// Array of gallery images
 const galleryPhotos = [
   'foto1.jpg', 'foto2.jpg', 'foto3.jpg', 'foto4.jpg', 'foto5.jpg',
   'foto6.jpg', 'foto7.jpg', 'foto8.jpg', 'foto9.jpg', 'foto10.jpg',
@@ -11,35 +10,39 @@ const galleryPhotos = [
   'foto41.jpg', 'foto42.jpg', 'foto43.jpg', 'foto44.jpg', 'foto45.jpg'
 ];
 
-// === 1) Vygeneruj widget galerii na hlavní stránce ===
-const widgetGallery = document.getElementById('widgetGallery');
-if (widgetGallery) {
-  const startIndex = galleryPhotos.length - 5;
-  galleryPhotos.slice(-5).forEach((img, i) => {
-    const el = document.createElement('img');
-    el.src = 'foto/thumbnails/' + img;
-    el.alt = 'Fotogalerie';
-    el.loading = 'lazy'; // lazy-load
-    el.classList.add('widget-photo');
+// === 1) Widget galerie na hlavní stránce ===
+document.addEventListener("DOMContentLoaded", () => {
+  const widgetGallery = document.getElementById("widgetGallery");
+  if (!widgetGallery) return;
 
-    // Přesměrování do celé galerie s hash indexem (#xx)
-    el.addEventListener('click', () => {
+  const startIndex = galleryPhotos.length - 5;
+
+  galleryPhotos.slice(-5).forEach((img, i) => {
+    const el = document.createElement("img");
+    el.src = `foto/thumbnails/${img}`;
+    el.alt = "Fotogalerie";
+    el.loading = "lazy";
+    el.classList.add("widget-photo");
+
+    // Přesměrování do galerie s hash indexem (#xx)
+    el.addEventListener("click", () => {
       const index = startIndex + i + 1;
-      window.location.href = `fotogalerie.html#${index}`;
+      window.location.href = `/fotogalerie#${index}`;
     });
 
     widgetGallery.appendChild(el);
   });
-}
 
-// === 2) Efekty při najetí myší (jemná záře a shimmer posílení) ===
-document.addEventListener('mouseover', e => {
-  if (e.target.matches('.widget-photo')) {
-    e.target.classList.add('hovered');
-  }
-});
-document.addEventListener('mouseout', e => {
-  if (e.target.matches('.widget-photo')) {
-    e.target.classList.remove('hovered');
-  }
+  // === 2) Efekt záře při najetí ===
+  widgetGallery.addEventListener("mouseover", (e) => {
+    if (e.target.classList.contains("widget-photo")) {
+      e.target.classList.add("hovered");
+    }
+  });
+
+  widgetGallery.addEventListener("mouseout", (e) => {
+    if (e.target.classList.contains("widget-photo")) {
+      e.target.classList.remove("hovered");
+    }
+  });
 });

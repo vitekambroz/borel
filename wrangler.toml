@@ -1,27 +1,21 @@
-# Název projektu (musí být stejný jako v Cloudflare Pages)
 name = "borel"
 compatibility_date = "2025-01-01"
 
-# 🧩 Definice umístění zdrojových souborů
 [site]
-bucket = "./"
-entry-point = "functions"   # složka s funkcemi (např. [[path]].js)
+bucket = "."              # vše je teď v rootu
+entry-point = "functions"
 
-# 🏗️ Build konfigurace
 [build]
-command = ""                # žádný build krok (čistý HTML projekt)
+command = ""
 
-# 🌍 Produkční prostředí (borel.cz / www.borel.cz)
+# Výstupní složka pro Pages
+pages_build_output_dir = "."
+
 [env.production]
 vars = { ENVIRONMENT = "production" }
 
-# 🔍 Preview prostředí (borel.pages.dev)
 [env.preview]
 vars = { ENVIRONMENT = "preview" }
 
-# 🧭 Cloudflare Pages – směrník pro výstup
-pages_build_output_dir = "./"
-
-# 📜 Logování funkcí (volitelné, ale pomáhá ladit)
 [observability]
 logs = true
