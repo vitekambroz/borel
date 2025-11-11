@@ -1,21 +1,19 @@
 name = "borel"
+main = "functions/_redirect-www.js"
 compatibility_date = "2025-01-01"
 
+# === Cloudflare Pages konfigurace ===
+pages_build_output_dir = "./"       # hlavní složka, kde máš HTML/CSS/JS
+entry-point = "functions"           # složka, kde jsou Pages Functions (např. _redirect-www.js)
+
 [site]
-bucket = "."              # vše je teď v rootu
-entry-point = "functions"
+bucket = "./"                       # nezměněno — vše je v rootu repozitáře
 
 [build]
-command = ""
-
-# Výstupní složka pro Pages
-pages_build_output_dir = "."
+command = ""                        # žádný build krok (čistý HTML projekt)
 
 [env.production]
 vars = { ENVIRONMENT = "production" }
 
 [env.preview]
 vars = { ENVIRONMENT = "preview" }
-
-[observability]
-logs = true
