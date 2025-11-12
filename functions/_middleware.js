@@ -35,33 +35,18 @@ export async function onRequest(context) {
   }
 
   // === 6️⃣ Content Security Policy (CSP) ===
-  const cspDirectives = [
-    // Základní pravidla – pouze vlastní doména
-    "default-src 'self';",
-
-    // Povolené skripty – jen lokální
-    "script-src 'self';",
-
-    // Styly – vlastní + Google Fonts (nutné pro fonty)
-    "style-src 'self' https://fonts.googleapis.com 'unsafe-inline';",
-
-    // Fonty – z Google Fonts
-    "font-src 'self' https://fonts.gstatic.com data:;",
-
-    // Obrázky – lokální + base64
-    "img-src 'self' data: blob:;",
-
-    // Spojení (fetch, xhr, websockets) – jen k vlastnímu původu
-    "connect-src 'self';",
-
-    // Frame a embedy (vypnuto)
-    "frame-ancestors 'none';",
-    "object-src 'none';",
-
-    // Základní bezpečnostní zásady
-    "base-uri 'self';",
-    "form-action 'self';",
-  ];
+const cspDirectives = [
+  "default-src 'self';",
+  "script-src 'self';",
+  "style-src 'self' https://fonts.googleapis.com 'unsafe-inline';",
+  "font-src 'self' https://fonts.gstatic.com data:;",
+  "img-src 'self' data: blob:;",
+  "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;",
+  "frame-ancestors 'none';",
+  "object-src 'none';",
+  "base-uri 'self';",
+  "form-action 'self';"
+];
 
   // 💡 Doplňkové povolení — aktivuj jen pokud je potřeba:
   // 🔹 YouTube videa
