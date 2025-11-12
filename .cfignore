@@ -15,12 +15,15 @@ functions/.cache/
 Thumbs.db
 .vscode/
 *.log
+*.tmp
 
 # ==========================
-# 🧠 VÝVOJOVÉ SKRIPTY
+# 🧠 VÝVOJOVÉ SKRIPTY & NÁSTROJE
 # ==========================
 scripts/
-generate-thumbnails.bat
+*.bat
+*.cmd
+*.ps1
 package.json
 package-lock.json
 wrangler.toml
@@ -28,16 +31,20 @@ wrangler.yaml
 wrangler.json
 wrangler.jsonc
 .github/
-
-# ==========================
-# 🖼️ FOTKY – originály nechci deployovat
-# ==========================
-foto/originals/
-# ale miniatury se deploynou:
-# foto/thumbnails/ (ponecháno)
+.git/
+.gitignore
+README.md
 
 # ==========================
 # ⚙️ LOKÁLNÍ POMOCNÉ SOUBORY
 # ==========================
 *.bak
-*.tmp
+exiftool.exe
+exiftool(-k).exe
+exiftool_files/
+
+# ==========================
+# 🖼️ FOTKY
+# ==========================
+# ✅ pokud bys chtěl někdy originals vynechat, stačí odkomentovat níže:
+# foto/originals/
