@@ -865,22 +865,41 @@ html.theme-dark .shimmer::before {
   display: flex;
   justify-content: space-between;
   transform: translateY(-50%);
+  padding: 0 40px; /* ✅ přidá vnitřní odsazení od kraje */
+  pointer-events: none; /* tlačítka neblokují klik mimo */
 }
+
 .lightbox-nav button {
-  width: 50px;
-  height: 50px;
-  font-size: 24px;
+  width: 60px;
+  height: 60px;
+  font-size: 26px;
   border-radius: 50%;
   border: none;
-  background: var(--glass);
+  background: rgba(255, 255, 255, 0.15);
   color: var(--text);
   cursor: pointer;
-  transition: transform .3s, background .3s;
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  pointer-events: all; /* tlačítka zase reagují */
+  box-shadow: 0 0 12px rgba(255, 0, 150, 0.25);
 }
+
 .lightbox-nav button:hover {
   transform: scale(1.15);
   background: var(--brand);
-  color: white;
+  color: #fff;
+  box-shadow: 0 0 22px var(--brand), 0 0 40px rgba(255, 150, 255, 0.4);
+}
+
+html.theme-dark .lightbox-nav button {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.25);
+}
+
+html.theme-dark .lightbox-nav button:hover {
+  background: var(--brand);
+  color: #fff;
+  box-shadow: 0 0 25px rgba(255, 0, 255, 0.55);
 }
 .lightbox-counter {
   position: absolute;
