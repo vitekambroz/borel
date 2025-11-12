@@ -13,7 +13,27 @@ export async function onRequest(context) {
   // === 3️⃣ Klonování hlaviček pro úpravy ===
   const newHeaders = new Headers(response.headers);
 
-  // === 4️⃣ Bezpečnostní hlavičky ===
+  // === 4️⃣ CACHE FIX PRO CLOUDFLARE ===
+  const contentType = response.headers.get("content-type") || "";
+
+  if (contentType.includes("text/html")) {
+    // HTML se NESMÍ cacheovat – jinak neuvidíš změny
+    newHeaders.set("Cache-Control", "no-cache, no-store, must-revalidate");
+  }
+  else if (url.pathname.endsWith(".css") || url.pathname.endsWith(".js")) {
+    // CSS a JS – krátká cache (10 minut)
+    newHeaders.set("Cache-Control", "public, max-age=600");
+  }
+  else if (url.pathname.match(/\.(png|jpg|jpeg|gif|webp|ico|svg)$/)) {
+    // Obrázky – dlouhá cache, protože se skoro nikdy nemění
+    newHeaders.set("Cache-Control", "public, max-age=31536000, immutable");
+  }
+  else {
+    // Ostatní soubory – krátká cache
+    newHeaders.set("Cache-Control", "public, max-age=300");
+  }
+
+  // === 5️⃣ Bezpečnostní hlavičky ===
   newHeaders.set(
     "Strict-Transport-Security",
     "max-age=63072000; includeSubDomains; preload"
@@ -31,19 +51,13 @@ export async function onRequest(context) {
     "geolocation=(), camera=(), microphone=()"
   );
 
-  // Statické soubory mohou být kešované dlouho
-  newHeaders.set("Cache-Control", "public, max-age=31536000, immutable");
-
-  // === 5️⃣ Canonical URL pro SEO ===
+  // === 6️⃣ Canonical URL ===
   if (url.hostname === "www.borel.cz") {
     const canonicalUrl = `${url.origin}${url.pathname}`;
     newHeaders.set("Link", `<${canonicalUrl}>; rel="canonical"`);
   }
 
-  // === 6️⃣ Sjednocená a funkční Content-Security-Policy (CSP) ===
-
-  // ⭐ TOTO je finální a funkční verze, která odpovídá tomu, co jsi chtěl.
-  // Sladěné mezi HTML + middleware + galerií + minihrami + SW.
+  // === 7️⃣ Content Security Policy ===
   const cspDirectives = [
     "default-src 'self';",
     "script-src 'self' 'unsafe-inline';",
@@ -61,7 +75,7 @@ export async function onRequest(context) {
 
   newHeaders.set("Content-Security-Policy", cspDirectives.join(" "));
 
-  // === 7️⃣ Vrácení odpovědi ===
+  // === 8️⃣ Vrácení odpovědi ===
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
