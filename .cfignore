@@ -9,6 +9,12 @@ functions/.cache/
 .env
 
 # ==========================
+# 🧠 Node / NPM metadata
+# ==========================
+package.json
+package-lock.json
+
+# ==========================
 # 💻 IDE & OS SOUBORY
 # ==========================
 .DS_Store
