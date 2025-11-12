@@ -328,7 +328,7 @@ html:not(.theme-dark) .theme-toggle .icon {
 
 /* DARK režim – měsíček */
 html.theme-dark .theme-toggle .icon {
-  transform: rotate(230deg) scale(1.18);
+  transform: rotate(230deg) scale(1.15);
   transition: transform 0.45s ease, filter 0.4s ease;
   color: #fff;
   filter: drop-shadow(0 0 18px rgba(255, 150, 255, 0.8));

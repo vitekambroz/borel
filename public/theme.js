@@ -1,5 +1,10 @@
 // =============================================
-//  BOREL THEME MANAGER – 2025 SUPER CLEAN EDITION
+//  BOREL THEME MANAGER — 2025 ULTIMATE FIX
+//  - Dokonalá poloha měsíce/slunce (už se nerozbije)
+//  - Jediný click handler
+//  - Cute neon animace
+//  - Stabilní animace BOREL názvu
+//  - Particles background
 // =============================================
 
 (function() {
@@ -9,82 +14,72 @@
   const toggleIcon = toggleBtn?.querySelector(".icon");
   const canvas = document.getElementById("particles");
 
-  // =============================================
-  //   1) Initial Theme Setup
-  // =============================================
-
+  // =====================================================
+  // 1) LOAD SAVED THEME (light/dark)
+  // =====================================================
   const saved = localStorage.getItem(STORAGE_KEY);
   const initial = saved || "light";
   applyTheme(initial);
 
-
-  // =============================================
-  //   2) Theme Toggle Button (Click)
-  // =============================================
-
+  // =====================================================
+  // 2) THEME TOGGLE BUTTON — SINGLE CLICK HANDLER
+  // =====================================================
   if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-      startToggleAnimation();
+    toggleBtn.onclick = () => {
+      // Start spin animation
+      toggleBtn.classList.add("switching");
+      setTimeout(() => toggleBtn.classList.remove("switching"), 450);
 
-      const next = root.classList.contains("theme-dark") ? "light" : "dark";
-      applyTheme(next);
-      localStorage.setItem(STORAGE_KEY, next);
+      // Switch theme
+      const dark = !root.classList.contains("theme-dark");
+      root.classList.toggle("theme-dark", dark);
 
+      // Change icon AFTER transform finishes for perfect position
+      setTimeout(() => {
+        if (toggleIcon) toggleIcon.textContent = dark ? "🌙" : "🌞";
+      }, 200);
+
+      // Save
+      localStorage.setItem(STORAGE_KEY, dark ? "dark" : "light");
+
+      // Update neon particles
       resizeParticles();
+
       flashBackground();
-    });
+    };
   }
 
-
-  // =============================================
-  //   3) Apply Light / Dark Theme
-  // =============================================
-
+  // =====================================================
+  // 3) APPLY THEME (called on load)
+  // =====================================================
   function applyTheme(mode) {
     const dark = mode === "dark";
     root.classList.toggle("theme-dark", dark);
 
-    // change icon
+    // Set initial icon
     if (toggleIcon) {
       toggleIcon.textContent = dark ? "🌙" : "🌞";
     }
   }
 
-
-  // =============================================
-  //   4) Cute Icon Spin Animation Handler
-  // =============================================
-
-  function startToggleAnimation() {
-    if (!toggleBtn) return;
-
-    toggleBtn.classList.add("switching");
-    setTimeout(() => toggleBtn.classList.remove("switching"), 450); 
-  }
-
-
-  // =============================================
-  //   5) Flash Effect (Background Pulse)
-  // =============================================
-
+  // =====================================================
+  // 4) Background Flash (cute neon pulse)
+  // =====================================================
   function flashBackground() {
     document.body.classList.add("theme-flash");
     setTimeout(() => document.body.classList.remove("theme-flash"), 500);
   }
 
+  // =====================================================
+  // 5) BOREL TEXT ANIMATION (RUN ONCE)
+  // =====================================================
+  window.addEventListener("DOMContentLoaded", () => {
+    document.body.classList.add("animate-title");
+  });
 
-  // =============================================
-  //   6) Fade-in for Text After Load (BOREL letters)
-  // =============================================
-
-window.addEventListener("DOMContentLoaded", () => {
-  document.body.classList.add("animate-title");
-});
-
-
-  // =============================================
-  //   7) PARTICLES BACKGROUND (Neon floating dots)
-  // =============================================
+  // =====================================================
+  // 6) PARTICLES BACKGROUND (Neon dots)
+  // =====================================================
 
   let ctx = null;
   let W = 0, H = 0;
@@ -97,13 +92,11 @@ window.addEventListener("DOMContentLoaded", () => {
     drawParticles();
   }
 
-
   function getParticleColors() {
     return root.classList.contains("theme-dark")
-      ? ["rgba(255,80,200,0.7)", "rgba(150,70,255,0.65)"]
-      : ["rgba(229,0,106,0.6)", "rgba(255,150,255,0.55)"];
+      ? ["rgba(255,80,200,0.75)", "rgba(160,80,255,0.65)"]
+      : ["rgba(229,0,106,0.6)", "rgba(255,150,255,0.6)"];
   }
-
 
   function resizeParticles() {
     if (!canvas || !ctx) return;
@@ -125,7 +118,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-
   function drawParticles() {
     if (!canvas || !ctx) return;
 
@@ -135,7 +127,7 @@ window.addEventListener("DOMContentLoaded", () => {
       ctx.beginPath();
       ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
       ctx.fillStyle = d.c;
-      ctx.shadowBlur = 12;
+      ctx.shadowBlur = 14;
       ctx.shadowColor = d.c;
       ctx.fill();
 
@@ -151,9 +143,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
 })();
 
-
 // =============================================
-//  HAMBURGER MENU – CLEAN REDESIGN
+//  HAMBURGER MENU — MODERN & STABLE
 // =============================================
 
 const menuBtn = document.querySelector(".menu-toggle");
@@ -171,10 +162,10 @@ if (menuBtn && nav) {
       nav.classList.remove("show");
       nav.classList.add("hide");
 
-      nav.addEventListener("animationend", function handler() {
+      nav.addEventListener("animationend", function hideAfter() {
         nav.style.display = "none";
         nav.classList.remove("hide");
-        nav.removeEventListener("animationend", handler);
+        nav.removeEventListener("animationend", hideAfter);
       });
     }
   });
