@@ -339,7 +339,8 @@ html:not(.theme-dark) .theme-toggle .icon {
 
 /* DARK režim – měsíček */
 html.theme-dark .theme-toggle .icon {
-  transform: rotate(260deg) scale(1.28);
+  transform: rotate(230deg) scale(1.18);
+  transition: transform 0.45s ease, filter 0.4s ease;
   color: #fff;
   filter: drop-shadow(0 0 18px rgba(255, 150, 255, 0.8));
 }
@@ -347,7 +348,7 @@ html.theme-dark .theme-toggle .icon {
 /* Flash při přepnutí */
 .theme-toggle.switching .icon {
   opacity: 0.7;
-  transform: rotate(420deg) scale(1.8);
+  transform: rotate(420deg) scale(1.6);
 }
 
 .theme-toggle:hover {
