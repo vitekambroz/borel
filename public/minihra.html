@@ -11,93 +11,52 @@
 
   <!-- 🎮 Meta informace -->
   <title>Minihra – BOREL</title>
-  <meta name="description" content="Zahraj si neonovou minihru BOREL. Lehké ovládání, rychlá akce, skvělá zábava – přímo v prohlížeči.">
+  <meta name="description" content="Zahraj si neonovou minihru BOREL. Lehké ovládání, rychlá akce a skvělá zábava přímo v prohlížeči.">
   <meta name="robots" content="index, follow">
 
-  <!-- 🌐 Open Graph -->
+  <!-- 🟣 Open Graph -->
   <meta property="og:url" content="https://www.borel.cz/minihra">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="BOREL">
   <meta property="og:title" content="Minihra – BOREL">
-  <meta property="og:description" content="Zahraj si neonovou minihru BOREL. Lehké ovládání, rychlá akce, skvělá zábava – přímo v prohlížeči.">
+  <meta property="og:description" content="Zahraj si neonovou minihru BOREL. Lehké ovládání, rychlá akce a skvělá zábava přímo v prohlížeči.">
   <meta property="og:image" content="https://www.borel.cz/foto/minihra-preview.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
   <meta property="og:locale" content="cs_CZ">
 
   <!-- 🐦 Twitter Cards -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta property="twitter:domain" content="www.borel.cz">
   <meta property="twitter:url" content="https://www.borel.cz/minihra">
   <meta name="twitter:title" content="Minihra – BOREL">
-  <meta name="twitter:description" content="Zahraj si neonovou minihru BOREL. Lehké ovládání, rychlá akce, skvělá zábava – přímo v prohlížeči.">
+  <meta name="twitter:description" content="Zahraj si neonovou minihru BOREL.">
   <meta name="twitter:image" content="https://www.borel.cz/foto/minihra-preview.png">
 
-  <!-- 📘 Schema.org (Google Rich Results) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "VideoGame",
-    "name": "Minihra – BOREL",
-    "description": "Zahraj si neonovou minihru BOREL. Lehké ovládání, rychlá akce, skvělá zábava – přímo v prohlížeči.",
-    "url": "https://www.borel.cz/minihra",
-    "image": "https://www.borel.cz/foto/minihra-preview.png",
-    "inLanguage": "cs",
-    "genre": "Arcade",
-    "applicationCategory": "Game",
-    "operatingSystem": "Web",
-    "author": {
-      "@type": "Person",
-      "name": "Vítek Ambrož"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "BOREL",
-      "logo": "https://www.borel.cz/logo.png"
-    }
-  }
-  </script>
+  <!-- 📘 Schema.org (externí – CSP SAFE) -->
+  <script src="/minihra-schema.js" defer></script>
 
-  <!-- 🛡️ Content Security Policy -->
-  <meta http-equiv="Content-Security-Policy"
-    content="
-      default-src 'self';
-      script-src 'self';
-      style-src 'self' https://fonts.googleapis.com;
-      font-src 'self' https://fonts.gstatic.com;
-      img-src 'self' data: https:;
-      connect-src 'self';
-      worker-src 'self';
-      manifest-src 'self';
-      upgrade-insecure-requests;
-    ">
-
-  <!-- 🖋️ Google Fonts -->
+  <!-- 🖋️ Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- ⚡ Preload hlavního stylu -->
-<!-- Preload pro rychlejší stažení -->
-<link rel="preload" href="/style.css?v=213" as="style">
-<!-- Běžné připojení stylu -->
-<link rel="stylesheet" href="/style.css?v=213">
+  <!-- 🎨 Styl -->
+  <link rel="preload" href="/style.css?v=213" as="style">
+  <link rel="stylesheet" href="/style.css?v=213">
 
-  <!-- 📱 PWA manifest -->
+  <!-- 📱 PWA -->
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#e5006a">
 
-  <!-- 📲 iOS podpora -->
+  <!-- 📲 iOS -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="BOREL">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-  <!-- 🪟 Windows / Edge -->
+  <!-- 🪟 Windows -->
   <meta name="msapplication-TileColor" content="#e5006a">
   <meta name="msapplication-config" content="/browserconfig.xml">
 
-  <!-- 🖼️ Favicons -->
+  <!-- 🖼️ Ikony -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
@@ -108,9 +67,7 @@
   <header>
     <div class="title-wrap">
       <img src="/logo.png" alt="Logo" class="logo">
-      <h1>
-        <span>B</span><span>O</span><span>R</span><span>E</span><span>L</span>
-      </h1>
+      <h1><span>B</span><span>O</span><span>R</span><span>E</span><span>L</span></h1>
     </div>
 
 <nav itemscope itemtype="https://schema.org/SiteNavigationElement">
@@ -120,20 +77,28 @@
 </nav>
 
     <button class="menu-toggle" aria-label="Menu">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span></span><span></span><span></span>
     </button>
-    <button class="theme-toggle" aria-label="Přepnout režim"><span class="icon">🌙</span></button>
+
+    <button class="theme-toggle" aria-label="Přepnout režim">
+      <span class="icon">🌙</span>
+    </button>
   </header>
 
   <main>
     <section id="gameWrap">
       <canvas id="game" width="420" height="640"></canvas>
-      <div class="ui"><span id="score">Skóre: 0</span></div>
+
+      <div class="ui">
+        <span id="score">Skóre: 0</span>
+      </div>
+
       <button id="restart">Restart</button>
       <button id="mute" title="Ztlumit / Zapnout zvuk">🔊</button>
-      <div class="centerMsg" id="centerMsg">Stiskni mezerník nebo klikni pro start</div>
+
+      <div class="centerMsg" id="centerMsg">
+        Stiskni mezerník nebo klikni pro start
+      </div>
     </section>
   </main>
 
@@ -141,9 +106,10 @@
     <span>&copy; Vítek Ambrož</span>
   </footer>
 
-  <!-- 📜 Skripty (bez inline JS) -->
+  <!-- 📜 Skripty -->
   <script src="/sw-register.js?v=2" defer></script>
-  <script src="/theme.js?v=3"></script>
+  <script src="/theme.js?v=3" defer></script>
   <script src="/minihra.js?v=202" defer></script>
+
 </body>
 </html>

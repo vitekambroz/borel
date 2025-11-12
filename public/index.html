@@ -31,52 +31,18 @@
   <meta name="twitter:description" content="BOREL – moderní neonový webový projekt s fotogalerií, minihrou a interaktivním designem.">
   <meta name="twitter:image" content="https://www.borel.cz/logo.png">
 
-  <!-- 📘 Schema.org -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "BOREL",
-    "description": "BOREL – moderní neonový webový projekt s fotogalerií a minihrou.",
-    "url": "https://www.borel.cz/",
-    "image": "https://www.borel.cz/logo.png",
-    "inLanguage": "cs",
-    "author": {
-      "@type": "Person",
-      "name": "Vítek Ambrož"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "BOREL",
-      "logo": "https://www.borel.cz/logo.png"
-    }
-  }
-  </script>
-
-  <!-- 🛡️ Content Security Policy -->
-  <meta http-equiv="Content-Security-Policy"
-    content="
-      default-src 'self';
-      script-src 'self';
-      style-src 'self' https://fonts.googleapis.com;
-      font-src 'self' https://fonts.gstatic.com;
-      img-src 'self' data: https:;
-      connect-src 'self';
-      worker-src 'self';
-      manifest-src 'self';
-      upgrade-insecure-requests;
-    ">
+  <!-- 📘 Schema.org (BEZ inline scriptu) -->
+  <script src="/schema.js" defer></script>
 
   <!-- 🖋️ Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- ⚡ Preload hlavního stylu -->
-<!-- Preload pro rychlejší stažení -->
-<link rel="preload" href="/style.css?v=213" as="style">
-<!-- Běžné připojení stylu -->
-<link rel="stylesheet" href="/style.css?v=213">
+  <!-- ⚡ Preload + hlavní styl -->
+  <link rel="preload" href="/style.css?v=213" as="style">
+  <link rel="stylesheet" href="/style.css?v=213">
+
   <!-- 📱 PWA -->
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#e5006a">
@@ -96,15 +62,14 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
   <link rel="shortcut icon" href="/favicon.ico">
+
 </head>
 
 <body>
   <header>
     <div class="title-wrap">
-      <img src="/logo.png" alt="Logo" class="logo">
-      <h1>
-        <span>B</span><span>O</span><span>R</span><span>E</span><span>L</span>
-      </h1>
+      <img src="/logo.png" alt="Logo BOREL" class="logo">
+      <h1><span>B</span><span>O</span><span>R</span><span>E</span><span>L</span></h1>
     </div>
 
 <nav itemscope itemtype="https://schema.org/SiteNavigationElement">
@@ -118,14 +83,17 @@
       <span></span>
       <span></span>
     </button>
-    <button class="theme-toggle" aria-label="Přepnout režim"><span class="icon">🌙</span></button>
+
+    <button class="theme-toggle" aria-label="Přepnout režim">
+      <span class="icon">🌙</span>
+    </button>
   </header>
 
   <main>
     <section class="widget">
       <h2>Nejnovější fotografie</h2>
       <div class="widget-gallery" id="widgetGallery">
-        <!-- Fotky zde vloží JS dynamicky -->
+        <!-- Fotky vloží JS -->
       </div>
     </section>
 
@@ -140,7 +108,8 @@
 
   <!-- 📜 Skripty -->
   <script src="/sw-register.js?v=1" defer></script>
-  <script src="/theme.js?v=2"></script>
-  <script src="/main.js?v=80"></script>
+  <script src="/theme.js?v=2" defer></script>
+  <script src="/main.js?v=80" defer></script>
+
 </body>
 </html>

@@ -33,68 +33,29 @@
   <meta name="twitter:description" content="Prohlédni si neonovou fotogalerii BOREL. Moderní efekty, světelné přechody a originální fotografie.">
   <meta name="twitter:image" content="https://www.borel.cz/foto/foto1.jpg">
 
-  <!-- 📘 Schema.org (Google Rich Results) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ImageGallery",
-    "name": "Fotogalerie – BOREL",
-    "description": "Prohlédni si neonovou fotogalerii BOREL. Moderní efekty, světelné přechody a originální fotografie.",
-    "url": "https://www.borel.cz/fotogalerie",
-    "inLanguage": "cs",
-    "image": [
-      "https://www.borel.cz/foto/foto1.jpg",
-      "https://www.borel.cz/foto/foto2.jpg",
-      "https://www.borel.cz/foto/foto3.jpg"
-    ],
-    "author": {
-      "@type": "Person",
-      "name": "Vítek Ambrož"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "BOREL",
-      "logo": "https://www.borel.cz/logo.png"
-    }
-  }
-  </script>
-
-  <!-- 🛡️ Content Security Policy -->
-  <meta http-equiv="Content-Security-Policy"
-    content="
-      default-src 'self';
-      script-src 'self';
-      style-src 'self' https://fonts.googleapis.com;
-      font-src 'self' https://fonts.gstatic.com;
-      img-src 'self' data: https:;
-      connect-src 'self';
-      worker-src 'self';
-      manifest-src 'self';
-      upgrade-insecure-requests;
-    ">
+  <!-- 📘 Schema.org JSON-LD (externí soubor – CSP safe) -->
+  <script src="/gallery-schema.js" defer></script>
 
   <!-- 🖋️ Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- ⚡ Preload hlavního stylu -->
-<!-- Preload pro rychlejší stažení -->
-<link rel="preload" href="/style.css?v=213" as="style">
-<!-- Běžné připojení stylu -->
-<link rel="stylesheet" href="/style.css?v=213">
+  <!-- ⚡ Preload + style -->
+  <link rel="preload" href="/style.css?v=213" as="style">
+  <link rel="stylesheet" href="/style.css?v=213">
 
   <!-- 📱 PWA manifest -->
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#e5006a">
 
-  <!-- 📲 iOS podpora -->
+  <!-- 📲 iOS -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="BOREL">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-  <!-- 🪟 Windows / Edge -->
+  <!-- 🪟 Windows -->
   <meta name="msapplication-TileColor" content="#e5006a">
   <meta name="msapplication-config" content="/browserconfig.xml">
 
@@ -125,25 +86,28 @@
       <span></span>
       <span></span>
     </button>
-    <button class="theme-toggle" aria-label="Přepnout režim"><span class="icon">🌙</span></button>
+
+    <button class="theme-toggle" aria-label="Přepnout režim">
+      <span class="icon">🌙</span>
+    </button>
   </header>
 
   <main>
     <section class="gallery-page">
       <h2>Fotogalerie</h2>
       <div class="gallery-grid" id="galleryGrid">
-        <!-- Fotky se vygenerují JS automaticky -->
+        <!-- Vkládá JS -->
       </div>
     </section>
   </main>
 
-  <!-- Lightbox overlay -->
+  <!-- Lightbox -->
   <div id="lightbox" class="lightbox">
     <span class="close" aria-label="Zavřít">&times;</span>
     <img class="lightbox-content" id="lightboxImg" alt="Zvětšená fotografie">
     <div class="lightbox-nav">
-      <button class="prev" aria-label="Předchozí snímek">&#10094;</button>
-      <button class="next" aria-label="Další snímek">&#10095;</button>
+      <button class="prev" aria-label="Předchozí">&#10094;</button>
+      <button class="next" aria-label="Další">&#10095;</button>
     </div>
     <div class="lightbox-counter" id="lightboxCounter"></div>
   </div>
@@ -152,9 +116,10 @@
     <span>&copy; Vítek Ambrož</span>
   </footer>
 
-  <!-- 📜 Skripty (CSP-safe, bez inline JS) -->
+  <!-- 📜 Skripty (CSP SAFE) -->
   <script src="/sw-register.js?v=2" defer></script>
-  <script src="/theme.js?v=3"></script>
-  <script src="/gallery.js?v=305"></script>
+  <script src="/theme.js?v=3" defer></script>
+  <script src="/gallery.js?v=305" defer></script>
+
 </body>
 </html>
