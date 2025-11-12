@@ -4,7 +4,15 @@ export async function onRequest(context) {
   // === 1️⃣ Přesměrování z borel.cz → www.borel.cz ===
   if (url.hostname === "borel.cz") {
     url.hostname = "www.borel.cz";
-    return Response.redirect(url.toString(), 301);
+    const response = Response.redirect(url.toString(), 301);
+
+    // 💡 Vyčištění cache, cookies a storage (pouze při přesměrování)
+    response.headers.set(
+      "Clear-Site-Data",
+      '"cache", "cookies", "storage", "executionContexts"'
+    );
+
+    return response;
   }
 
   // === 2️⃣ Pokračování (už jsme na www.borel.cz) ===
@@ -35,25 +43,22 @@ export async function onRequest(context) {
   }
 
   // === 6️⃣ Content Security Policy (CSP) ===
-const cspDirectives = [
-  "default-src 'self';",
-  "script-src 'self';",
-  "style-src 'self' https://fonts.googleapis.com 'unsafe-inline';",
-  "font-src 'self' https://fonts.gstatic.com data:;",
-  "img-src 'self' data: blob:;",
-  "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;",
-  "frame-ancestors 'none';",
-  "object-src 'none';",
-  "base-uri 'self';",
-  "form-action 'self';"
-];
+  const cspDirectives = [
+    "default-src 'self';",
+    "script-src 'self';",
+    "style-src 'self' https://fonts.googleapis.com 'unsafe-inline';",
+    "font-src 'self' https://fonts.gstatic.com data:;",
+    "img-src 'self' data: blob:;",
+    "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;",
+    "frame-ancestors 'none';",
+    "object-src 'none';",
+    "base-uri 'self';",
+    "form-action 'self';"
+  ];
 
   // 💡 Doplňkové povolení — aktivuj jen pokud je potřeba:
-  // 🔹 YouTube videa
   // cspDirectives.push("frame-src https://www.youtube.com https://www.youtube-nocookie.com;");
-  // 🔹 Mapy Google
   // cspDirectives.push("frame-src https://www.google.com/maps https://maps.googleapis.com;");
-  // 🔹 Cloudflare Analytics
   // cspDirectives.push("script-src 'self' https://static.cloudflareinsights.com; connect-src https://cloudflareinsights.com;");
 
   newHeaders.set("Content-Security-Policy", cspDirectives.join(" "));
