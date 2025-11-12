@@ -77,9 +77,9 @@
   //   6) Fade-in for Text After Load (BOREL letters)
   // =============================================
 
-  window.addEventListener("DOMContentLoaded", () => {
-    document.body.classList.add("loaded");
-  });
+window.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add("animate-title");
+});
 
 
   // =============================================
