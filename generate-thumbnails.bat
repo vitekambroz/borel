@@ -18,15 +18,15 @@ if not exist "node_modules" (
 )
 
 REM --- Kontrola složek ---
-if not exist "foto\originals" (
-  echo ❌ Složka "foto\originals" nebyla nalezena!
+if not exist "public\foto\originals" (
+  echo ❌ Složka "public\foto\originals" nebyla nalezena!
   pause
   exit /b
 )
 
-if not exist "foto\thumbnails" (
+if not exist "public\foto\thumbnails" (
   echo 📁 Vytvářím složku pro thumbnaily...
-  mkdir foto\thumbnails
+  mkdir public\foto\thumbnails
 )
 
 REM --- Spuštění Node skriptu ---
@@ -34,6 +34,6 @@ echo 🚀 Spouštím generování...
 node scripts\generate-thumbnails.js
 
 echo.
-echo ✅ Hotovo! Miniatury jsou ve složce foto\thumbnails
+echo ✅ Hotovo! Miniatury jsou ve složce public\foto\thumbnails
 echo ======================================
 pause
