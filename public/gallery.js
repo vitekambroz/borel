@@ -33,6 +33,11 @@ document.addEventListener("DOMContentLoaded", () => {
     img.alt = `Fotka ${index + 1}`;
     img.dataset.index = index;
     img.classList.add("lazy-fade");
+    img.loading = "lazy"; // prohlížeče, co lazy-load podporují nativně
+
+    // Volitelné (pokud chceš fixní poměr stran, můžeš dát:
+    img.width = 400;
+    img.height = 300;
 
     img.addEventListener("load", () => {
       wrapper.classList.remove("shimmer");
@@ -45,25 +50,38 @@ document.addEventListener("DOMContentLoaded", () => {
     grid.appendChild(wrapper);
   });
 
-  // === 2) Lazy-load pomocí IntersectionObserver ===
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const img = entry.target;
-        const src = img.dataset.src;
-        if (src) {
-          img.src = src;
-          img.removeAttribute("data-src");
+  // === 2) Lazy-load pomocí IntersectionObserver (s fallbackem) ===
+  const lazyImages = document.querySelectorAll(".lazy-fade");
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          const src = img.dataset.src;
+          if (src) {
+            img.src = src;
+            img.removeAttribute("data-src");
+          }
+          obs.unobserve(img);
         }
-        obs.unobserve(img);
+      });
+    }, {
+      rootMargin: "100px",
+      threshold: 0.1
+    });
+
+    lazyImages.forEach(img => observer.observe(img));
+  } else {
+    // Fallback pro starší prohlížeče: načti všechno hned
+    lazyImages.forEach(img => {
+      const src = img.dataset.src;
+      if (src) {
+        img.src = src;
+        img.removeAttribute("data-src");
       }
     });
-  }, {
-    rootMargin: "100px",
-    threshold: 0.1
-  });
-
-  document.querySelectorAll(".lazy-fade").forEach(img => observer.observe(img));
+  }
 
   // === 3) Otevření lightboxu ===
   function openLightbox(index, pushHash = false) {
@@ -75,7 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
     lightbox.classList.add("show");
     document.body.style.overflow = "hidden";
 
-    if (pushHash) history.replaceState(null, "", `#${index + 1}`);
+    if (pushHash) {
+      history.replaceState(null, "", `#${index + 1}`);
+    }
   }
 
   // === 4) Zavření ===
@@ -83,7 +103,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!lightbox) return;
     lightbox.classList.remove("show");
     document.body.style.overflow = "auto";
-    history.replaceState(null, "", " ");
+
+    // smaže hash, ale nechá URL (cestu + query) v klidu
+    const cleanUrl = window.location.pathname + window.location.search;
+    history.replaceState(null, "", cleanUrl);
   }
 
   // === 5) Přepínání s animací ===
