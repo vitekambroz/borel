@@ -260,60 +260,81 @@ nav a.active::before {
   transform: rotate(-45deg);
 }
 
-/* ------------------------- */
-/* TLAČÍTKO TÉMATU           */
-/* ------------------------- */
+/* ============================================
+   THEME TOGGLE — NEON SUN/MOON BUTTON (FINAL)
+   ============================================ */
 
 .theme-toggle {
-  margin-left: 10px;
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  border: 0;
+  position: relative;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: none;
   cursor: pointer;
-  display: inline-flex;
+
+  background: radial-gradient(circle at 30% 30%, #fff, #ffe6f0);
+  display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 30% 20%, #fff, #ffe6f0);
-  box-shadow:
-    0 0 10px rgba(229, 0, 106, 0.4),
-    inset 0 0 8px rgba(255, 255, 255, 0.7);
+
+  font-size: 1.6rem;
   color: var(--brand);
+
+  box-shadow:
+    0 0 6px rgba(229, 0, 106, 0.2),
+    inset 0 0 6px rgba(255, 255, 255, 0.4);
+
   transition:
     transform 0.4s ease,
     box-shadow 0.4s ease,
-    background 0.5s ease,
-    color 0.4s ease;
-  position: relative;
+    background 0.6s ease,
+    color 0.5s ease;
   overflow: hidden;
 }
 
+/* Hover efekt */
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow:
+    0 0 10px rgba(255, 100, 200, 0.4),
+    0 0 20px rgba(255, 182, 212, 0.3);
+}
+
+/* Rotující neonová záře (barevná) */
 .theme-toggle::before {
   content: "";
   position: absolute;
-  inset: -4px;
-  border-radius: inherit;
+  inset: -3px;
+  border-radius: 50%;
   background: conic-gradient(
     from 0deg,
-    #ffb6e6,
-    #ffe0ff,
-    #ffd0f4,
-    #ffc0ea,
-    #ffb6e6
+    #ffb6c1,
+    #ffe0f3,
+    #ffd6ec,
+    #ffc4e0,
+    #ffb6c1
   );
   opacity: 0.5;
-  filter: blur(12px);
+  filter: blur(10px);
   animation: rotateGlow 8s linear infinite;
   z-index: 0;
 }
 
-/* Smooth moon/sun morph + rotation */
+/* Cute spinning efekt při přepínání */
+.theme-toggle.switching .icon {
+  transform: rotate(360deg) scale(1.4);
+  opacity: 0.85;
+}
+
+/* ===========================
+   IKONA SLUNCE/MĚSÍCE
+   =========================== */
+
 .theme-toggle .icon {
   position: relative;
   z-index: 1;
-  font-size: 1.6rem;
 
-  /* zarovnání (fix měsíce nahoře) */
+  /* FIX měsíce/slunce nahoře */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -322,12 +343,52 @@ nav a.active::before {
   height: 1em;
   width: 1em;
 
-  /* animace */
+  /* Animace */
   transition:
     transform 0.75s cubic-bezier(.22,1.5,.36,1),
     opacity 0.4s ease,
     color 0.4s ease,
     filter 0.4s ease;
+}
+
+/* ===========================
+   TMAVÝ REŽIM
+   =========================== */
+
+html.theme-dark .theme-toggle {
+  background: radial-gradient(circle at 70% 70%, #2a0042, #16001e);
+  color: #ffb8ff;
+  box-shadow:
+    0 0 12px rgba(255, 0, 255, 0.45),
+    inset 0 0 12px rgba(255, 255, 255, 0.15);
+}
+
+html.theme-dark .theme-toggle::before {
+  background: conic-gradient(
+    from 0deg,
+    #ff00ff,
+    #ff33cc,
+    #a600ff,
+    #ff66ff,
+    #ff00ff
+  );
+  filter: blur(6px);
+  opacity: 0.6;
+}
+
+html.theme-dark .theme-toggle:hover {
+  box-shadow:
+    0 0 20px rgba(255, 150, 255, 0.6),
+    0 0 35px rgba(255, 0, 255, 0.3);
+}
+
+/* ===========================
+   KEYFRAMES
+   =========================== */
+
+@keyframes rotateGlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 /* LIGHT režim – sluníčko */
