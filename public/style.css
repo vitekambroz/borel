@@ -309,16 +309,20 @@ nav a.active::before {
 
 /* Smooth moon/sun morph + rotation */
 .theme-toggle .icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  vertical-align: middle;
-  height: 1em;
-  width: 1em;
   position: relative;
   z-index: 1;
   font-size: 1.6rem;
+
+  /* zarovnání (fix měsíce nahoře) */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 1;
+  height: 1em;
+  width: 1em;
+
+  /* animace */
   transition:
     transform 0.75s cubic-bezier(.22,1.5,.36,1),
     opacity 0.4s ease,
