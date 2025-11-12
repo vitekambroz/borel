@@ -4,26 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- 🌈 Barvy pro motiv -->
+  <!-- 🌈 Barvy motivu -->
   <meta name="theme-color" content="#e5006a" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#1a1020" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
 
-  <!-- ========== META TAGS PRO MINIHRA ========== -->
+  <!-- 🎮 Meta informace -->
   <title>Minihra – BOREL</title>
   <meta name="description" content="Zahraj si neonovou minihru BOREL. Lehké ovládání, rychlá akce, skvělá zábava – přímo v prohlížeči.">
-  <meta name="robots" content="index,follow">
+  <meta name="robots" content="index, follow">
 
-  <!-- Facebook / Open Graph -->
+  <!-- 🌐 Open Graph -->
   <meta property="og:url" content="https://www.borel.cz/minihra">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="BOREL">
   <meta property="og:title" content="Minihra – BOREL">
   <meta property="og:description" content="Zahraj si neonovou minihru BOREL. Lehké ovládání, rychlá akce, skvělá zábava – přímo v prohlížeči.">
   <meta property="og:image" content="https://www.borel.cz/foto/minihra-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:locale" content="cs_CZ">
 
-  <!-- Twitter Cards -->
+  <!-- 🐦 Twitter Cards -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="twitter:domain" content="www.borel.cz">
   <meta property="twitter:url" content="https://www.borel.cz/minihra">
@@ -31,7 +33,7 @@
   <meta name="twitter:description" content="Zahraj si neonovou minihru BOREL. Lehké ovládání, rychlá akce, skvělá zábava – přímo v prohlížeči.">
   <meta name="twitter:image" content="https://www.borel.cz/foto/minihra-preview.png">
 
-  <!-- Schema.org (Google Rich Results) -->
+  <!-- 📘 Schema.org (Google Rich Results) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -41,9 +43,17 @@
     "url": "https://www.borel.cz/minihra",
     "image": "https://www.borel.cz/foto/minihra-preview.png",
     "inLanguage": "cs",
+    "genre": "Arcade",
+    "applicationCategory": "Game",
+    "operatingSystem": "Web",
     "author": {
       "@type": "Person",
       "name": "Vítek Ambrož"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "BOREL",
+      "logo": "https://www.borel.cz/logo.png"
     }
   }
   </script>
@@ -55,37 +65,41 @@
       script-src 'self';
       style-src 'self' https://fonts.googleapis.com;
       font-src 'self' https://fonts.gstatic.com;
-      img-src 'self' data:;
+      img-src 'self' data: https:;
       connect-src 'self';
       worker-src 'self';
       manifest-src 'self';
+      upgrade-insecure-requests;
     ">
 
   <!-- 🖋️ Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
+  <!-- ⚡ Preload hlavního stylu -->
+  <link rel="preload" href="/style.css?v=212" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/style.css?v=212"></noscript>
+
   <!-- 📱 PWA manifest -->
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#e5006a">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#e5006a">
 
-<!-- 📲 iOS podpora -->
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="BOREL">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <!-- 📲 iOS podpora -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="BOREL">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-<!-- 🪟 Windows / Edge -->
-<meta name="msapplication-TileColor" content="#e5006a">
-<meta name="msapplication-config" content="/browserconfig.xml">
+  <!-- 🪟 Windows / Edge -->
+  <meta name="msapplication-TileColor" content="#e5006a">
+  <meta name="msapplication-config" content="/browserconfig.xml">
 
-<!-- 🖼️ Favicons -->
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
-<link rel="shortcut icon" href="/favicon.ico">
-
-  <!-- 🎨 Styl -->
-  <link rel="stylesheet" href="/style.css?v=212" />
+  <!-- 🖼️ Favicons -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+  <link rel="shortcut icon" href="/favicon.ico">
 </head>
 
 <body>
@@ -128,6 +142,6 @@
   <!-- 📜 Skripty (bez inline JS) -->
   <script src="/sw-register.js?v=2" defer></script>
   <script src="/theme.js?v=3"></script>
-  <script src="/minihra.js?v=202"></script>
+  <script src="/minihra.js?v=202" defer></script>
 </body>
 </html>
