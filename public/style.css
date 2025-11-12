@@ -518,6 +518,19 @@ html.theme-dark .info-box {
   filter: blur(0);
 }
 
+.img-wrapper img.loaded:hover {
+  transform: scale(1.05);
+  filter: brightness(1.12) saturate(1.2);
+  box-shadow:
+    0 0 20px rgba(229, 0, 106, 0.7),
+    0 0 40px rgba(255, 150, 255, 0.45);
+  transition:
+    transform .35s ease,
+    filter .35s ease,
+    box-shadow .35s ease;
+}
+
+
 /* extra třída pro JS – hladký fade-in */
 
 .lazy-fade {
