@@ -46,5 +46,4 @@ exiftool_files/
 # ==========================
 # 🖼️ FOTKY
 # ==========================
-# ✅ pokud bys chtěl někdy originals vynechat, stačí odkomentovat níže:
-# foto/originals/
+foto/originals/
