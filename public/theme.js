@@ -83,7 +83,7 @@
 //  HAMBURGER MENU — unchanged, optimized
 // =============================================
 
-const menuBtn = document.querySelector(".menu-toggle");
+/*const menuBtn = document.querySelector(".menu-toggle");
 const nav = document.querySelector("header nav");
 
 if (menuBtn && nav) {
@@ -105,4 +105,8 @@ if (menuBtn && nav) {
       });
     }
   });
-}
+}*/
+const mobileNav = document.querySelector(".mobile-nav");
+menuBtn.addEventListener("click", () => {
+  mobileNav.classList.toggle("show");
+});

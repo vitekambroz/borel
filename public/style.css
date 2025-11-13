@@ -70,14 +70,16 @@ img {
 /* HEADER + NAV              */
 /* ------------------------- */
 
+/* ========================================= */
+/* HEADER LAYOUT (DESKTOP + MOBIL)           */
+/* ========================================= */
+
 header {
   position: sticky;
   top: 0;
   z-index: 100;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
-  justify-content: space-between;
 
   padding: 10px 16px;
   background: color-mix(in srgb, var(--glass-light) 75%, transparent);
@@ -87,15 +89,15 @@ header {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
+/* CENTER TITLE */
 .title-wrap {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-
   display: flex;
   align-items: center;
   gap: 12px;
-  pointer-events: none;    /* díky tomu na něj neklikneš místo menu */
+  pointer-events: none;
 }
 
 .title-wrap img,
@@ -103,32 +105,126 @@ header {
   pointer-events: auto;
 }
 
-.logo {
-  width: 54px;
-  height: 54px;
-  border-radius: 14px;
-  object-fit: cover;
-  box-shadow:
-    0 0 12px rgba(229, 0, 106, 0.8),
-    0 0 26px rgba(255, 150, 255, 0.6);
+/* RIGHT SIDE -> NAV + THEME TOGGLE */
+.right-side {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 22px;
 }
 
-/* CUTE + HARD NEON – nejlepší kombinace */
-header h1 {
-  margin: 0;
-  font-size: 2.3rem;
-  font-weight: 800;
-  letter-spacing: 0.22em;
-  color: var(--brand-strong);
-  font-family: "Fredoka", "Poppins", sans-serif;
+/* DESKTOP NAV */
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
 
-  /* SILNÝ NEON – posíleno! */
-  text-shadow:
-    0 0 14px rgba(229, 0, 106, 0.85),
-    0 0 28px rgba(255, 150, 255, 0.75),
-    0 0 48px rgba(255, 0, 150, 0.55);
+/* ---- SPOTIFY UNDERLINE ANIMATION ---- */
+.desktop-nav a {
+  position: relative;
+  padding: 8px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--text-soft);
+  transition: 0.25s ease;
+}
 
-  transition: transform 0.35s ease, text-shadow 0.35s ease;
+.desktop-nav a::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 4px;
+  height: 2px;
+  background: var(--brand-strong);
+  border-radius: 10px;
+
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s cubic-bezier(.25,.46,.45,.94);
+}
+
+.desktop-nav a:hover::after {
+  transform: scaleX(1);
+}
+
+.desktop-nav a.active::after {
+  transform: scaleX(1);
+  background: #fff;
+}
+
+/* ACTIVE (neon styl) */
+.desktop-nav a.active {
+  color: #fff;
+}
+
+/* ========================================= */
+/* MOBILNÍ MENU                              */
+/* ========================================= */
+
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 820px) {
+
+  /* Nav + toggle blok pryč */
+  .right-side {
+    display: none;
+  }
+
+  /* Desktop nav pryč */
+  .desktop-nav {
+    display: none;
+  }
+
+  /* Hamburger viditelný */
+  .menu-toggle {
+    display: flex;
+  }
+
+  /* MOBILE MENU PANEL */
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    background: var(--glass-light);
+    backdrop-filter: blur(12px);
+    border-radius: 18px;
+    padding: 12px 16px;
+    position: absolute;
+    top: 70px;
+    right: 14px;
+    gap: 10px;
+    box-shadow: var(--shadow-soft);
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: 0.25s ease;
+    z-index: 999;
+  }
+
+  .mobile-nav.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .mobile-nav a {
+    color: var(--text-soft);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 10px;
+    border-radius: 12px;
+    transition: 0.2s;
+  }
+
+  .mobile-nav a:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--brand-strong);
+  }
 }
 
 /* Hover – ještě více neonového výbuchu */
