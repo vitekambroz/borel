@@ -271,13 +271,11 @@ nav a.active::before {
   border-radius: 50%;
   border: none;
   cursor: pointer;
-
   background: radial-gradient(circle at 30% 30%, #fff, #ffe6f0);
   display: flex;
   align-items: center;
   justify-content: center;
-
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   color: var(--brand);
 
   box-shadow:
@@ -290,6 +288,7 @@ nav a.active::before {
     background 0.6s ease,
     color 0.5s ease;
   overflow: hidden;
+  margin-right: auto;
 }
 
 /* Hover efekt */
@@ -322,8 +321,8 @@ nav a.active::before {
 
 /* Cute spinning efekt při přepínání */
 .theme-toggle.switching .icon {
-  transform: rotate(360deg) scale(1.4);
-  opacity: 0.85;
+  transform: rotate(360deg) scale(1.3);
+  opacity: 0.7;
 }
 
 /* ===========================
@@ -333,22 +332,7 @@ nav a.active::before {
 .theme-toggle .icon {
   position: relative;
   z-index: 1;
-
-  /* FIX měsíce/slunce nahoře */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  vertical-align: middle;
-  line-height: 1;
-  height: 1em;
-  width: 1em;
-
-  /* Animace */
-  transition:
-    transform 0.75s cubic-bezier(.22,1.5,.36,1),
-    opacity 0.4s ease,
-    color 0.4s ease,
-    filter 0.4s ease;
+  transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
 /* ===========================
