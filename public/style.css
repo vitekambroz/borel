@@ -185,59 +185,110 @@ nav a.active{background:var(--accent);color:white;}
 }
 @keyframes shim{0%{background-position:200%}100%{background-position:-200%}}
 
-/* LIGHTBOX */
-#lightbox{
-  position:fixed;inset:0;display:none;
-  background:rgba(0,0,0,0.85);
-  align-items:center;justify-content:center;flex-direction:column;
-}
-#lightbox.show{display:flex;}
-#lightboxImg{
-  max-width:90vw;
-  max-height:85vh;
-  border-radius:18px;
-  box-shadow:0 0 25px rgba(0,0,0,0.5);
-}
-.lightbox-nav button {
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: white;
-  font-size: 26px;
-  cursor: pointer;
-  transition: transform .25s ease, background .25s ease;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+/* LIGHTBOX – IG vibe + kulatá tlačítka */
+
+#lightbox {
+  position: fixed;
+  inset: 0;
+  display: none;
+  background: rgba(0, 0, 0, 0.88);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 999;
 }
 
-.lightbox-nav button:hover {
-  transform: scale(1.12);
-  background: rgba(255,255,255,0.25);
+#lightbox.show {
+  display: flex;
 }
-.lightbox .close {
+
+#lightboxImg {
+  max-width: min(90vw, 1200px);
+  max-height: 80vh;
+  border-radius: 18px;
+  object-fit: contain;
+  box-shadow:
+    0 0 25px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(0, 0, 0, 0.6);
+  background: #000;
+  transition: opacity 0.3s ease;
+}
+
+/* kruhové X vpravo nahoře */
+#lightbox .close {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 48px;
-  height: 48px;
+  top: 18px;
+  right: 18px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.15);
-  color: white;
-  font-size: 32px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 1.8rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+#lightbox .close:hover {
+  transform: rotate(180deg) scale(1.05);
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 0 20px rgba(0, 0, 0, 0.9),
+    0 0 24px rgba(255, 255, 255, 0.2);
+}
+
+/* šipky – kulaté bubly po stranách */
+.lightbox-nav {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 26px;
+  pointer-events: none; /* celé overlay – klik mimo zavírá */
+}
+
+.lightbox-nav button {
+  pointer-events: auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.13);
+  color: #fff;
+  font-size: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform .25s ease, background .25s ease;
-  backdrop-filter: blur(8px);
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
-.lightbox .close:hover {
-  transform: scale(1.15);
-  background: rgba(255,255,255,0.25);
+.lightbox-nav button:hover {
+  transform: scale(1.12);
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 0 22px rgba(0, 0, 0, 0.9),
+    0 0 26px rgba(255, 255, 255, 0.3);
+}
+
+.lightbox-counter {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 0.9rem;
 }
 
 /* MINI GAME */
