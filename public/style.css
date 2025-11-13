@@ -156,8 +156,8 @@ nav a.active{background:var(--accent);color:white;}
   aspect-ratio: 4 / 3;
   border-radius: 16px;
   overflow: hidden;
-  cursor: pointer;
   pointer-events: auto;
+  cursor: pointer;
   z-index: 5;
 }
 
