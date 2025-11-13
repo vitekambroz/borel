@@ -1,3 +1,8 @@
+/* =========================================================
+   BOREL – Modern Instagram Gallery (2025)
+   Kompletně přepsaný gallery.js
+========================================================= */
+
 const galleryPhotos = [
   'foto1.jpg','foto2.jpg','foto3.jpg','foto4.jpg','foto5.jpg',
   'foto6.jpg','foto7.jpg','foto8.jpg','foto9.jpg','foto10.jpg',
@@ -10,7 +15,9 @@ const galleryPhotos = [
   'foto41.jpg','foto42.jpg','foto43.jpg','foto44.jpg','foto45.jpg'
 ];
 
-let currentImageIndex = 0;
+let currentIndex = 0;
+let startX = 0;         // swipe start
+let isSwiping = false;  // swipe active
 
 document.addEventListener("DOMContentLoaded", () => {
   const grid = document.getElementById("galleryGrid");
@@ -21,27 +28,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnPrev = document.querySelector(".prev");
   const btnNext = document.querySelector(".next");
 
-  if (!grid) return;
-
-  // === 1) Vygenerování náhledů ===
+  /* ---------------------------------------------------------
+     1) Vytvoření galerie (thumbnails + shimmer)
+  --------------------------------------------------------- */
   galleryPhotos.forEach((src, index) => {
     const wrapper = document.createElement("div");
     wrapper.className = "img-wrapper shimmer";
 
     const img = document.createElement("img");
     img.dataset.src = `foto/thumbnails/${src}`;
-    img.alt = `Fotka ${index + 1}`;
     img.dataset.index = index;
+    img.alt = "Fotografie";
+    img.loading = "lazy";
     img.classList.add("lazy-fade");
-    img.loading = "lazy"; // prohlížeče, co lazy-load podporují nativně
-
-    // Volitelné (pokud chceš fixní poměr stran, můžeš dát:
     img.width = 400;
     img.height = 300;
 
     img.addEventListener("load", () => {
       wrapper.classList.remove("shimmer");
       img.classList.add("loaded");
+      wrapper.classList.add("glow-in");
     });
 
     img.addEventListener("click", () => openLightbox(index, true));
@@ -50,73 +56,61 @@ document.addEventListener("DOMContentLoaded", () => {
     grid.appendChild(wrapper);
   });
 
-  // === 2) Lazy-load pomocí IntersectionObserver (s fallbackem) ===
-  const lazyImages = document.querySelectorAll(".lazy-fade");
+  /* ---------------------------------------------------------
+     2) Lazy loading s IntersectionObserver
+  --------------------------------------------------------- */
+  const lazyImgs = document.querySelectorAll(".lazy-fade");
 
   if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
+    const obs = new IntersectionObserver((entries, observer) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const img = e.target;
           const src = img.dataset.src;
-          if (src) {
-            img.src = src;
-            img.removeAttribute("data-src");
-          }
-          obs.unobserve(img);
+          if (src) img.src = src;
+          observer.unobserve(img);
         }
       });
-    }, {
-      rootMargin: "100px",
-      threshold: 0.1
-    });
+    }, { rootMargin: "150px" });
 
-    lazyImages.forEach(img => observer.observe(img));
+    lazyImgs.forEach(img => obs.observe(img));
   } else {
-    // Fallback pro starší prohlížeče: načti všechno hned
-    lazyImages.forEach(img => {
-      const src = img.dataset.src;
-      if (src) {
-        img.src = src;
-        img.removeAttribute("data-src");
-      }
-    });
+    // fallback
+    lazyImgs.forEach(img => img.src = img.dataset.src);
   }
 
-  // === 3) Otevření lightboxu ===
-  function openLightbox(index, pushHash = false) {
-    if (!lightbox || !lightboxImg) return;
+  /* ---------------------------------------------------------
+     3) Otevření lightboxu
+  --------------------------------------------------------- */
+  function openLightbox(index, pushHash = true) {
+    currentIndex = index;
 
-    currentImageIndex = index;
     lightboxImg.src = `foto/originals/${galleryPhotos[index]}`;
     counter.textContent = `${index + 1} / ${galleryPhotos.length}`;
     lightbox.classList.add("show");
     document.body.style.overflow = "hidden";
 
-    if (pushHash) {
-      history.replaceState(null, "", `#${index + 1}`);
-    }
+    if (pushHash) history.replaceState(null, "", `#${index + 1}`);
   }
 
-  // === 4) Zavření ===
+  /* ---------------------------------------------------------
+     4) Zavření lightboxu
+  --------------------------------------------------------- */
   function closeLightbox() {
-    if (!lightbox) return;
     lightbox.classList.remove("show");
     document.body.style.overflow = "auto";
-
-    // smaže hash, ale nechá URL (cestu + query) v klidu
-    const cleanUrl = window.location.pathname + window.location.search;
-    history.replaceState(null, "", cleanUrl);
+    history.replaceState(null, "", window.location.pathname);
   }
 
-  // === 5) Přepínání s animací ===
+  /* ---------------------------------------------------------
+     5) Přepínání fotek s animací
+  --------------------------------------------------------- */
   function changeSlide(dir) {
-    if (!lightboxImg) return;
-
-    const nextIndex = (currentImageIndex + dir + galleryPhotos.length) % galleryPhotos.length;
+    const nextIndex = (currentIndex + dir + galleryPhotos.length) % galleryPhotos.length;
     const nextSrc = `foto/originals/${galleryPhotos[nextIndex]}`;
-    const outClass = dir > 0 ? "is-exiting-left" : "is-exiting-right";
-    const inClass  = dir > 0 ? "is-entering-right" : "is-entering-left";
+
+    const outClass = dir === 1 ? "is-exiting-left" : "is-exiting-right";
+    const inClass  = dir === 1 ? "is-entering-right" : "is-entering-left";
 
     const preload = new Image();
     preload.src = nextSrc;
@@ -135,31 +129,66 @@ document.addEventListener("DOMContentLoaded", () => {
         lightboxImg.classList.remove(inClass);
       });
 
-      currentImageIndex = nextIndex;
-      counter.textContent = `${currentImageIndex + 1} / ${galleryPhotos.length}`;
-      history.replaceState(null, "", `#${currentImageIndex + 1}`);
-    }, { once: true });
+      currentIndex = nextIndex;
+      counter.textContent = `${currentIndex + 1} / ${galleryPhotos.length}`;
+      history.replaceState(null, "", `#${currentIndex + 1}`);
+    });
   }
 
-  // === 6) Ovládání ===
-  if (btnClose) btnClose.addEventListener("click", closeLightbox);
-  if (btnPrev)  btnPrev.addEventListener("click", () => changeSlide(-1));
-  if (btnNext)  btnNext.addEventListener("click", () => changeSlide(1));
+  /* ---------------------------------------------------------
+     6) SWIPE GESTA jako Instagram (mobile)
+  --------------------------------------------------------- */
+  lightboxImg.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+    isSwiping = true;
+  });
+
+  lightboxImg.addEventListener("touchmove", e => {
+    if (!isSwiping) return;
+    const dx = e.touches[0].clientX - startX;
+
+    // vizuální efekt “posunu” obrázku
+    lightboxImg.style.transform = `translateX(${dx * 0.2}px)`;
+  });
+
+  lightboxImg.addEventListener("touchend", e => {
+    if (!isSwiping) return;
+    isSwiping = false;
+
+    const dx = e.changedTouches[0].clientX - startX;
+
+    // swipe threshold
+    if (dx > 80) changeSlide(-1); // doprava → předchozí
+    else if (dx < -80) changeSlide(1); // doleva → další
+
+    // reset transform
+    lightboxImg.style.transform = "translateX(0)";
+  });
+
+  /* ---------------------------------------------------------
+     7) Ovládání myší / klávesnicí
+  --------------------------------------------------------- */
+  btnClose?.addEventListener("click", closeLightbox);
+  btnPrev?.addEventListener("click", () => changeSlide(-1));
+  btnNext?.addEventListener("click", () => changeSlide(1));
 
   document.addEventListener("keydown", e => {
-    if (!lightbox?.classList.contains("show")) return;
+    if (!lightbox.classList.contains("show")) return;
     if (e.key === "Escape") closeLightbox();
     if (e.key === "ArrowLeft") changeSlide(-1);
     if (e.key === "ArrowRight") changeSlide(1);
   });
 
-  lightbox?.addEventListener("click", e => {
+  lightbox.addEventListener("click", e => {
     if (e.target === lightbox) closeLightbox();
   });
 
-  // === 7) Otevři podle #hash ===
+  /* ---------------------------------------------------------
+     8) Otevření z URL #hash
+  --------------------------------------------------------- */
   const hash = window.location.hash.replace("#", "");
   const num = parseInt(hash, 10);
+
   if (!isNaN(num) && num >= 1 && num <= galleryPhotos.length) {
     openLightbox(num - 1, false);
   }
