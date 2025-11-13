@@ -303,7 +303,7 @@ nav a.active::before {
 }
 
 /* Rotující neonová záře (barevná) */
-.theme-toggle::before {
+/*.theme-toggle::before {
   content: "";
   position: absolute;
   inset: -3px;
@@ -320,7 +320,7 @@ nav a.active::before {
   filter: blur(10px);
   animation: rotateGlow 8s linear infinite;
   z-index: 0;
-}
+}*/
 
 /* Cute spinning efekt při přepínání */
 .theme-toggle.switching .icon {
@@ -373,10 +373,13 @@ html.theme-dark .theme-toggle:hover {
    KEYFRAMES
    =========================== */
 
-@keyframes rotateGlow {
+/*@keyframes rotateGlow {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
+/* ===========================
+ IKONA SLUNCE/MĚSÍCE STYLY
+ =========================== */
 
 /* LIGHT režim – sluníčko */
 html:not(.theme-dark) .theme-toggle .icon {
