@@ -156,3 +156,22 @@ window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e =
 
   applyTheme(e.matches ? "dark" : "light");
 });
+window.addEventListener("scroll", () => {
+  
+  // Zeslabuje BOREL od 0 do 120px
+  const y = Math.min(window.scrollY, 120);
+  const opacity = 1 - (y / 120);
+  
+  document.querySelector(".site-title").style.opacity = opacity;
+});
+const siteTitle = document.querySelector(".site-title");
+
+window.addEventListener("scroll", () => {
+
+  if (window.scrollY > 40) {
+    siteTitle.classList.add("shrunk");
+  } else {
+    siteTitle.classList.remove("shrunk");
+  }
+
+});
