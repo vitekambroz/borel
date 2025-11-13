@@ -65,7 +65,7 @@ export async function onRequest(context) {
     "font-src 'self' https://fonts.gstatic.com data:;",
     "img-src 'self' data: blob: https:;",
     "media-src 'self' data:;",
-    "connect-src 'self';",
+    "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;",
     "worker-src 'self';",
     "frame-ancestors 'none';",
     "object-src 'none';",

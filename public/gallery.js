@@ -1,148 +1,169 @@
+const galleryPhotos = [
+  'foto1.jpg','foto2.jpg','foto3.jpg','foto4.jpg','foto5.jpg',
+  'foto6.jpg','foto7.jpg','foto8.jpg','foto9.jpg','foto10.jpg',
+  'foto11.jpg','foto12.jpg','foto13.jpg','foto14.jpg','foto15.jpg',
+  'foto16.jpg','foto17.jpg','foto18.jpg','foto19.jpg','foto20.jpg',
+  'foto21.jpg','foto22.jpg','foto23.jpg','foto24.jpg','foto25.jpg',
+  'foto26.jpg','foto27.jpg','foto28.jpg','foto29.jpg','foto30.jpg',
+  'foto31.jpg','foto32.jpg','foto33.jpg','foto34.jpg','foto35.jpg',
+  'foto36.jpg','foto37.jpg','foto38.jpg','foto39.jpg','foto40.jpg',
+  'foto41.jpg','foto42.jpg','foto43.jpg','foto44.jpg','foto45.jpg'
+];
+
+let currentImageIndex = 0;
+
 document.addEventListener("DOMContentLoaded", () => {
-
   console.log("gallery.js: DOM ready");
-
-  const galleryPhotos = [
-    'foto1.jpg','foto2.jpg','foto3.jpg','foto4.jpg','foto5.jpg',
-    'foto6.jpg','foto7.jpg','foto8.jpg','foto9.jpg','foto10.jpg',
-    'foto11.jpg','foto12.jpg','foto13.jpg','foto14.jpg','foto15.jpg',
-    'foto16.jpg','foto17.jpg','foto18.jpg','foto19.jpg','foto20.jpg',
-    'foto21.jpg','foto22.jpg','foto23.jpg','foto24.jpg','foto25.jpg',
-    'foto26.jpg','foto27.jpg','foto28.jpg','foto29.jpg','foto30.jpg',
-    'foto31.jpg','foto32.jpg','foto33.jpg','foto34.jpg','foto35.jpg',
-    'foto36.jpg','foto37.jpg','foto38.jpg','foto39.jpg','foto40.jpg',
-    'foto41.jpg','foto42.jpg','foto43.jpg','foto44.jpg','foto45.jpg'
-  ];
-
-  let currentIndex = 0;
 
   const grid        = document.getElementById("galleryGrid");
   const lightbox    = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightboxImg");
   const counter     = document.getElementById("lightboxCounter");
-  const btnClose    = document.querySelector("#lightbox .close");
-  const btnPrev     = document.querySelector("#lightbox .prev");
-  const btnNext     = document.querySelector("#lightbox .next");
+  const btnClose    = document.querySelector(".close");
+  const btnPrev     = document.querySelector(".prev");
+  const btnNext     = document.querySelector(".next");
 
   if (!grid) {
-    console.error("‼️ galleryGrid nebyl nalezen na stránce — gallery.js končí");
+    console.warn("gallery.js: #galleryGrid NOT FOUND");
     return;
   }
+  console.log("gallery.js: galleryGrid OK → generuji náhledy…");
 
-  console.log("gallery.js: galleryGrid OK → generuji obrázky…");
-
-  /* --------------------------------------------------
-     Vygenerování náhledů
-  -------------------------------------------------- */
-  galleryPhotos.forEach((file, index) => {
-    const wrap = document.createElement("div");
-    wrap.className = "img-wrapper shimmer";
+  // === 1) Vygenerování náhledů (bez IntersectionObserver – na jistotu) ===
+  galleryPhotos.forEach((src, index) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "img-wrapper";
 
     const img = document.createElement("img");
-    img.dataset.src = `foto/thumbnails/${file}`;
+    img.src = `foto/thumbnails/${src}`;     // přímo načtu – žádná magie
+    img.alt = `Fotka ${index + 1}`;
     img.dataset.index = index;
-    img.alt = `Foto ${index + 1}`;
-    img.loading = "lazy";
     img.width = 400;
     img.height = 300;
-    img.classList.add("lazy-fade");
 
     img.addEventListener("load", () => {
-      wrap.classList.remove("shimmer");
       img.classList.add("loaded");
     });
 
-    img.addEventListener("click", () => {
-      console.log("Kliknuto na index:", index);
-      openLightbox(index);
-    });
-
-    wrap.appendChild(img);
-    grid.appendChild(wrap);
+    wrapper.appendChild(img);
+    grid.appendChild(wrapper);
   });
 
-  /* --------------------------------------------------
-     Lazy-load
-  -------------------------------------------------- */
-  const lazyImages = document.querySelectorAll(".lazy-fade");
+  // === 2) Event delegace – klik na grid chytá všechny obrázky ===
+  grid.addEventListener("click", (e) => {
+    const img = e.target.closest("img[data-index]");
+    if (!img) return;
 
-  if ("IntersectionObserver" in window) {
-    const obs = new IntersectionObserver((entries, ob) => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        const img = e.target;
-        img.src = img.dataset.src;
-        img.removeAttribute("data-src");
-        ob.unobserve(img);
-      });
-    }, { rootMargin: "100px" });
+    const index = parseInt(img.dataset.index, 10);
+    if (Number.isNaN(index)) return;
 
-    lazyImages.forEach(img => obs.observe(img));
-  } else {
-    lazyImages.forEach(img => img.src = img.dataset.src);
-  }
+    console.log("gallery.js: click z gridu → index", index);
+    openLightbox(index, true);
+  });
 
-  /* --------------------------------------------------
-     Lightbox logic
-  -------------------------------------------------- */
+  // === 3) Otevření lightboxu ===
+  function openLightbox(index, pushHash = false) {
+    if (!lightbox || !lightboxImg || !counter) return;
 
-  function openLightbox(i) {
-    console.log("Lightbox: otevření", i);
-
-    currentIndex = i;
-    setImage(i);
-
+    currentImageIndex = index;
+    const src = `foto/originals/${galleryPhotos[index]}`;
+    lightboxImg.src = src;
+    counter.textContent = `${index + 1} / ${galleryPhotos.length}`;
     lightbox.classList.add("show");
     document.body.style.overflow = "hidden";
 
-    history.replaceState(null, "", `#${i + 1}`);
+    if (pushHash) {
+      history.replaceState(null, "", `#${index + 1}`);
+    }
+
+    console.log("gallery.js: openLightbox →", index, src);
   }
 
+  // === 4) Zavření ===
   function closeLightbox() {
+    if (!lightbox) return;
     lightbox.classList.remove("show");
     document.body.style.overflow = "";
 
-    const clean = window.location.pathname + window.location.search;
-    history.replaceState(null, "", clean);
+    const cleanUrl = window.location.pathname + window.location.search;
+    history.replaceState(null, "", cleanUrl);
+    console.log("gallery.js: closeLightbox");
   }
 
-  function setImage(i) {
-    const src = `foto/originals/${galleryPhotos[i]}`;
-    console.log("Lightbox: set image", src);
+  // === 5) Přepínání fotek (bez složitých animací – jednoduché & spolehlivé) ===
+  function changeSlide(dir) {
+    if (!lightboxImg) return;
+    if (!lightbox?.classList.contains("show")) return;
 
-    lightboxImg.style.opacity = "0";
+    let nextIndex = currentImageIndex + dir;
+    if (nextIndex < 0) nextIndex = galleryPhotos.length - 1;
+    if (nextIndex >= galleryPhotos.length) nextIndex = 0;
 
-    const preload = new Image();
-    preload.onload = () => {
-      lightboxImg.src = src;
+    currentImageIndex = nextIndex;
+    const src = `foto/originals/${galleryPhotos[nextIndex]}`;
+    lightboxImg.src = src;
+    counter.textContent = `${nextIndex + 1} / ${galleryPhotos.length}`;
+    history.replaceState(null, "", `#${nextIndex + 1}`);
 
-      requestAnimationFrame(() => {
-        lightboxImg.style.transition = "opacity 0.3s";
-        lightboxImg.style.opacity = "1";
-      });
-    };
-
-    preload.src = src;
-    counter.textContent = `${i + 1} / ${galleryPhotos.length}`;
+    console.log("gallery.js: changeSlide →", nextIndex);
   }
 
-  function next() { setImage((currentIndex = (currentIndex + 1) % galleryPhotos.length)); }
-  function prev() { setImage((currentIndex = (currentIndex - 1 + galleryPhotos.length) % galleryPhotos.length)); }
+  // === 6) Ovládání tlačítek ===
+  if (btnClose) btnClose.addEventListener("click", closeLightbox);
+  if (btnPrev)  btnPrev.addEventListener("click", () => changeSlide(-1));
+  if (btnNext)  btnNext.addEventListener("click", () => changeSlide(1));
 
-  if (btnPrev) btnPrev.onclick = prev;
-  if (btnNext) btnNext.onclick = next;
-  if (btnClose) btnClose.onclick = closeLightbox;
+  // === 7) Klávesy ===
+  document.addEventListener("keydown", (e) => {
+    if (!lightbox?.classList.contains("show")) return;
 
-  lightbox.addEventListener("click", e => {
-    if (e.target === lightbox) closeLightbox();
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") changeSlide(-1);
+    if (e.key === "ArrowRight") changeSlide(1);
   });
 
-  /* --------------------------------------------------
-     Podpora hash (#21)
-  -------------------------------------------------- */
-  const hash = parseInt(location.hash.replace("#", ""), 10);
-  if (!isNaN(hash) && hash >= 1 && hash <= galleryPhotos.length) {
-    console.log("Otevírám fotku podle hash:", hash);
-    openLightbox(hash - 1);
+  // === 8) Klik mimo fotku = zavřít ===
+  if (lightbox) {
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+  }
+
+  // === 9) Swipe na mobilu (IG styl) ===
+  let touchStartX = null;
+
+  if (lightbox) {
+    lightbox.addEventListener("touchstart", (e) => {
+      if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+      }
+    });
+
+    lightbox.addEventListener("touchend", (e) => {
+      if (touchStartX === null) return;
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      touchStartX = null;
+
+      const SWIPE_MIN = 50; // minimální vzdálenost
+      if (Math.abs(dx) < SWIPE_MIN) return;
+
+      if (dx < 0) {
+        // swipe doleva → další
+        changeSlide(1);
+      } else {
+        // swipe doprava → předchozí
+        changeSlide(-1);
+      }
+    });
+  }
+
+  // === 10) Otevři podle hash (#číslo) při načtení stránky ===
+  const hash = window.location.hash.replace("#", "");
+  const num = parseInt(hash, 10);
+  if (!Number.isNaN(num) && num >= 1 && num <= galleryPhotos.length) {
+    console.log("gallery.js: found hash → otevírám fotku", num);
+    openLightbox(num - 1, false);
   }
 });
