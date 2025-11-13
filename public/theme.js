@@ -6,6 +6,7 @@ const themeIcon = themeToggle?.querySelector(".icon");
 
 const menuBtn = document.querySelector(".menu-toggle");
 const mobileNav = document.querySelector(".mobile-nav");
+const modeIndicator = document.querySelector(".mode-indicator");
 
 // ===============================================
 // DETEKCE SYSTÉMOVÉHO TÉMATU
@@ -20,6 +21,7 @@ function systemPrefersDark() {
 function applyTheme(mode, save = false) {
   const html = document.documentElement;
 
+  // Přepnout dark/light class
   if (mode === "dark") {
     html.classList.add("theme-dark");
     if (themeIcon) animateIcon("🌞");
@@ -28,9 +30,23 @@ function applyTheme(mode, save = false) {
     if (themeIcon) animateIcon("🌙");
   }
 
+  // Uložit manuální volbu (pokud save = true)
   if (save) {
     localStorage.setItem("theme-mode", "manual");
     localStorage.setItem("theme", mode);
+  }
+
+  // Nastavení indikátoru AUTO / MANUAL
+  const isManual = localStorage.getItem("theme-mode") === "manual";
+
+  if (themeToggle) {
+    if (isManual) {
+      themeToggle.classList.remove("auto-mode");
+      themeToggle.classList.add("manual-mode");
+    } else {
+      themeToggle.classList.remove("manual-mode");
+      themeToggle.classList.add("auto-mode");
+    }
   }
 }
 
@@ -61,6 +77,11 @@ function animateIcon(newIcon) {
     // systémová detekce (auto)
     applyTheme(systemPrefersDark() ? "dark" : "light");
   }
+  if (mode === "manual") {
+  themeToggle.classList.add("manual-mode");
+} else {
+  themeToggle.classList.add("auto-mode");
+}
 })();
 
 // ===============================================
@@ -68,10 +89,24 @@ function animateIcon(newIcon) {
 // ===============================================
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
-    const dark = document.documentElement.classList.toggle("theme-dark");
-    applyTheme(dark ? "dark" : "light", true);
 
-    autoScrollMode = false; // RUČNÍ kliknutí vypíná auto scroll
+    // manuální přepnutí vypíná auto-scroll mód
+    autoScrollMode = false;
+    localStorage.setItem("theme-mode", "manual");
+
+    // přepnout class theme-dark
+    const dark = document.documentElement.classList.toggle("theme-dark");
+
+    // uložit výsledek
+    localStorage.setItem("theme", dark ? "dark" : "light");
+
+    // aktualizace ikonky
+    if (themeIcon) animateIcon(dark ? "🌞" : "🌙");
+
+    // indikátor MANUAL mode
+    themeToggle.classList.remove("auto-mode");
+    themeToggle.classList.add("manual-mode");
+
   });
 }
 
