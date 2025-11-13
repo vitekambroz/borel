@@ -1,112 +1,123 @@
-// =============================================
-//   BOREL THEME MANAGER — A1 Cute Pastel Edition
-//   ✔ stabilní pozice slunce/měsíce
-//   ✔ plynulá cute spin animace
-//   ✔ žádné particles (nový styl)
-//   ✔ animace BOREL názvu při načtení
-//   ✔ jeden click handler, žádné duplikace
-// =============================================
+// ===============================================
+// SELECTORY
+// ===============================================
+const themeToggle = document.querySelector(".theme-toggle");
+const themeIcon = themeToggle?.querySelector(".icon");
 
-(function () {
-  const STORAGE_KEY = "borel-theme";
-  const root = document.documentElement;
-  const toggleBtn = document.querySelector(".theme-toggle");
-  const toggleIcon = toggleBtn?.querySelector(".icon");
+const menuBtn = document.querySelector(".menu-toggle");
+const mobileNav = document.querySelector(".mobile-nav");
 
-  // =============================================
-  // 1) LOAD SAVED THEME OR DEFAULT
-  // =============================================
+// ===============================================
+// DETEKCE SYSTÉMOVÉHO TÉMATU
+// ===============================================
+function systemPrefersDark() {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
 
-  const saved = localStorage.getItem(STORAGE_KEY);
-  const initial = saved || "light";
-  applyTheme(initial);
+// ===============================================
+// NASTAVENÍ TÉMATU (hlavní funkce)
+// ===============================================
+function applyTheme(mode, save = false) {
+  const html = document.documentElement;
 
-  // =============================================
-  // 2) CUTE SPIN THEME BUTTON (one handler)
-  // =============================================
-
-  if (toggleBtn) {
-    toggleBtn.onclick = () => {
-      toggleBtn.classList.add("switching");
-
-      setTimeout(() => toggleBtn.classList.remove("switching"), 400);
-
-      // switch
-      const dark = !root.classList.contains("theme-dark");
-      root.classList.toggle("theme-dark", dark);
-
-      // SET correct icon
-      if (toggleIcon) {
-        toggleIcon.textContent = dark ? "🌙" : "🌞";
-      }
-
-      // save
-      localStorage.setItem(STORAGE_KEY, dark ? "dark" : "light");
-
-      flashBackground();
-    };
+  if (mode === "dark") {
+    html.classList.add("theme-dark");
+    if (themeIcon) animateIcon("🌞");
+  } else {
+    html.classList.remove("theme-dark");
+    if (themeIcon) animateIcon("🌙");
   }
 
-  // =============================================
-  // 3) APPLY THEME ON LOAD
-  // =============================================
-
-  function applyTheme(mode) {
-    const dark = mode === "dark";
-    root.classList.toggle("theme-dark", dark);
-
-    if (toggleIcon) {
-      toggleIcon.textContent = dark ? "🌙" : "🌞";
-    }
+  if (save) {
+    localStorage.setItem("theme-mode", "manual");
+    localStorage.setItem("theme", mode);
   }
+}
 
-  // =============================================
-  // 4) BACKGROUND FLASH (cute pastel pulse)
-  // =============================================
+// ===============================================
+// ANIMACE IKONY (fade + scale)
+// ===============================================
+function animateIcon(newIcon) {
+  themeIcon.style.opacity = 0;
+  themeIcon.style.transform = "scale(0.5)";
 
-  function flashBackground() {
-    document.body.classList.add("theme-flash");
-    setTimeout(() => document.body.classList.remove("theme-flash"), 450);
+  setTimeout(() => {
+    themeIcon.textContent = newIcon;
+    themeIcon.style.opacity = 1;
+    themeIcon.style.transform = "scale(1)";
+  }, 150);
+}
+
+// ===============================================
+// INIT (při načtení)
+// ===============================================
+(function initTheme() {
+  const mode = localStorage.getItem("theme-mode"); // "manual" / null
+  const saved = localStorage.getItem("theme");
+
+  if (mode === "manual" && saved) {
+    applyTheme(saved);  // preferuje manuální
+  } else {
+    // systémová detekce (auto)
+    applyTheme(systemPrefersDark() ? "dark" : "light");
   }
-
-  // =============================================
-  // 5) BOREL TEXT ANIMATION WHEN PAGE LOADS
-  // =============================================
-
-  window.addEventListener("DOMContentLoaded", () => {
-    document.body.classList.add("animate-title");
-  });
 })();
 
+// ===============================================
+// PŘEPÍNÁNÍ TÉMATU RUČNĚ
+// ===============================================
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const dark = document.documentElement.classList.toggle("theme-dark");
+    applyTheme(dark ? "dark" : "light", true);
 
-// =============================================
-//  HAMBURGER MENU — unchanged, optimized
-// =============================================
-
-/*const menuBtn = document.querySelector(".menu-toggle");
-const nav = document.querySelector("header nav");
-
-if (menuBtn && nav) {
-  menuBtn.addEventListener("click", () => {
-    menuBtn.classList.toggle("active");
-
-    if (!nav.classList.contains("show")) {
-      nav.classList.remove("hide");
-      nav.style.display = "flex";
-      requestAnimationFrame(() => nav.classList.add("show"));
-    } else {
-      nav.classList.remove("show");
-      nav.classList.add("hide");
-
-      nav.addEventListener("animationend", function hideAfter() {
-        nav.style.display = "none";
-        nav.classList.remove("hide");
-        nav.removeEventListener("animationend", hideAfter);
-      });
-    }
+    autoScrollMode = false; // RUČNÍ kliknutí vypíná auto scroll
   });
-}*/
-const mobileNav = document.querySelector(".mobile-nav");
-menuBtn.addEventListener("click", () => {
-  mobileNav.classList.toggle("show");
+}
+
+// ===============================================
+// MOBILE MENU
+// ===============================================
+if (menuBtn && mobileNav) {
+  menuBtn.addEventListener("click", () => {
+    mobileNav.classList.toggle("show");
+    menuBtn.classList.toggle("active");
+  });
+}
+
+document.querySelectorAll(".mobile-nav a").forEach(link => {
+  link.addEventListener("click", () => {
+    mobileNav.classList.remove("show");
+    menuBtn.classList.remove("active");
+  });
+});
+
+// ===============================================
+// SCROLL-BASED THEME (auto mód)
+// ===============================================
+let autoScrollMode = localStorage.getItem("theme-mode") !== "manual";
+
+window.addEventListener("scroll", () => {
+  if (!autoScrollMode) return;
+
+  const scrollY = window.scrollY;
+
+  // 0–150px = světlý, >150px = tmavý
+  if (scrollY > 150) {
+    applyTheme("dark");
+  } else {
+    applyTheme("light");
+  }
+});
+
+// ===============================================
+// SYSTÉMOVÁ ZMĚNA (uživatel změní OS téma)
+// ===============================================
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+  const mode = localStorage.getItem("theme-mode");
+
+  // pokud používá manuální mód → ignorujeme systém
+  if (mode === "manual") return;
+
+  applyTheme(e.matches ? "dark" : "light");
 });

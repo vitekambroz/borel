@@ -414,6 +414,21 @@ nav a.active::before {
   transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
+/* Indikátor automatického režimu */
+
+.theme-toggle .mode-indicator {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-strong);
+  box-shadow: 0 0 6px var(--brand-strong);
+  opacity: 0;             /* defaultně schovaný (MANUAL MODE) */
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
 /* ===========================
    TMAVÝ REŽIM
    =========================== */
@@ -446,18 +461,6 @@ html.theme-dark .theme-toggle:hover {
     0 0 35px rgba(255, 0, 255, 0.3);
 }
 
-/* ===========================
-   KEYFRAMES
-   =========================== */
-
-/*@keyframes rotateGlow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-/* ===========================
- IKONA SLUNCE/MĚSÍCE STYLY
- =========================== */
-
 /* LIGHT režim – sluníčko */
 html:not(.theme-dark) .theme-toggle .icon {
   transform: rotate(0deg) scale(1);
@@ -471,6 +474,11 @@ html.theme-dark .theme-toggle .icon {
   transition: transform 0.45s ease, filter 0.4s ease;
   color: #fff;
   filter: drop-shadow(0 0 18px rgba(255, 150, 255, 0.8));
+}
+/* Indikátor AUTOMATICKÉHO režimu */
+html.theme-dark .theme-toggle .mode-indicator {
+  background: #ff99ff;
+  box-shadow: 0 0 8px #ff99ff;
 }
 
 /* Flash při přepnutí */
@@ -493,10 +501,17 @@ html.theme-dark .theme-toggle {
     0 0 15px rgba(255, 0, 255, 0.55),
     inset 0 0 10px rgba(255, 255, 255, 0.15);
 }
-
-@keyframes rotateGlow {
-  to { transform: rotate(360deg); }
+.theme-toggle.auto-mode .mode-indicator {
+  opacity: 1;
+  transform: scale(1);
 }
+
+/* MANUAL mód → skrýt */
+.theme-toggle.manual-mode .mode-indicator {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
 
 /* ------------------------- */
 /* RESPONSIVNÍ HEADER        */
