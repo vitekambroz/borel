@@ -53,11 +53,16 @@ header{
 }
 .title-wrap{display:flex;align-items:center;gap:14px;}
 .logo{width:48px;height:48px;border-radius:12px;object-fit:cover;}
-header h1{
-  margin:0;font-size:1.8rem;font-weight:800;
+
+header h1 {
+  margin:0;
+  font-size:1.8rem;
+  font-weight:800;
   letter-spacing:.08em;
   background:linear-gradient(45deg,var(--accent),var(--accent-soft));
-  -webkit-background-clip:text;color:transparent;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
 
 /* NAV */
