@@ -24,83 +24,39 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!grid) return;
 
   // =====================================================
-  // 1) Vygenerování náhledů (400x300, jako máš rád)
+  // 1) Vyrenderování galerie (bez lazy load)
   // =====================================================
   galleryPhotos.forEach((src, index) => {
     const wrapper = document.createElement("div");
-    wrapper.className = "img-wrapper shimmer";
+    wrapper.className = "img-wrapper";
 
     const img = document.createElement("img");
-    img.dataset.src = `foto/thumbnails/${src}`;
+    img.src = `foto/thumbnails/${src}`;
     img.alt = `Fotka ${index + 1}`;
     img.dataset.index = index;
     img.classList.add("lazy-fade");
-    img.loading = "lazy";
-    img.width = 400;
-    img.height = 300;
 
     img.addEventListener("load", () => {
-      wrapper.classList.remove("shimmer");
       img.classList.add("loaded");
     });
 
-    img.addEventListener("error", () => {
-      wrapper.classList.remove("shimmer");
-      wrapper.classList.add("broken");
+    img.addEventListener("click", () => {
+      openLightbox(index, true);
     });
-
-    img.addEventListener("click", () => openLightbox(index, true));
 
     wrapper.appendChild(img);
     grid.appendChild(wrapper);
   });
 
   // =====================================================
-  // 2) Lazy-load s fallbackem (kvůli starším prohlížečům)
-  // =====================================================
-  const lazyImages = document.querySelectorAll(".lazy-fade");
-
-  if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          const src = img.dataset.src;
-          if (src) {
-            img.src = src;
-            img.removeAttribute("data-src");
-          }
-          obs.unobserve(img);
-        }
-      });
-    }, {
-      rootMargin: "100px",
-      threshold: 0.1
-    });
-
-    lazyImages.forEach(img => observer.observe(img));
-  } else {
-    // Fallback – starší prohlížeče, kde by jinak spadl JS
-    lazyImages.forEach(img => {
-      const src = img.dataset.src;
-      if (src) {
-        img.src = src;
-        img.removeAttribute("data-src");
-      }
-    });
-  }
-
-  // =====================================================
-  // 3) Otevření lightboxu
+  // Otevření lightboxu
   // =====================================================
   function openLightbox(index, pushHash = false) {
-    if (!lightbox || !lightboxImg) return;
-
     currentImageIndex = index;
+
     lightboxImg.src = `foto/originals/${galleryPhotos[index]}`;
-    if (counter) {
-      counter.textContent = `${index + 1} / ${galleryPhotos.length}`;
-    }
+    counter.textContent = `${index + 1} / ${galleryPhotos.length}`;
+
     lightbox.classList.add("show");
     document.body.style.overflow = "hidden";
 
@@ -110,80 +66,57 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =====================================================
-  // 4) Zavření lightboxu
+  // Zavření
   // =====================================================
   function closeLightbox() {
-    if (!lightbox) return;
     lightbox.classList.remove("show");
     document.body.style.overflow = "auto";
 
-    const cleanUrl = window.location.pathname + window.location.search;
+    const cleanUrl = window.location.pathname;
     history.replaceState(null, "", cleanUrl);
   }
 
   // =====================================================
-  // 5) Přepínání s animací + šipky
+  // Přepínání obrázků
   // =====================================================
   function changeSlide(dir) {
-    if (!lightboxImg) return;
+    const next = (currentImageIndex + dir + galleryPhotos.length) % galleryPhotos.length;
 
-    const nextIndex = (currentImageIndex + dir + galleryPhotos.length) % galleryPhotos.length;
-    const nextSrc = `foto/originals/${galleryPhotos[nextIndex]}`;
-    const outClass = dir > 0 ? "is-exiting-left" : "is-exiting-right";
-    const inClass  = dir > 0 ? "is-entering-right" : "is-entering-left";
+    currentImageIndex = next;
 
-    const preload = new Image();
-    preload.src = nextSrc;
+    lightboxImg.classList.add("fading");
 
-    lightboxImg.classList.add(outClass);
-
-    lightboxImg.addEventListener("transitionend", function onOut(e) {
-      if (e.propertyName !== "opacity") return;
-      lightboxImg.removeEventListener("transitionend", onOut);
-
-      lightboxImg.src = nextSrc;
-      lightboxImg.classList.remove(outClass);
-      lightboxImg.classList.add(inClass);
-
-      requestAnimationFrame(() => {
-        lightboxImg.classList.remove(inClass);
-      });
-
-      currentImageIndex = nextIndex;
-      if (counter) {
-        counter.textContent = `${currentImageIndex + 1} / ${galleryPhotos.length}`;
-      }
-      history.replaceState(null, "", `#${currentImageIndex + 1}`);
-    }, { once: true });
+    setTimeout(() => {
+      lightboxImg.src = `foto/originals/${galleryPhotos[next]}`;
+      counter.textContent = `${next + 1} / ${galleryPhotos.length}`;
+      history.replaceState(null, "", `#${next + 1}`);
+      lightboxImg.classList.remove("fading");
+    }, 170);
   }
 
-  // =====================================================
-  // 6) Ovládání – tlačítka a klávesnice
-  // =====================================================
+  // Tlačítka
+  if (btnPrev) btnPrev.addEventListener("click", () => changeSlide(-1));
+  if (btnNext) btnNext.addEventListener("click", () => changeSlide(1));
   if (btnClose) btnClose.addEventListener("click", closeLightbox);
-  if (btnPrev)  btnPrev.addEventListener("click", () => changeSlide(-1));
-  if (btnNext)  btnNext.addEventListener("click", () => changeSlide(1));
 
+  // Klávesy
   document.addEventListener("keydown", e => {
-    if (!lightbox || !lightbox.classList.contains("show")) return;
+    if (!lightbox.classList.contains("show")) return;
     if (e.key === "Escape") closeLightbox();
     if (e.key === "ArrowLeft") changeSlide(-1);
     if (e.key === "ArrowRight") changeSlide(1);
   });
 
-  // Klik mimo fotku zavře lightbox
-  if (lightbox) {
-    lightbox.addEventListener("click", e => {
-      if (e.target === lightbox) closeLightbox();
-    });
-  }
+  // Klik mimo fotku zavře
+  lightbox.addEventListener("click", e => {
+    if (e.target === lightbox) closeLightbox();
+  });
 
   // =====================================================
-  // 7) Otevření podle #hash z hlavní stránky
+  // Otevření podle #hash
   // =====================================================
-  const hash = window.location.hash.replace("#", "");
-  const num = parseInt(hash, 10);
-  if (!isNaN(num) && num >= 1 && num <= galleryPhotos.length) {
-    openLightbox(num - 1, false);
+  const hash = parseInt(window.location.hash.replace("#", ""), 10);
+  if (hash && hash >= 1 && hash <= galleryPhotos.length) {
+    openLightbox(hash - 1, false);
   }
 });
