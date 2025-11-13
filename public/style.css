@@ -1,12 +1,11 @@
-
 /* ===============================
    BOREL — Cute Pastel Style 2025
-   Fully Rebuilt Style.css
+   Fully Rebuilt Style.css (Final with darker bottom background gradient)
 =============================== */
 
 /* COLOR VARIABLES */
 :root {
-  --bg: #ffe6f0;
+  --bg: linear-gradient(to bottom, #ffe6f0 0%, #ffd9eb 60%, #ffc2df 100%);
   --bg-soft: #fff2f7;
   --text: #3a0030;
   --accent: #ff6fae;
@@ -18,7 +17,7 @@
 }
 
 html.theme-dark {
-  --bg: #e5006a;
+  --bg: linear-gradient(to bottom, #e5006a 0%, #a3004e 65%, #6d0037 100%);
   --bg-soft: #b00054;
   --text: #ffe6f4;
   --accent: #ffb3dd;
@@ -39,6 +38,7 @@ body {
   transition:background .35s,color .35s;
   display:flex;
   flex-direction:column;
+  min-height:100vh;
 }
 
 main { flex:1 0 auto; padding:20px 5vw; }
@@ -179,7 +179,7 @@ nav a.active{background:var(--accent);color:white;}
 
 #lightbox{
   position:fixed;inset:0;display:none;
-  background:rgba(0,0,0,0.85);
+  background:linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.92));
   align-items:center;justify-content:center;flex-direction:column;
 }
 #lightbox.show{display:flex;}
