@@ -134,9 +134,12 @@ nav a.active{background:var(--accent);color:white;}
 
 /* GALLERY PAGE — FULL IG FEED */
 .gallery-grid{
+  position: relative;
   display: grid;
   gap: 14px;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  pointer-events: auto;
+  z-index: 20;
 }
 @media(max-width:600px){
   .gallery-grid{
@@ -154,6 +157,8 @@ nav a.active{background:var(--accent);color:white;}
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
+  pointer-events: auto;
+  z-index: 4;
 }
 
 /* INSTAGRAM HOVER ANIMATION */
@@ -195,7 +200,7 @@ nav a.active{background:var(--accent);color:white;}
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  z-index: 999;
+  z-index: 9999;
 }
 
 #lightbox.show {
@@ -289,6 +294,10 @@ nav a.active{background:var(--accent);color:white;}
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
   font-size: 0.9rem;
+}
+#particles {
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* MINI GAME */
