@@ -87,6 +87,7 @@ header {
   align-items: center;
 
   padding: 10px 16px;
+  min-height: 56px;
   background: color-mix(in srgb, var(--glass-light) 75%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
