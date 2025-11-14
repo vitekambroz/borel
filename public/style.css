@@ -254,32 +254,41 @@ body.animate-title .site-title span {
   .desktop-nav {
     display: none;
   }
+  /* Schovat šipky pro mobil */
+  .lightbox-nav button {
+    display: none;
+  }
+    .lightbox-nav {
+    display: none;
+  }
+
+  /* Schovat křížek vpravo nahoře */
+  #lightbox .close {
+    display: none;
+  }
 
   /* right-side = toggle viditelný! */
   .right-side {
     display: none;
   }
 
-  /* mobil-menu vlevo */
-  .mobile-nav {
-    left: 12px;
-    right: auto;
-  }
-  .theme-toggle {
+.theme-toggle {
   position: absolute;
   right: 14px;
-  top: 12px;
-  display: flex;    /* zajistí, že bude vidět */
-  z-index: 1000;    /* přes všechno, nic ho nezastrčí */
-  }
+  top: 50%;
+  transform: translateY(-50%);   /* 🔥 perfektně vycentruje */
+  display: flex;
+  z-index: 1000;
+}
 
-  .menu-toggle {
-    position: absolute;
-    left: 14px;
-    top: 14px;
-    display: flex;
-    z-index: 1000;
-  }
+.menu-toggle {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);   /* 🔥 perfektně vycentruje */
+  display: flex;
+  z-index: 1000;
+}
 }
   /* MOBILE MENU PANEL */
 .mobile-nav {
@@ -291,20 +300,25 @@ body.animate-title .site-title span {
   padding: 12px 16px;
   position: absolute;
   top: 70px;
-  left: 14px;
+
+  /* 🔥 Centrované menu */
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+
   gap: 12px;
   box-shadow: var(--shadow-soft);
-
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-10px);
   transition: 0.25s ease;
   z-index: 900;
 }
 
 .mobile-nav.show {
   opacity: 1;
-  transform: translateY(0);
+
+  /* 🔥 Centrované menu při otevření + animace */
+  transform: translateX(-50%) translateY(0);
+
   pointer-events: auto;
 }
 
