@@ -82,30 +82,27 @@ img {
 header {
   position: sticky;
   top: 0;
-  z-index: 100;
-  display: flex;
+  z-index: 1000;
+
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
 
-  padding: 10px 16px;
+  padding: 10px 20px;
   background: color-mix(in srgb, var(--glass-light) 75%, transparent);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-glass-light);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-/* CENTER TITLE */
-/* TITLE — apple style */
 .title-wrap {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
+  justify-self: center;
+  position: relative;    /* už žádné absolute */
+}
 
+.right-side {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 20px;
 }
 
 .site-title {
@@ -169,13 +166,6 @@ body.animate-title .site-title span {
   height: 20px;
   margin-right: 10px;
   opacity: 0.9;
-}
-/* RIGHT SIDE -> NAV*/
-.right-side {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 22px;
 }
 
 /* DESKTOP NAV */
@@ -282,26 +272,31 @@ body.animate-title .site-title span {
 }
   /* MOBILE MENU PANEL */
 .mobile-nav {
-  display: flex;
-  flex-direction: column;
-  background: var(--glass-light);
-  backdrop-filter: blur(14px);
-  border-radius: 18px;
-  padding: 12px 16px;
-  position: absolute;
+  position: fixed;
   top: 70px;
   left: 14px;
+  width: 200px;
+
+  display: flex;
+  flex-direction: column;
+
+  background: var(--glass-light);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 12px 16px;
   gap: 12px;
-  box-shadow: var(--shadow-soft);
 
   opacity: 0;
   pointer-events: none;
   transform: translateY(-10px);
   transition: 0.25s ease;
-  z-index: 900;
+  z-index: 2000;  /* musí být nad headerem, ale NE přes fullscreen */
 }
 
 .mobile-nav.show {
+  position: fixed;
+  top: 70px;
+  left: 14px;
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
@@ -483,6 +478,7 @@ nav a.active::before {
   align-items: center;
   transition: background .35s ease, border .35s ease;
   position: relative;
+  margin-left: 10px;
 }
 
 /* Vnitřní lišta */
