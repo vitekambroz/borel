@@ -237,23 +237,26 @@ body.animate-title .site-title span {
 
 /* ---------- UNDERLINE ANIMATION ---------- */
 
+/* ZÁKLAD PODTRŽENÍ – roste zleva pomocí width */
 .desktop-nav a::after {
   content: "";
   position: absolute;
-  width: 240%;
-  height: 240%;
-  left: 50%;
-  top: 50%;
-  background: transparent;
-  box-shadow: none;
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  pointer-events: none;
+  left: 12px;
+  bottom: 4px;
+  height: 2px;
+  border-radius: 10px;
+
+  width: 0; /* start = nic */
+  transition:
+    width 0.28s cubic-bezier(.25,.46,.45,.94),
+    background 0.28s ease,
+    box-shadow 0.28s ease;
 }
 
-.desktop-nav a:hover::after {
-  transform: scaleX(1);
+/* při hoveru/active se linka roztáhne zleva doprava */
+.desktop-nav a:hover::after,
+.desktop-nav a.active::after {
+  width: calc(100% - 24px); /* mezi levým a pravým okrajem paddingu */
 }
 
 .desktop-nav a:hover::before {
@@ -655,6 +658,11 @@ html.theme-light .desktop-nav a:hover::after {
   box-shadow: 0 0 10px rgba(255,255,255,0.8);
 }
 
+html.theme-light .desktop-nav a.active::after {
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(255,255,255,0.8);
+}
+
 /* Dark mode → růžové neon podtržení */
 html.theme-dark .desktop-nav a.active::after,
 html.theme-dark .desktop-nav a:hover::after {
@@ -662,6 +670,12 @@ html.theme-dark .desktop-nav a:hover::after {
   background: var(--brand-strong);
   box-shadow: 0 0 14px rgba(255,0,200,0.7);
 }
+
+html.theme-dark .desktop-nav a.active::after {
+  background: var(--brand-strong);
+  box-shadow: 0 0 14px rgba(255,0,200,0.7);
+}
+
 .desktop-nav a:hover {
   color: var(--brand-strong);
   transform: translateY(-2px);
