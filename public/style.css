@@ -72,7 +72,29 @@ img {
 }
 
 /* ------------------------- */
-/* HEADER +
+/* HEADER + NAV              */
+/* ------------------------- */
+
+/* ========================================= */
+/* HEADER LAYOUT (DESKTOP + MOBIL)           */
+/* ========================================= */
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+
+  padding: 10px 16px;
+  min-height: 58px;
+  background: color-mix(in srgb, var(--glass-light) 75%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-glass-light);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
 /* CENTER TITLE */
 /* TITLE — apple style */
 .title-wrap {
@@ -153,8 +175,22 @@ body.animate-title .site-title span {
   margin-right: 10px;
   opacity: 0.9;
 }
-/* RIGHT SIDE ->
-/* DESKTOP
+/* RIGHT SIDE -> NAV*/
+.right-side {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  padding-right: 16px;
+  gap: 14px;
+}
+
+/* DESKTOP NAV */
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 /* ---- SPOTIFY UNDERLINE ANIMATION ---- */
 .desktop-nav a {
   overflow: hidden;
@@ -433,17 +469,25 @@ html.theme-dark .desktop-nav a.active::after {
     color: var(--brand-strong);
   }
 
-/* TABLET
+/* TABLET NAV – hamburger aktivní už od 1100px */
+@media (max-width: 1100px) {
+
+  .desktop-nav {
+    display: none !important;
+  }
+
   .menu-toggle {
     display: flex !important;
   }
 
   .right-side {
     display: none !important; /* theme toggle na tablet vlevo/vpravo si doladíme */
+  }
 
   .mobile-nav {
     display: flex !important;
   }
+}
 
 /* Hover – ještě více neonového výbuchu */
 header h1:hover {
@@ -482,28 +526,68 @@ body.animate-title header h1 span:nth-child(5){ animation-delay: 0.25s; }
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/*
+/* Nav */
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-right: auto; /* <<< NAV DOPRAVA */
+  padding-left: 40px; /* <<< rezerva, aby nenarážel do TITLE */
+}
+
+nav a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  color: var(--text-soft);
+  transition: color 0.25s ease, transform 0.2s ease;
+  overflow: hidden;
+}
+
+nav a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.02));
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: -1;
+}
+
+nav a:hover::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+nav a:hover {
+  color: var(--brand-strong);
+  transform: translateY(-1px);
+}
+
+nav a.active {
+  color: #fff;
+}
+
+nav a.active::before {
+  opacity: 1;
+  transform: scale(1);
+  background: linear-gradient(135deg, var(--brand), var(--brand-strong));
+}
+
 /* Úplný reset starého hover/active pozadí */
-.desktop-nav a {
-  background: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-}
-
-/* reset starého hover pozadí */
-.desktop-nav a:hover {
-  background: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  transform: none !important;
-}
-
-/* reset starého active pozadí */
-.desktop-nav a.active {
-  background: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-}
+/* ================================================
+   DESKTOP NAV — FINÁLNÍ ČISTÁ VERZE
+   ================================================ */
 
 .desktop-nav {
   display: flex;
@@ -511,75 +595,36 @@ body.animate-title header h1 span:nth-child(5){ animation-delay: 0.25s; }
   gap: 22px;
 }
 
+/* ZÁKLAD */
 .desktop-nav a {
   position: relative;
   display: inline-flex;
   align-items: center;
+  gap: 8px;
+
   padding: 8px 16px;
-  border-radius: 14px;
+  border-radius: 10px;
+
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--text-soft);
   text-decoration: none;
-  overflow: hidden;
+
   cursor: pointer;
-  transition: color 0.25s ease, transform 0.25s ease;
+  overflow: hidden;
+
+  transition: color .25s ease, transform .25s ease;
 }
 
+/* Ikonky */
 .desktop-nav a .icon,
 .desktop-nav a .nav-icon {
-  margin-right: 8px;
-  opacity: 0.6;
-  transition: color 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
-}
-.desktop-nav a::after {
-  content: "";
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 4px;
-  height: 2px;
-  border-radius: 10px;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.35s cubic-bezier(.25,.46,.45,.94),
-              background 0.35s ease,
-              box-shadow 0.35s ease;
+  opacity: .55;
+  margin-right: 6px;
+  transition: opacity .25s ease, color .25s ease, transform .25s ease;
 }
 
-/* Light mode → bílé podtržení + glow */
-html.theme-light .desktop-nav a.active::after,
-html.theme-light .desktop-nav a:hover::after {
-  transform: scaleX(1);
-  background: #ffffff;
-  box-shadow: 0 0 10px rgba(255,255,255,0.8);
-}
-
-html.theme-light .desktop-nav a.active::after {
-  background: #ffffff;
-  box-shadow: 0 0 10px rgba(255,255,255,0.8);
-}
-
-/* Dark mode → růžové neon podtržení */
-html.theme-dark .desktop-nav a:hover::after {
-  transform: scaleX(1);
-  background: var(--brand-strong);
-  box-shadow: 0 0 14px rgba(255,0,200,0.7);
-}
-
-html.theme-dark .desktop-nav a.active::after {
-  background: var(--brand-strong);
-  box-shadow: 0 0 14px rgba(255,0,200,.7);
-}
-
-/* Aktivní odkaz = bez podtržení */
-.desktop-nav a.active::after {
-  width: 0 !important;
-  transform: none !important;
-  background: none !important;
-  box-shadow: none !important;
-}
-
+/* Hover */
 .desktop-nav a:hover {
   color: var(--brand-strong);
   transform: translateY(-2px);
@@ -588,62 +633,76 @@ html.theme-dark .desktop-nav a.active::after {
 .desktop-nav a:hover .icon,
 .desktop-nav a:hover .nav-icon {
   opacity: 1;
-  transform: translateY(-1px);
   color: var(--brand-strong);
+  transform: translateY(-1px);
 }
+
+/* Podtržení (pouze hover) */
+.desktop-nav a::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  bottom: 4px;
+
+  height: 2px;
+  width: 0;
+  border-radius: 4px;
+
+  transition: width .28s ease, background .28s ease, box-shadow .28s ease;
+}
+
+/* Hover underline */
+.desktop-nav a:hover::after {
+  width: calc(100% - 24px);
+}
+
+/* Light underline */
+html.theme-light .desktop-nav a:hover::after {
+  background: #fff;
+  box-shadow: 0 0 8px rgba(255,255,255,0.7);
+}
+
+/* Dark underline */
+html.theme-dark .desktop-nav a:hover::after {
+  background: var(--brand-strong);
+  box-shadow: 0 0 12px rgba(255,0,200,0.6);
+}
+
+/* === ACTIVE === */
 .desktop-nav a.active {
-  color: #ffffff !important;
+  color: #fff !important;
   background: rgba(255, 0, 140, 0.22);
   backdrop-filter: blur(6px);
+
+  padding-bottom: 6px;
+  border-radius: 10px;
+  background-clip: padding-box;
+
   box-shadow:
     0 0 12px rgba(255, 0, 170, 0.35),
     0 0 25px rgba(255, 0, 140, 0.25);
-  border-radius: 10px;
-  padding-bottom: 6px;
-  background-clip: padding-box;
 }
 
+/* Ikonky v active */
 .desktop-nav a.active .icon,
 .desktop-nav a.active .nav-icon {
   opacity: 1;
-  color: #ffffff !important;
-}
-.desktop-nav a {
-  position: relative;
-  overflow: hidden;
+  color: #fff !important;
 }
 
-.desktop-nav a::before {
-  content: "";
-  position: absolute;
-  width: 260%;
-  height: 260%;
-  left: 50%;
-  top: 50%;
-  background: rgba(255,255,255,0.25);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  pointer-events: none;
+/* ACTIVE = bez podtržení */
+.desktop-nav a.active::after {
+  width: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
 }
 
+/* === Reset všeho starého === */
+.desktop-nav a::before,
+.desktop-nav a:active::after,
 .desktop-nav a:focus-visible::before {
-  animation: slowRipple 0.6s ease-out forwards;
-}
-
-@keyframes slowRipple {
-  0% { transform: translate(-50%, -50%) scale(0.1); opacity: 0.55; }
-  40% { opacity: 0.35; }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
-}
-html.theme-light .desktop-nav a .icon,
-html.theme-light .desktop-nav a .nav-icon {
-  color: var(--text-soft);
-}
-
-html.theme-dark .desktop-nav a .icon,
-html.theme-dark .desktop-nav a .nav-icon {
-  color: rgba(255,255,255,0.75);
+  content: none !important;
+  display: none !important;
 }
 
 /* ------------------------- */
@@ -799,9 +858,37 @@ html {
     0 0 26px rgba(255, 150, 255, 0.5);
 }
 
- 
- 
- }
+  nav {
+    position: absolute;
+    right: 14px;
+    top: 64px;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px 16px;
+    border-radius: 18px;
+    background: var(--glass-light);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-glass-light);
+    box-shadow: var(--shadow-soft);
+    gap: 10px;
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+    pointer-events: none;
+  }
+
+  nav.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  nav a {
+    justify-content: flex-start;
+    min-width: 150px;
+  }
+}
 
 /* ------------------------- */
 /* WIDGET NA HOMEPAGE        */
