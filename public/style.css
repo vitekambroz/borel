@@ -822,9 +822,7 @@ html.theme-dark .desktop-nav a:hover::after {
 
 @media (max-width: 1100px) {
   .theme-toggle {
-    top: 50%;
-    transform: translateY(-50%);
-    right: 16px;
+    display: none; /* skryj toggle na mobilech/tabletech */
   }
 }
 /* Světlý mód → sluníčko */
