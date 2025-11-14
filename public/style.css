@@ -310,11 +310,6 @@ body.animate-title .site-title span {
   }
 }
 
-/* ve světlém režimu je underline růžový, ne bílý */
-html.theme-light .desktop-nav a.active::after {
-  background: var(--brand); /* ve světlém režimu ne bílé, ale růžové */
-}
-
 html.theme-light .desktop-nav a .icon,
 html.theme-light .desktop-nav a .nav-icon {
   color: var(--text-soft);
@@ -324,6 +319,55 @@ html.theme-dark .desktop-nav a .icon,
 html.theme-dark .desktop-nav a .nav-icon {
   color: rgba(255, 255, 255, 0.8);
 }
+.desktop-nav a::after {
+  transition: background 0.25s ease,
+              box-shadow 0.35s ease,
+              transform 0.35s cubic-bezier(.25,.46,.45,.94);
+}
+
+html.theme-light .desktop-nav a::after {
+  background: #ffffff !important;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8),
+              0 0 14px rgba(255, 255, 255, 0.6);
+}
+
+html.theme-light .desktop-nav a.active::after {
+  background: #ffffff !important;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 1),
+              0 0 20px rgba(255, 255, 255, 0.9),
+              0 0 28px rgba(255, 255, 255, 0.8);
+}
+
+/* Normální hover/active ve tmavém režimu */
+html.theme-dark .desktop-nav a::after {
+  background: var(--brand-strong);
+  box-shadow: 0 0 8px rgba(255, 0, 180, 0.6),
+              0 0 16px rgba(255, 0, 200, 0.35);
+}
+
+/* Dark active = extra neon */
+html.theme-dark .desktop-nav a.active::after {
+  background: var(--brand-strong);
+  box-shadow: 0 0 12px rgba(255, 0, 180, 0.9),
+              0 0 26px rgba(255, 0, 220, 0.6),
+              0 0 40px rgba(255, 0, 255, 0.4);
+}
+
+/* Normální hover/active ve tmavém režimu */
+html.theme-dark .desktop-nav a::after {
+  background: var(--brand-strong);
+  box-shadow: 0 0 8px rgba(255, 0, 180, 0.6),
+              0 0 16px rgba(255, 0, 200, 0.35);
+}
+
+/* Dark active = extra neon */
+html.theme-dark .desktop-nav a.active::after {
+  background: var(--brand-strong);
+  box-shadow: 0 0 12px rgba(255, 0, 180, 0.9),
+              0 0 26px rgba(255, 0, 220, 0.6),
+              0 0 40px rgba(255, 0, 255, 0.4);
+}
+
 
 /* ========================================= */
 /* MOBILNÍ MENU                              */
