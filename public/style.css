@@ -244,19 +244,17 @@ body.animate-title .site-title span {
   left: 12px;
   bottom: 4px;
   height: 2px;
-  border-radius: 10px;
-
-  width: 0; /* start = nic */
-  transition:
-    width 0.28s cubic-bezier(.25,.46,.45,.94),
-    background 0.28s ease,
-    box-shadow 0.28s ease;
+  width: 0;
+  border-radius: 4px;
+  transition: width .28s cubic-bezier(.25,.46,.45,.94),
+              background .28s ease, 
+              box-shadow .28s ease;
 }
 
 /* při hoveru/active se linka roztáhne zleva doprava */
 .desktop-nav a:hover::after,
 .desktop-nav a.active::after {
-  width: calc(100% - 24px); /* mezi levým a pravým okrajem paddingu */
+  width: calc(100% - 24px);
 }
 
 .desktop-nav a:hover::before {
@@ -664,7 +662,6 @@ html.theme-light .desktop-nav a.active::after {
 }
 
 /* Dark mode → růžové neon podtržení */
-html.theme-dark .desktop-nav a.active::after,
 html.theme-dark .desktop-nav a:hover::after {
   transform: scaleX(1);
   background: var(--brand-strong);
@@ -673,7 +670,15 @@ html.theme-dark .desktop-nav a:hover::after {
 
 html.theme-dark .desktop-nav a.active::after {
   background: var(--brand-strong);
-  box-shadow: 0 0 14px rgba(255,0,200,0.7);
+  box-shadow: 0 0 14px rgba(255,0,200,.7);
+}
+
+/* Aktivní odkaz = bez podtržení */
+.desktop-nav a.active::after {
+  width: 0 !important;
+  transform: none !important;
+  background: none !important;
+  box-shadow: none !important;
 }
 
 .desktop-nav a:hover {
@@ -694,6 +699,9 @@ html.theme-dark .desktop-nav a.active::after {
   box-shadow:
     0 0 12px rgba(255, 0, 170, 0.35),
     0 0 25px rgba(255, 0, 140, 0.25);
+  border-radius: 10px;
+  padding-bottom: 6px;
+  background-clip: padding-box;
 }
 
 .desktop-nav a.active .icon,
