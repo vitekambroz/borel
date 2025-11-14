@@ -195,57 +195,66 @@ body.animate-title .site-title span {
   text-decoration: none;
   font-weight: 600;
   color: var(--text-soft);
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  transition: color .28s ease;
+  gap: 8px;                     /* text a ikonka = jeden celek */
+  transition: color .25s ease, transform .25s ease;
 }
 
-/* jemný glow ikony */
+/* ikonka nemá dělat transform! */
 .desktop-nav a .icon {
-  opacity: .55;
-  transition: .28s ease;
+  opacity: 0.55;
+  transition: opacity .25s ease;
+}
+
+/* hover = zvedne se celej element, ne jen ikonka */
+.desktop-nav a:hover {
+  transform: translateY(-2px);
 }
 
 .desktop-nav a:hover .icon {
   opacity: 1;
-  transform: translateY(-1px);
 }
 
-.desktop-nav a.active .icon {
-  opacity: 1;
-}
+/* ---------- UNDERLINE ANIMATION ---------- */
 
-/* silky underline */
 .desktop-nav a::after {
   content: "";
   position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 3px;
+  left: 14px;
+  right: 14px;
+  bottom: 4px;
   height: 2px;
   background: var(--brand-strong);
-  border-radius: 20px;
+  border-radius: 10px;
   transform: scaleX(0);
-  transform-origin: center;
-  transition: transform .35s cubic-bezier(.25,.46,.45,.94);
+  transform-origin: left;
+  transition: transform .28s cubic-bezier(.25,.46,.45,.94);
 }
 
-/* hover */
 .desktop-nav a:hover::after {
   transform: scaleX(1);
-  opacity: .9;
 }
 
-/* active */
-.desktop-nav a.active::after {
-  transform: scaleX(1);
-  background: var(--brand-strong);
-}
+/* ---------- ACTIVE STATE (nové barvy + pozadí) ---------- */
 
-/* ACTIVE (neon styl) */
 .desktop-nav a.active {
   color: #fff;
+  background: color-mix(in srgb, var(--brand) 25%, transparent); /* jemný neon */
+}
+
+html.theme-light .desktop-nav a.active {
+  background: rgba(255, 0, 140, 0.15); /* světlejší verze pro light-mode */
+  color: var(--brand);
+}
+
+.desktop-nav a.active::after {
+  transform: scaleX(1);
+  background: #fff;  /* čisté bílé underline v dark */
+}
+
+html.theme-light .desktop-nav a.active::after {
+  background: var(--brand); /* ve světlém režimu ne bílé, ale růžové */
 }
 
 /* ========================================= */
