@@ -821,8 +821,10 @@ html.theme-dark .desktop-nav a:hover::after {
 
 @media (max-width: 768px) {
   .theme-toggle {
-    top: auto;              /* zruší zarovnání do nav */
-    transform: none;
+    right: 16px;             /* normální rozumná mezera */
+    top: 16px;               /* ať je pěkně nahoře vlevo/vpravo */
+    transform: none;         /* zruší zarovnání do nav */
+    position: fixed;         /* zůstane nahoře */
   }
 }
 
