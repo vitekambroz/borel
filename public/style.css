@@ -159,7 +159,11 @@ body.animate-title .site-title span {
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.desktop-nav a:hover .nav-icon,
+.desktop-nav a:hover .nav-icon {
+  opacity: 1;
+  transform: translateY(-2px);
+  color: var(--brand-strong);
+}
 .desktop-nav a.active .nav-icon {
   opacity: 1;
   transform: translateY(-1px);
@@ -189,6 +193,7 @@ body.animate-title .site-title span {
 
 /* ---- SPOTIFY UNDERLINE ANIMATION ---- */
 .desktop-nav a {
+  overflow: hidden;
   position: relative;
   padding: 8px 14px;
   border-radius: 12px;
@@ -207,14 +212,29 @@ body.animate-title .site-title span {
   transition: opacity .25s ease;
 }
 
+.desktop-nav a .nav-icon {
+  transition: 
+    color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
 /* hover = zvedne se celej element, ne jen ikonka */
 .desktop-nav a:hover {
+  color: var(--brand-strong);
   transform: translateY(-2px);
 }
 
 .desktop-nav a:hover .icon {
   opacity: 1;
 }
+.desktop-nav a:hover .nav-icon {
+  opacity: 1;
+  color: var(--brand-strong);
+}
+
 
 /* ---------- UNDERLINE ANIMATION ---------- */
 
@@ -236,29 +256,73 @@ body.animate-title .site-title span {
   transform: scaleX(1);
 }
 
+.desktop-nav a:hover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: rgba(255, 0, 150, 0.09);
+  box-shadow: 0 0 12px rgba(255, 0, 180, 0.45);
+  z-index: -1;
+  opacity: 1;
+}
+
 /* ---------- ACTIVE STATE (nové barvy + pozadí) ---------- */
 
+/* -------------------------------------------------- */
+/* ACTIVE STAV – text i ikonka ZBĚLÁ (light i dark)   */
+/* -------------------------------------------------- */
 .desktop-nav a.active {
-  color: #fff;
-  background: color-mix(in srgb, var(--brand) 25%, transparent); /* jemný neon */
+  color: #fff !important;
+  background: rgba(255, 0, 150, 0.22);
+  backdrop-filter: blur(6px);
+  box-shadow:
+    0 0 12px rgba(255, 0, 170, 0.35),
+    0 0 24px rgba(255, 0, 150, 0.25);
+  transform: translateY(-1px);
 }
 
-html.theme-light .desktop-nav a.active {
-  background: rgba(255, 0, 140, 0.12); /* jemné růžové pozadí */
-  color: #9b0060;                      /* tmavší růžová – dobře čitelná */
-}
-html.theme-light .desktop-nav a.active .icon {
-  opacity: 1;                          /* ikona musí být vidět */
-  color: #9b0060;
+/* ikonka zbělá taky */
+.desktop-nav a.active .icon,
+.desktop-nav a.active .nav-icon {
+  color: #fff !important;
+  opacity: 1 !important;
 }
 
-.desktop-nav a.active::after {
-  transform: scaleX(1);
-  background: #fff;  /* čisté bílé underline v dark */
+/* Ripple efekt na klik */
+.desktop-nav a:active::after {
+  content: "";
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  animation: rippleClick 0.4s ease-out forwards;
 }
 
+@keyframes rippleClick {
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* ve světlém režimu je underline růžový, ne bílý */
 html.theme-light .desktop-nav a.active::after {
   background: var(--brand); /* ve světlém režimu ne bílé, ale růžové */
+}
+
+html.theme-light .desktop-nav a .icon,
+html.theme-light .desktop-nav a .nav-icon {
+  color: var(--text-soft);
+}
+
+html.theme-dark .desktop-nav a .icon,
+html.theme-dark .desktop-nav a .nav-icon {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* ========================================= */
