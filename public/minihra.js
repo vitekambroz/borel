@@ -1,8 +1,15 @@
+// =====================================================
+//  Připravená a modernizovaná verze – minihra.js
+// =====================================================
+
 const cvs = document.getElementById('game');
 const ctx = cvs.getContext('2d');
+
 let W = cvs.width, H = cvs.height;
 
-// === Dynamické přizpůsobení canvasu ===
+// =====================================================
+//  Dynamická velikost canvasu
+// =====================================================
 function resizeCanvas() {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   const rect = cvs.getBoundingClientRect();
@@ -10,60 +17,74 @@ function resizeCanvas() {
   cvs.width = rect.width * dpr;
   cvs.height = rect.height * dpr;
   ctx.scale(dpr, dpr);
+
   W = rect.width;
   H = rect.height;
 }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-// === Obrázky ===
+// =====================================================
+//  Obrázky
+// =====================================================
 const birdImgAlive = new Image();
 birdImgAlive.src = 'foto/bird.png';
 const birdImgDead = new Image();
 birdImgDead.src = 'foto/bird_dead.png';
 let birdImg = birdImgAlive;
 
-// === Zvuky ===
+// =====================================================
+//  Zvuky
+// =====================================================
 const deathSound = new Audio('sounds/dead.mp3');
 deathSound.volume = 0.8;
+
 const levelUpSound = new Audio('sounds/levelup.mp3');
 levelUpSound.volume = 0.7;
 
+// =====================================================
+//  UI prvky
+// =====================================================
+const scoreBox = document.getElementById('score');
+const difficultyBox = document.getElementById('difficulty');
+const msgBox = document.getElementById('centerMsg');
+const restartBtn = document.getElementById('restart');
+const muteBtn = document.getElementById('mute');
+
+// =====================================================
+//  Herní proměnné
+// =====================================================
+let bird = { x: 100, y: H / 2, w: 48, h: 48, vy: 0, rotation: 0 };
+
+const gravity = 0.6;
+const jump = -10.5;
+const pipeWidth = 70;
+
+let pipes = [];
+let score = 0;
+let bestScore = Number(localStorage.getItem('bestScore')) || 0;
+let running = false;
+let gameOver = false;
+let lastTime = 0;
+let spawnTimer = 0;
+
+let level = 1;
+let levelPulse = 0;
+let flashTimer = 0;
+
+let isMuted = false;
+
+// =====================================================
+//  Inicializace po načtení obrázku
+// =====================================================
 birdImg.onload = () => {
   reset();
   requestAnimationFrame(loop);
 };
 
-// === Herní proměnné ===
-let bird = { x: 100, y: H / 2, w: 48, h: 48, vy: 0, rotation: 0 };
-const gravity = 0.6;
-const jump = -10.5;
-let pipes = [];
-const pipeWidth = 70;
-let score = 0;
-let running = false;
-let gameOver = false;
-let lastTime = 0;
-let spawnTimer = 0;
-let bestScore = localStorage.getItem('bestScore') || 0;
-let level = 1;
-let levelPulse = 0;
-let flashTimer = 0;
-
-const scoreBox = document.getElementById('score');
-const msgBox = document.getElementById('centerMsg');
-const restartBtn = document.getElementById('restart');
-const muteBtn = document.getElementById('mute');
-
-scoreBox.textContent = `Skóre: 0 | Nejlepší: ${bestScore}`;
-
-const SPAWN_EVERY_MS = 1200;
-const PIPE_SPEED = 2;
-
-restartBtn.addEventListener('click', reset);
-
-// === Tlačítko pro ztlumení ===
-let isMuted = false;
+// =====================================================
+//  Mute tlačítko
+// =====================================================
 if (muteBtn) {
   muteBtn.addEventListener('click', () => {
     isMuted = !isMuted;
@@ -71,7 +92,9 @@ if (muteBtn) {
   });
 }
 
-// === Ovládání ===
+// =====================================================
+//  Ovládání – skok
+// =====================================================
 function flap() {
   if (!running && !gameOver) {
     running = true;
@@ -89,47 +112,84 @@ window.addEventListener('keydown', (e) => {
 });
 cvs.addEventListener('mousedown', flap);
 cvs.addEventListener('touchstart', (e) => { e.preventDefault(); flap(); }, { passive: false });
-cvs.addEventListener('touchend', (e) => e.preventDefault(), { passive: false });
 
-// === Spawn trubek ===
+// =====================================================
+//  Auto-pause při ztrátě focusu
+// =====================================================
+let paused = false;
+
+window.addEventListener('blur', () => {
+  paused = true;
+});
+window.addEventListener('focus', () => {
+  if (!gameOver) {
+    paused = false;
+    lastTime = performance.now();
+  }
+});
+
+// =====================================================
+//  Spawn trubek
+// =====================================================
 function spawnPipe() {
   const minMargin = 80;
   const baseGap = 170;
   const gap = Math.max(baseGap, Math.floor(H * 0.26));
   const randomFactor = 0.4;
+
   const maxTop = H - minMargin - gap;
   const midTop = (minMargin + maxTop) / 2;
   const range = (maxTop - minMargin) * randomFactor;
+
   const topH = Math.floor(midTop + (Math.random() - 0.5) * range);
-  pipes.push({ x: W, top: topH, bottom: topH + gap });
+
+  pipes.push({
+    x: W,
+    top: topH,
+    bottom: topH + gap,
+    scored: false
+  });
 }
 
-// === Kolize ===
+// =====================================================
+//  Kolize
+// =====================================================
 function intersect(a, b) {
   return !(a.x + a.w < b.x || a.x > b.x + b.w || a.y + a.h < b.y || a.y > b.y + b.h);
 }
 
-// === Update ===
+// =====================================================
+//  Update logika
+// =====================================================
+const SPAWN_EVERY_MS = 1200;
+const PIPE_SPEED = 2;
+
 function update(dt, deltaMs) {
   if (running && !gameOver) {
+    // pohyb ptáka
     bird.vy += gravity * dt;
     bird.y += bird.vy * dt;
 
+    // spawn trubek
     spawnTimer += deltaMs;
     if (spawnTimer >= SPAWN_EVERY_MS) {
       spawnPipe();
       spawnTimer = 0;
     }
 
+    // obtížnost
     const maxLevel = 200;
     const levelProgress = Math.min(score, maxLevel);
+
     const speed = levelProgress <= 100
       ? PIPE_SPEED + (levelProgress / 100) * 6
       : PIPE_SPEED + 6 + ((levelProgress - 100) / 100) * 6;
 
+    // trubky
     for (let i = pipes.length - 1; i >= 0; i--) {
       pipes[i].x -= speed * dt;
 
+      // zisk bodu
       if (!pipes[i].scored && pipes[i].x + pipeWidth < bird.x) {
         pipes[i].scored = true;
         score++;
@@ -137,12 +197,23 @@ function update(dt, deltaMs) {
         const newLevel = Math.min(score + 1, maxLevel);
         if (newLevel !== level) {
           level = newLevel;
-          levelPulse = 1;
           flashTimer = 300;
+
           if (!isMuted) {
             levelUpSound.currentTime = 0;
             levelUpSound.play();
           }
+
+          // UI – update obtížnosti
+          difficultyBox.textContent = `Obtížnost: ${level}`;
+
+          if (level <= 30) difficultyBox.style.color = "#3eea3e";
+          else if (level <= 60) difficultyBox.style.color = "#f39c12";
+          else difficultyBox.style.color = "#e74c3c";
+
+          // jemná animovaná záře
+          difficultyBox.classList.add("glowPulse");
+          setTimeout(() => difficultyBox.classList.remove("glowPulse"), 350);
         }
 
         scoreBox.textContent = `Skóre: ${score} | Nejlepší: ${bestScore}`;
@@ -151,19 +222,30 @@ function update(dt, deltaMs) {
       if (pipes[i].x + pipeWidth < -10) pipes.splice(i, 1);
     }
 
+    // kolize se zemí
     if (bird.y + bird.h / 2 > H || bird.y - bird.h / 2 < 0) endGame();
 
+    // kolize s trubkami
     for (const p of pipes) {
       const topRect = { x: p.x, y: 0, w: pipeWidth, h: p.top };
       const botRect = { x: p.x, y: p.bottom, w: pipeWidth, h: H - p.bottom };
+
       const inset = 6;
-      const birdRect = { x: bird.x - bird.w / 2 + inset, y: bird.y - bird.h / 2 + inset, w: bird.w - inset * 2, h: bird.h - inset * 2 };
-      if (intersect(birdRect, topRect) || intersect(birdRect, botRect)) endGame();
+      const birdRect = {
+        x: bird.x - bird.w / 2 + inset,
+        y: bird.y - bird.h / 2 + inset,
+        w: bird.w - inset * 2,
+        h: bird.h - inset * 2
+      };
+
+      if (intersect(birdRect, topRect) || intersect(birdRect, botRect))
+        endGame();
     }
 
-    if (levelPulse > 0) levelPulse -= 0.05 * dt;
     if (flashTimer > 0) flashTimer -= deltaMs;
+
   } else if (gameOver) {
+    // pád dolů
     if (bird.y + bird.h / 2 < H - 30) {
       bird.vy += gravity * 0.4 * dt;
       bird.y += bird.vy * dt;
@@ -171,9 +253,12 @@ function update(dt, deltaMs) {
   }
 }
 
-// === Konec hry ===
+// =====================================================
+//  Konec hry
+// =====================================================
 function endGame() {
   if (gameOver) return;
+
   gameOver = true;
   running = false;
   birdImg = birdImgDead;
@@ -190,16 +275,19 @@ function endGame() {
   }
 
   msgBox.style.display = 'block';
-  msgBox.replaceChildren();
-  msgBox.insertAdjacentHTML(
-    'afterbegin',
-    `💀 Prohrál/a jsi<br>Skóre: <b>${score}</b><br>Nejlepší: <b>${bestScore}</b><br><small>Klikni Restart</small>`
-  );
+  msgBox.innerHTML = `
+    💀 Prohrál/a jsi<br>
+    Skóre: <b>${score}</b><br>
+    Nejlepší: <b>${bestScore}</b><br>
+    <small>Klikni Restart</small>
+  `;
 
   scoreBox.textContent = `Skóre: ${score} | Nejlepší: ${bestScore}`;
 }
 
-// === Reset ===
+// =====================================================
+//  Reset hry
+// =====================================================
 function reset() {
   birdImg = birdImgAlive;
   bird = { x: 100, y: H / 2, w: 48, h: 48, vy: 0, rotation: 0 };
@@ -210,18 +298,23 @@ function reset() {
   lastTime = 0;
   spawnTimer = 0;
   level = 1;
-  levelPulse = 0;
   flashTimer = 0;
 
   scoreBox.textContent = `Skóre: 0 | Nejlepší: ${bestScore}`;
+  difficultyBox.textContent = `Obtížnost: 1`;
+  difficultyBox.style.color = "#3eea3e";
+
   msgBox.style.display = 'block';
-  msgBox.replaceChildren();
   msgBox.textContent = 'Stiskni mezerník nebo klikni pro start';
 }
 
-// === Kreslení ===
+// =====================================================
+//  Kreslení
+// =====================================================
 function draw() {
   ctx.clearRect(0, 0, W, H);
+
+  // záblesk při zvýšení levelu
   if (flashTimer > 0) {
     const alpha = Math.min(0.6, flashTimer / 300);
     const gradient = ctx.createLinearGradient(0, 0, W, H);
@@ -231,8 +324,12 @@ function draw() {
     ctx.fillRect(0, 0, W, H);
   }
 
-  let topColor, bottomColor;
+  // -----------------------------------------------------
+  //  Grafika pozadí + země
+  // -----------------------------------------------------
   const progress = level / 100;
+  let topColor, bottomColor;
+
   if (progress < 0.1) {
     topColor = `hsl(330,70%,${70 - progress * 50}%)`;
     bottomColor = `hsl(200,80%,${85 - progress * 30}%)`;
@@ -250,66 +347,80 @@ function draw() {
     bottomColor = `hsl(260,70%,${15 + (progress - 0.8) * 10}%)`;
   }
 
-  const bgGradient = ctx.createLinearGradient(0, 0, 0, H);
-  bgGradient.addColorStop(0, topColor);
-  bgGradient.addColorStop(1, bottomColor);
-  ctx.fillStyle = bgGradient;
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, topColor);
+  bg.addColorStop(1, bottomColor);
+  ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
+  // zem
   const groundHeight = 80;
   ctx.fillStyle = '#ded895';
   ctx.fillRect(0, H - groundHeight, W, groundHeight);
   ctx.fillStyle = '#3ec73e';
   ctx.fillRect(0, H - groundHeight, W, 20);
 
+  // -----------------------------------------------------
+  //  Trubky
+  // -----------------------------------------------------
   for (const p of pipes) {
-    const pipeColor = '#3bb300';
-    const pipeBorder = '#2a8c00';
-    ctx.fillStyle = pipeColor;
+    const color = '#3bb300';
+    const border = '#2a8c00';
+
+    ctx.fillStyle = color;
     ctx.fillRect(p.x, 0, pipeWidth, p.top);
-    ctx.strokeStyle = pipeBorder;
+    ctx.strokeStyle = border;
     ctx.lineWidth = 4;
     ctx.strokeRect(p.x, 0, pipeWidth, p.top);
+
     ctx.fillRect(p.x, p.bottom, pipeWidth, H - p.bottom);
     ctx.strokeRect(p.x, p.bottom, pipeWidth, H - p.bottom);
+
     ctx.fillStyle = '#4cff4c';
     ctx.fillRect(p.x - 3, p.top - 20, pipeWidth + 6, 20);
     ctx.fillRect(p.x - 3, p.bottom, pipeWidth + 6, 20);
   }
 
+  // -----------------------------------------------------
+  //  Pták
+  // -----------------------------------------------------
   if (birdImg.complete && birdImg.naturalWidth !== 0) {
     ctx.save();
     let angle = Math.max(-0.3, Math.min(0.3, bird.vy / 20));
     if (gameOver) angle = bird.rotation;
+
     ctx.translate(bird.x, bird.y);
     ctx.rotate(angle);
     ctx.drawImage(birdImg, -bird.w / 2, -bird.h / 2, bird.w, bird.h);
+
     ctx.restore();
   }
-
-  let color;
-  if (level <= 30) color = '#3eea3e';
-  else if (level <= 60) color = '#f39c12';
-  else color = '#e74c3c';
-
-  ctx.font = `600 ${1.2 + levelPulse * 0.4}rem Segoe UI, Arial`;
-  ctx.textAlign = 'left';
-  ctx.shadowColor = 'rgba(0,0,0,0.6)';
-  ctx.shadowBlur = 4;
-  ctx.fillStyle = color;
-  ctx.fillText(`Obtížnost: ${level}`, 12, 54);
-  ctx.shadowBlur = 0;
 }
 
-// === Loop ===
+// =====================================================
+//  Loop
+// =====================================================
 function loop(timestamp) {
+  if (paused) {
+    requestAnimationFrame(loop);
+    return;
+  }
+
   if (!lastTime) lastTime = timestamp;
   let deltaMs = timestamp - lastTime;
+
   if (deltaMs > 50) deltaMs = 50;
+
   const dt = deltaMs / 16.67;
   lastTime = timestamp;
 
   update(dt, deltaMs);
   draw();
+
   requestAnimationFrame(loop);
 }
+
+// =====================================================
+//  Restart tlačítko
+// =====================================================
+restartBtn.addEventListener('click', reset);

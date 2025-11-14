@@ -1075,6 +1075,14 @@ canvas {
   transition: color .3s ease;
 }
 
+#difficultyBox.glowPulse,
+#difficulty.glowPulse {
+  box-shadow: 0 0 12px rgba(255,255,255,0.55),
+              0 0 20px rgba(255,255,255,0.55);
+  transform: scale(1.06);
+  transition: all 0.25s ease;
+}
+
 /* DARK MODE */
 html.theme-dark .ui {
   color: #fff;
