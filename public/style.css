@@ -1064,12 +1064,11 @@ canvas {
   backdrop-filter: blur(10px);
 }
 #scoreBox {
-  top: 12px;
+  top: 10px;
 }
 
 #difficultyBox {
-  top: 12px; /* posunuto pod score */
-  margin-left: 18px;
+  top: 54px; /* posunuto pod score */
 }
 
 #difficultyBox span {
