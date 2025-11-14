@@ -328,6 +328,26 @@ body.animate-title .site-title span {
     color: var(--brand-strong);
   }
 
+/* TABLET NAV – hamburger aktivní už od 1100px */
+@media (max-width: 1100px) {
+
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .menu-toggle {
+    display: flex !important;
+  }
+
+  .right-side {
+    display: none !important; /* theme toggle na tablet vlevo/vpravo si doladíme */
+  }
+
+  .mobile-nav {
+    display: flex !important;
+  }
+}
+
 /* Hover – ještě více neonového výbuchu */
 header h1:hover {
   transform: scale(1.05);
