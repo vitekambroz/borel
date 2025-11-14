@@ -818,15 +818,6 @@ html.theme-dark .desktop-nav a:hover::after {
     0 0 35px rgba(229, 0, 106, 0.4);
 }
 
-@media (max-width: 768px) {
-  .theme-toggle {
-    top: auto;              /* zruší zarovnání do nav */
-    bottom: 20px;           /* například dole */
-    transform: none;
-    right: 20px;
-  }
-}
-
 /* Světlý mód → sluníčko */
 .theme-light .thumb::before {
   content: "🌞";
