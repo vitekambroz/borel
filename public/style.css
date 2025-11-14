@@ -241,15 +241,15 @@ body.animate-title .site-title span {
 .desktop-nav a::after {
   content: "";
   position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: 4px;
-  height: 2px;
-  background: var(--brand-strong);
-  border-radius: 10px;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform .28s cubic-bezier(.25,.46,.45,.94);
+  width: 240%;
+  height: 240%;
+  left: 50%;
+  top: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .desktop-nav a:hover::after {
@@ -300,11 +300,18 @@ body.animate-title .site-title span {
   transform: translate(-50%, -50%) scale(0);
   background: rgba(255, 255, 255, 0.25);
   border-radius: 50%;
-  animation: rippleClick 0.4s ease-out forwards;
+  animation: rippleClick 0.55s ease-out forwards;
 }
 
 @keyframes rippleClick {
-  to {
+  0% {
+    transform: translate(-50%, -50%) scale(0.1);
+    opacity: 0.4;
+  }
+  40% {
+    opacity: 0.25;
+  }
+  100% {
     transform: translate(-50%, -50%) scale(1);
     opacity: 0;
   }
