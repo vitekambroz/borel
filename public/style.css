@@ -175,14 +175,14 @@ body.animate-title .site-title span {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 22px;
 }
 
 /* DESKTOP NAV */
 .desktop-nav {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 10px;
 }
 
 /* ---- SPOTIFY UNDERLINE ANIMATION ---- */
@@ -365,7 +365,7 @@ nav {
   align-items: center;
   gap: 18px;
   margin-right: auto; /* <<< NAV DOPRAVA */
-  padding-left: 80px; /* <<< rezerva, aby nenarážel do TITLE */
+  padding-left: 40px; /* <<< rezerva, aby nenarážel do TITLE */
 }
 
 nav a {
