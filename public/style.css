@@ -12,6 +12,7 @@
   --bg-light: #ffe6f0;
   --bg-dark-solid: #120018;
   --bg-dark-grad: radial-gradient(circle at top, #3a005a, #120018 50%, #050008 100%);
+  --glow:none;
   --text: #2b0020;
   --text-soft: #5a1140;
   --text-dark: #fce9f6;
@@ -24,6 +25,7 @@
 }
 
 html {
+  transition: background 0.35s ease, color 0.35s ease, filter 0.35s ease;
   scroll-behavior: smooth;
 }
 
@@ -503,7 +505,7 @@ nav a.active::before {
 .theme-toggle .icon {
   position: relative;
   z-index: 1;
-  transition: transform 0.6s ease, opacity 0.4s ease;
+  transition: transform .25s ease, opacity .2s ease;
 }
 
 /* Indikátor automatického režimu */
@@ -524,6 +526,10 @@ nav a.active::before {
 /* ===========================
    TMAVÝ REŽIM
    =========================== */
+
+   .theme-dark .neon {
+  box-shadow: var(--glow);
+}
 
 html.theme-dark .theme-toggle {
   background: radial-gradient(circle at 70% 70%, #2a0042, #16001e);

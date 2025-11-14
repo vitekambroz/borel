@@ -1,10 +1,8 @@
 // ===============================================
-// QUERY SELECTORS
+// SELECTORY
 // ===============================================
 const themeToggle = document.querySelector(".theme-toggle");
 const themeIcon = themeToggle?.querySelector(".icon");
-const modeIndicator = document.querySelector(".mode-indicator");
-
 const menuBtn = document.querySelector(".menu-toggle");
 const mobileNav = document.querySelector(".mobile-nav");
 const siteTitle = document.querySelector(".site-title");
@@ -12,93 +10,90 @@ const siteTitle = document.querySelector(".site-title");
 // ===============================================
 // ANIMACE IKONY (fade + scale)
 // ===============================================
-function animateIcon(newIcon) {
+function animateIcon(icon) {
   if (!themeIcon) return;
-  themeIcon.style.opacity = 0;
-  themeIcon.style.transform = "scale(0.5)";
-  
+  themeIcon.style.opacity = "0";
+  themeIcon.style.transform = "scale(0.5) rotate(-30deg)";
+
   setTimeout(() => {
-    themeIcon.textContent = newIcon;
-    themeIcon.style.opacity = 1;
-    themeIcon.style.transform = "scale(1)";
-  }, 150);
+    themeIcon.textContent = icon;
+    themeIcon.style.opacity = "1";
+    themeIcon.style.transform = "scale(1) rotate(0deg)";
+  }, 180);
 }
 
 // ===============================================
-// DETEKCE TÉMATU V SYSTÉMU (iOS, Android, Windows, macOS)
+// SYSTÉMOVÉ TÉMA
 // ===============================================
+const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
 function systemPrefersDark() {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  return prefersDark.matches;
 }
 
 // ===============================================
-// NASTAVENÍ TÉMATU
+// ULOŽIT MANUÁLNÍ TÉMA
+// ===============================================
+function saveManualTheme(mode) {
+  localStorage.setItem("theme-mode", "manual");
+  localStorage.setItem("theme", mode);
+}
+
+// ===============================================
+// NASTAVIT TÉMA (HLAVNÍ FUNKCE)
 // ===============================================
 function applyTheme(mode, save = false) {
   const html = document.documentElement;
 
-  if (mode === "dark") {
-    html.classList.add("theme-dark");
-    animateIcon("🌞");
+  const isDark = mode === "dark";
+  html.classList.toggle("theme-dark", isDark);
+  html.classList.toggle("theme-light", !isDark);
+
+  // Ikona
+  animateIcon(isDark ? "🌙" : "🌞");
+
+  // Neon glow (dark only)
+  if (isDark) {
+    html.style.setProperty("--glow", "0 0 18px rgba(255,0,255,0.7)");
   } else {
-    html.classList.remove("theme-dark");
-    animateIcon("🌙");
+    html.style.setProperty("--glow", "none");
   }
 
-  // uložit manuální volbu
-  if (save) {
-    localStorage.setItem("theme-mode", "manual");
-    localStorage.setItem("theme", mode);
-  }
-
-  // indikátor AUTO vs MANUAL
-  const isManual = localStorage.getItem("theme-mode") === "manual";
-
-  if (themeToggle) {
-    themeToggle.classList.toggle("manual-mode", isManual);
-    themeToggle.classList.toggle("auto-mode", !isManual);
-  }
+  // Uložení preferencí
+  if (save) saveManualTheme(mode);
 }
 
 // ===============================================
-// INIT — PŘI NAČTENÍ STRÁNKY
+// INIT PŘI STARTU
 // ===============================================
 (function initTheme() {
-  const savedMode = localStorage.getItem("theme-mode"); // "manual" / null
+  const savedMode = localStorage.getItem("theme-mode");
   const savedTheme = localStorage.getItem("theme");
 
   if (savedMode === "manual" && savedTheme) {
-    // ruční režim → použij uložené téma
-    applyTheme(savedTheme);
+    applyTheme(savedTheme, false);
   } else {
-    // AUTO režim → použij systémový režim
-    applyTheme(systemPrefersDark() ? "dark" : "light");
+    applyTheme(systemPrefersDark() ? "dark" : "light", false);
   }
-
-  // indikátor přepínače
-  themeToggle?.classList.add(savedMode === "manual" ? "manual-mode" : "auto-mode");
 })();
 
 // ===============================================
-// SYSTEM EVENT — změna systému (iOS/Android/Windows/macOS)
+// SYSTÉMOVÉ PŘEPÍNÁNÍ
 // ===============================================
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
-  const mode = localStorage.getItem("theme-mode");
-
-  if (mode === "manual") return;  // ruční režim → ignorovat změny systému
-
+prefersDark.addEventListener("change", (e) => {
+  const manual = localStorage.getItem("theme-mode") === "manual";
+  if (manual) return; // manuální režim → ignorovat
   applyTheme(e.matches ? "dark" : "light");
 });
 
 // ===============================================
-// PŘEPÍNAČ TÉMATU → MANUAL MODE
+// KLIKNUTÍ NA SWITCH → přepnutí tématu
 // ===============================================
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
-    const dark = document.documentElement.classList.toggle("theme-dark");
-    const newMode = dark ? "dark" : "light";
-
-    applyTheme(newMode, true); // true = uložit manuální volbu
+    const html = document.documentElement;
+    const nowDark = !html.classList.contains("theme-dark");
+    applyTheme(nowDark ? "dark" : "light", true);
   });
 }
 
@@ -120,20 +115,15 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 });
 
 // ===============================================
-// APPLE TITLE FADE + SHRINK (NE theme!)
+// APPLE TITLE FADE + SHRINK
 // ===============================================
 window.addEventListener("scroll", () => {
   const y = Math.min(window.scrollY, 120);
 
-  // Fade efekt
   if (siteTitle) {
     siteTitle.style.opacity = 1 - y / 120;
   }
 
-  // Shrink efekt
-  if (window.scrollY > 40) {
-    siteTitle.classList.add("shrunk");
-  } else {
-    siteTitle.classList.remove("shrunk");
-  }
+  if (window.scrollY > 40) siteTitle.classList.add("shrunk");
+  else siteTitle.classList.remove("shrunk");
 });
