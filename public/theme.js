@@ -128,3 +128,8 @@ window.addEventListener("scroll", () => {
     }
   });
 })();
+
+const nav = document.querySelector("nav");
+const height = nav.offsetHeight;
+
+document.documentElement.style.setProperty("--nav-height-mobile", `${height}px`);

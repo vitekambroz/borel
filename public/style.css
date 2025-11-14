@@ -14,6 +14,7 @@
   --bg-dark-grad: radial-gradient(circle at top, #3a005a, #120018 50%, #050008 100%);
   --glow:none;
   --nav-height: 70px;
+  --mobile-nav-height: 58px;
   --text: #2b0020;
   --text-soft: #5a1140;
   --text-dark: #fce9f6;
@@ -819,15 +820,12 @@ html.theme-dark .desktop-nav a:hover::after {
     0 0 35px rgba(229, 0, 106, 0.4);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   .theme-toggle {
-    right: 16px;             /* normální rozumná mezera */
-    top: 16px;               /* ať je pěkně nahoře vlevo/vpravo */
-    transform: none;         /* zruší zarovnání do nav */
-    position: fixed;         /* zůstane nahoře */
+    top: calc(var(--nav-height-mobile) / 2);
+    transform: translateY(-50%);
   }
 }
-
 /* Světlý mód → sluníčko */
 .theme-light .thumb::before {
   content: "🌞";
