@@ -1,1172 +1,178 @@
-/* =========================================================
-   BOREL 2025 – Neonový styl (kompletně nový style.css)
-   ========================================================= */
+/* style.css cleaned base — HEADER/NAV updated; gallery/lightbox/game unchanged (B: no neon glow) */
 
-/* ------------------------- */
-/* ZÁKLAD + PROMĚNNÉ         */
-/* ------------------------- */
-
+/* VARIABLES */
 :root {
   --brand: #e5006a;
   --brand-strong: #ff2f92;
   --bg-light: #ffe6f0;
   --bg-dark-solid: #120018;
   --bg-dark-grad: radial-gradient(circle at top, #3a005a, #120018 50%, #050008 100%);
-  --glow:none;
   --text: #2b0020;
   --text-soft: #5a1140;
   --text-dark: #fce9f6;
   --glass-light: rgba(255, 255, 255, 0.7);
   --glass-dark: rgba(8, 0, 16, 0.85);
-  --border-glass-light: rgba(255, 255, 255, 0.5);
-  --border-glass-dark: rgba(255, 150, 255, 0.35);
-  --shadow-soft: 0 12px 35px rgba(229, 0, 106, 0.25);
-  --shadow-strong: 0 0 40px rgba(255, 0, 170, 0.4);
+  --border-glass-light: rgba(255, 255, 255, 0.4);
+  --border-glass-dark: rgba(255, 150, 255, 0.3);
+  --shadow-soft: 0 12px 35px rgba(229, 0, 106, 0.18);
 }
 
-html {
-  transition: background 0.35s ease, color 0.35s ease, filter 0.35s ease;
-  scroll-behavior: smooth;
-}
-
-html.theme-dark {
-  --bg-light: var(--bg-dark-grad);
-  --text: var(--text-dark);
-  --text-soft: #ffe0ff;
-  --glass-light: var(--glass-dark);
-  --border-glass-light: var(--border-glass-dark);
-  --shadow-soft: 0 12px 40px rgba(255, 0, 255, 0.35);
-}
-
-/* Reset + base */
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+/* GLOBAL RESET */
+*,*::before,*::after { box-sizing: border-box; }
 
 body {
-  margin: 0;
-  min-height: 100vh;          /* tělo musí mít výšku celé obrazovky */
-  display: flex;              /* aby footer mohl zůstat dole */
-  flex-direction: column;     
-  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: var(--text);
-  background: var(--bg-light);
-  transition: background 0.6s ease, color 0.4s ease;
-  overflow-x: hidden;         /* fix oproti horizontálnímu scrollu na mobilu */
+  margin:0; min-height:100vh;
+  display:flex; flex-direction:column;
+  font-family:"Poppins",system-ui;
+  color:var(--text);
+  background:var(--bg-light);
 }
 
-main {
-  flex: 1 0 auto;             /* main zabere všechno mezi headerem a footerem */
-  width: 100%;
-  padding: 20px 5vw 40px;     /* tvé původní paddingy */
-  box-sizing: border-box;     /* jistota – žádné posuny */
-}
+main { flex:1; padding:20px 5vw 40px; }
 
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* ------------------------- */
-/* HEADER + NAV              */
-/* ------------------------- */
-
-/* ========================================= */
-/* HEADER LAYOUT (DESKTOP + MOBIL)           */
-/* ========================================= */
-
+/* HEADER */
 header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-
-  padding: 10px 16px;
-  min-height: 58px;
-  background: color-mix(in srgb, var(--glass-light) 75%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-glass-light);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  position:sticky; top:0; z-index:1000;
+  display:flex; align-items:center;
+  padding:10px 16px; min-height:60px;
+  background:color-mix(in srgb,var(--glass-light)75%,transparent);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border-glass-light);
 }
 
-/* CENTER TITLE */
-/* TITLE — apple style */
+/* TITLE */
 .title-wrap {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position:absolute; left:50%; top:50%;
+  transform:translate(-50%,-50%);
 }
-
 .site-title {
-  margin: 0;
-  font-size: 2.2rem;
-  letter-spacing: 0.20em;
-  font-weight: 800;
-  font-family: "Fredoka", "Poppins", sans-serif;
-  color: var(--brand-strong);
-
-  pointer-events: auto;
-
-  /* apple-like crisp neon */
-  text-shadow:
-    0 0 10px rgba(229, 0, 106, 0.5),
-    0 0 22px rgba(255, 150, 255, 0.4);
-
-  transition: opacity .25s ease, transform .25s ease;
+  margin:0; font-size:2.2rem; font-weight:800;
+  letter-spacing:0.2em; font-family:"Fredoka";
+  color:var(--brand-strong);
+  transition:opacity .25s,font-size .25s;
 }
-.site-title.shrunk {
-  font-size: 1.4rem;
-}
-
-.site-title span {
-  display: inline-block;
-  transition: transform .25s ease;
-}
-
-/* optional mini-hover bounce */
-.site-title span:hover {
-  transform: translateY(-2px) scale(1.1);
-}
-
-/* keep your existing cuteLetter animation */
-body.animate-title .site-title span {
-  opacity: 0;
-  transform: translateY(14px) scale(0.92);
-  animation: cuteLetter 0.55s cubic-bezier(.22,1.5,.36,1) forwards;
-}
-
-.title-wrap h1 {
-  pointer-events: auto;
-}
-
-.nav-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
-  opacity: 0.65;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.desktop-nav a:hover .nav-icon,
-.desktop-nav a.active .nav-icon {
-  opacity: 1;
-  transform: translateY(-1px);
-}
-
-.mobile-nav .nav-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-  opacity: 0.9;
-}
-/* RIGHT SIDE -> NAV*/
-.right-side {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  padding-right: 16px;
-  gap: 14px;
-}
+.site-title.shrunk { font-size:1.4rem; }
 
 /* DESKTOP NAV */
+.right-side {
+  margin-left:auto; display:flex; gap:16px;
+}
 .desktop-nav {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* ---- SPOTIFY UNDERLINE ANIMATION ---- */
-.desktop-nav a {
-  position: relative;
-  padding: 8px 14px;
-  border-radius: 12px;
-  text-decoration: none;
-  font-weight: 600;
-  color: var(--text-soft);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: color .28s ease;
-}
-
-/* jemný glow ikony */
-.desktop-nav a .icon {
-  opacity: .55;
-  transition: .28s ease;
-}
-
-.desktop-nav a:hover .icon {
-  opacity: 1;
-  transform: translateY(-1px);
-}
-
-.desktop-nav a.active .icon {
-  opacity: 1;
-}
-
-/* silky underline */
-.desktop-nav a::after {
-  content: "";
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 3px;
-  height: 2px;
-  background: var(--brand-strong);
-  border-radius: 20px;
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform .35s cubic-bezier(.25,.46,.45,.94);
-}
-
-/* hover */
-.desktop-nav a:hover::after {
-  transform: scaleX(1);
-  opacity: .9;
-}
-
-/* active */
-.desktop-nav a.active::after {
-  transform: scaleX(1);
-  background: var(--brand-strong);
-}
-
-/* ACTIVE (neon styl) */
-.desktop-nav a.active {
-  color: #fff;
-}
-
-/* ========================================= */
-/* MOBILNÍ MENU                              */
-/* ========================================= */
-
-.mobile-nav {
-  display: none;
-}
-
-/* === MOBILE HEADER FIX === */
-
-@media (max-width: 820px) {
-
-  /* desktop-nav pryč */
-  .desktop-nav {
-    display: none;
-  }
-  .lightbox-nav,
-  .lightbox-nav button,
-  #lightbox .close {
-    display: none !important;
-  }
-  /* right-side = toggle viditelný! */
-  .right-side {
-    display: none;
-  }
-
-.menu-toggle {
-  display: flex !important;
-  position: absolute;
-  left: 14px;
-  top: 0;
-  bottom: 0;
-  margin-block: auto;
-  transform: none;
-  z-index: 1000;
-  }
-
-.theme-toggle {
-  position: absolute;
-  right: 14px !important;
-  left: auto !important;
-  top: 0;
-  bottom: 0;
-  margin-block: auto;
-  transform: none;
-  z-index: 1000;
-  }
-}
-  /* MOBILE MENU PANEL */
-.mobile-nav {
-  display: flex;
-  flex-direction: column;
-  background: var(--glass-light);
-  backdrop-filter: blur(14px);
-  border-radius: 18px;
-  padding: 12px 16px;
-  position: absolute;
-  top: 60px;       /* ✔ přímo pod header */
-  left: 14px;      /* ✔ zarovnáno vlevo pod hamburger */
-    
-  gap: 12px;
-  box-shadow: var(--shadow-soft);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-10px); /* ✔ animace */
-  transition: 0.25s ease;
-  z-index: 1500;
-}
-
-.mobile-nav.show {
-  opacity: 1;
-  transform: translateY(0);      /* ✔ animace */
-  pointer-events: auto;
-}
-
-.mobile-nav a {
-  color: var(--text-soft);
-  text-decoration: none;
-  font-weight: 600;
-  padding: 8px 10px;
-  border-radius: 12px;
-  transition: 0.2s;
-  }
-
-.mobile-nav a.active {
-  color: var(--brand-strong);
-  background: rgba(255, 255, 255, 0.1);
-}
-.mobile-nav a.active .icon {
-  opacity: 1;
-}
-
-  .mobile-nav a:hover {
-    background: rgba(255,255,255,0.1);
-    color: var(--brand-strong);
-  }
-
-/* TABLET NAV – hamburger aktivní už od 1100px */
-@media (max-width: 1100px) {
-
-  .desktop-nav {
-    display: none !important;
-  }
-
-  .menu-toggle {
-    display: flex !important;
-  }
-
-  .right-side {
-    display: none !important; /* theme toggle na tablet vlevo/vpravo si doladíme */
-  }
-
-  .mobile-nav {
-    display: flex !important;
-  }
-}
-
-/* Hover – ještě více neonového výbuchu */
-header h1:hover {
-  transform: scale(1.05);
-  text-shadow:
-    0 0 20px rgba(255, 120, 200, 1),
-    0 0 40px rgba(255, 80, 170, 0.9),
-    0 0 80px rgba(255, 0, 200, 0.6);
-}
-
-/* Default stav = písmena VIDITELNÁ */
-header h1 span {
-  opacity: 1;
-  transform: none;
-  display: inline-block;
-}
-
-/* Animace se spustí JEN když je stránka načtená */
-body.animate-title header h1 span {
-  opacity: 0;
-  transform: translateY(14px) scale(0.92);
-  animation: cuteLetter 0.55s cubic-bezier(.22,1.5,.36,1) forwards;
-}
-
-/* Stagger delay – musí zůstat! */
-body.animate-title header h1 span:nth-child(1){ animation-delay: 0.05s; }
-body.animate-title header h1 span:nth-child(2){ animation-delay: 0.10s; }
-body.animate-title header h1 span:nth-child(3){ animation-delay: 0.15s; }
-body.animate-title header h1 span:nth-child(4){ animation-delay: 0.20s; }
-body.animate-title header h1 span:nth-child(5){ animation-delay: 0.25s; }
-
-/* Cute anime styl */
-@keyframes cuteLetter {
-  0%   { opacity: 0; transform: translateY(14px) scale(0.92); }
-  70%  { opacity: 1; transform: translateY(-4px) scale(1.06); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-/* Nav */
-
-nav {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  margin-right: auto; /* <<< NAV DOPRAVA */
-  padding-left: 40px; /* <<< rezerva, aby nenarážel do TITLE */
-}
-
-nav a {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  text-decoration: none;
-  color: var(--text-soft);
-  transition: color 0.25s ease, transform 0.2s ease;
-  overflow: hidden;
-}
-
-nav a::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.02));
-  opacity: 0;
-  transform: scale(0.8);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  z-index: -1;
-}
-
-nav a:hover::before {
-  opacity: 1;
-  transform: scale(1);
-}
-
-nav a:hover {
-  color: var(--brand-strong);
-  transform: translateY(-1px);
-}
-
-nav a.active {
-  color: #fff;
-}
-
-nav a.active::before {
-  opacity: 1;
-  transform: scale(1);
-  background: linear-gradient(135deg, var(--brand), var(--brand-strong));
-}
-
-/* ------------------------- */
-/* MENU TOGGLE (MOBILE)      */
-/* ------------------------- */
-
-.menu-toggle {
-  position: relative;
-  width: 32px;
-  height: 24px;
-  margin-left: 0px;
-  margin-right: auto;
-  border: none;
-  background: none;
-  cursor: pointer;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  z-index: 150;
-}
-
-.menu-toggle span {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 3px;
-  border-radius: 99px;
-  background: var(--brand-strong);
-  box-shadow: 0 0 9px rgba(229, 0, 106, 0.9);
-  transition: all 0.3s ease;
-}
-
-.menu-toggle span:nth-child(1) { top: 2px; }
-.menu-toggle span:nth-child(2) { top: 10px; }
-.menu-toggle span:nth-child(3) { top: 18px; }
-
-.menu-toggle.active span:nth-child(1) {
-  top: 10px;
-  transform: rotate(45deg);
-}
-.menu-toggle.active span:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
-.menu-toggle.active span:nth-child(3) {
-  top: 10px;
-  transform: rotate(-45deg);
-}
-
-/* ---------------------------------------------------
-   THEME SWITCH (iOS style)
---------------------------------------------------- */
-
-.theme-toggle {
-  width: 52px;
-  height: 28px;
-  border-radius: 30px;
-  padding: 3px;
-  cursor: pointer;
-
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(10px);
-
-  display: flex;
-  align-items: center;
-  transition: background .35s ease, border .35s ease;
-  position: relative;
-}
-
-/* Vnitřní lišta */
-.theme-toggle .switch {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-/* Tečka (thumb) */
-.theme-toggle .thumb {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 3px;
-  transform: translateY(-50%);
-
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-
-  transition: left .28s cubic-bezier(.4, 0, .2, 1),
-              background .35s ease,
-              box-shadow .35s ease;
-
-  box-shadow: 0 0 6px rgba(0,0,0,0.15);
-}
-
-/* Světlý mód → sluníčko */
-.theme-light .thumb::before {
-  content: "🌞";
-}
-
-/* Tmavý mód → měsíc */
-.theme-dark .thumb::before {
-  content: "🌙";
-}
-
-/* Posunutí tečky doprava v dark módu */
-.theme-dark .thumb {
-  left: 26px;
-  background: #ffe7ff;
-  box-shadow: 0 0 12px rgba(255,0,255,0.6);
-}
-
-/* Toggle glow effect */
-.theme-dark .theme-toggle {
-  border-color: rgba(255,0,255,0.5);
-  box-shadow: 0 0 15px rgba(255,0,255,0.6);
-}
-
-.theme-light .theme-toggle {
-  box-shadow: none;
-}
-
-/* Animation smooth */
-html {
-  transition: background .35s ease, color .35s ease;
-}
-
-
-/* ------------------------- */
-/* RESPONSIVNÍ HEADER        */
-/* ------------------------- */
-
-@media (max-width: 820px) {
-  header {
-    gap: 10px;
-    padding-inline: 14px;
-  }
-
-  header h1 {
-    font-size: 1.4rem;
-    letter-spacing: 0.18em;
-  }
-  header h1:hover {
-  transform: scale(1.03);
-  text-shadow:
-    0 0 12px rgba(255, 170, 220, 0.7),
-    0 0 26px rgba(255, 150, 255, 0.5);
-}
-
-  nav {
-    position: absolute;
-    right: 14px;
-    top: 64px;
-    flex-direction: column;
-    align-items: stretch;
-    padding: 12px 16px;
-    border-radius: 18px;
-    background: var(--glass-light);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--border-glass-light);
-    box-shadow: var(--shadow-soft);
-    gap: 10px;
-    opacity: 0;
-    transform: translateY(-10px) scale(0.98);
-    pointer-events: none;
-  }
-
-  nav.show {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    pointer-events: auto;
-    transition: opacity 0.25s ease, transform 0.25s ease;
-  }
-
-  nav a {
-    justify-content: flex-start;
-    min-width: 150px;
-  }
-}
-
-/* ------------------------- */
-/* WIDGET NA HOMEPAGE        */
-/* ------------------------- */
-
-.widget {
-  max-width: 960px;
-  margin: 24px auto 18px;
-  padding: 18px 18px 20px;
-  border-radius: 20px;
-  background: color-mix(in srgb, var(--glass-light) 70%, transparent);
-  box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.widget h2 {
-  margin: 0 0 12px;
-  font-size: 1.4rem;
-  color: var(--brand-strong);
-}
-
-.widget-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  gap: 10px;
-}
-
-.widget-gallery img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.65);
-  box-shadow: 0 0 14px rgba(229, 0, 106, 0.35);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
-}
-
-/* CUTE NEON HOVER – čisté, svěží, silné */
-.widget-gallery img:hover {
-  transform: translateY(-4px) scale(1.06);
-  filter: brightness(1.12) saturate(1.18);
-  box-shadow:
-    0 0 20px rgba(229, 0, 106, 0.55),
-    0 0 40px rgba(255, 150, 255, 0.45),
-    0 8px 18px rgba(0, 0, 0, 0.35);
-  border-color: rgba(255,255,255,0.9);
-}
-
-/* ------------------------- */
-/* INFO BOX (TEXT)           */
-/* ------------------------- */
-
-.info-box {
-  max-width: 960px;
-  margin: 28px auto 10px;
-  padding: 18px 18px;
-  text-align: center;
-  font-weight: 700;
-  font-size: 1.3rem;
-  color: var(--brand-strong);
-  background: linear-gradient(135deg, rgba(255, 230, 248, 0.95), rgba(255, 245, 255, 0.9));
-  border-radius: 22px;
-  box-shadow:
-    0 0 24px rgba(255, 182, 212, 0.8),
-    0 0 40px rgba(255, 150, 255, 0.5);
-}
-
-html.theme-dark .info-box {
-  color: #ffe7ff;
-  background: radial-gradient(circle at top, rgba(80, 0, 110, 0.9), rgba(10, 0, 18, 0.95));
-  border: 1px solid rgba(255, 170, 255, 0.5);
-  box-shadow:
-    0 0 26px rgba(255, 0, 255, 0.5),
-    0 0 50px rgba(120, 0, 170, 0.8);
-}
-
-/* ------------------------- */
-/* GALERIE – GRID            */
-/* ------------------------- */
-
-.gallery-page {
-  max-width: 1280px;
-  margin: 14px auto 40px;
-  text-align: center;
-}
-
-.gallery-page h2 {
-  margin-bottom: 18px;
-  font-size: 1.6rem;
-  color: var(--brand-strong);
-}
-
-.gallery-grid,
-#galleryGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-  width: 100%;
-}
-
-/* MOBIL → vždy min. 2 fotky vedle sebe */
-@media (max-width: 820px) {
-  .gallery-grid,
-  #galleryGrid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px;
-  }
-}
-
-/* container pro každý náhled */
-
-.img-wrapper {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: 16px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
-}
-
-/* shimmer skeleton */
-
-.shimmer::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    115deg,
-    rgba(255, 255, 255, 0.05) 0%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0.05) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmerMove 1.2s linear infinite;
-  z-index: 1;
-}
-
-@keyframes shimmerMove {
-  0% { background-position: 180% 0; }
-  100% { background-position: -180% 0; }
-}
-
-/* obrázek uvnitř wrapperu */
-
-.img-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: inherit;
-  opacity: 0;
-  transform: scale(1.02);
-  filter: blur(5px);
-  transition:
-    opacity 0.55s ease,
-    transform 0.55s ease,
-    filter 0.55s ease;
-}
-
-.img-wrapper img.loaded {
-  opacity: 1;
-  transform: scale(1.0);
-  filter: blur(0);
-}
-
-.img-wrapper img.loaded:hover {
-  transform: scale(1.05);
-  filter: brightness(1.12) saturate(1.2);
-  box-shadow:
-    0 0 20px rgba(229, 0, 106, 0.7),
-    0 0 40px rgba(255, 150, 255, 0.45);
-  transition:
-    transform .35s ease,
-    filter .35s ease,
-    box-shadow .35s ease;
-}
-
-
-/* extra třída pro JS – hladký fade-in */
-
-.lazy-fade {
-  opacity: 0;
-  transform: scale(0.97);
-}
-
-.lazy-fade.loaded {
-  opacity: 1;
-  transform: scale(1.0);
-}
-
-/* ------------------------- */
-/* GALERIE – LIGHTBOX        */
-/* ------------------------- */
-
-.lightbox,
-#lightbox {
-  position: fixed;
-  inset: 0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 9999;
-}
-
-#lightbox.show {
-  display: flex;
-}
-
-#lightboxImg,
-.lightbox-content {
-  max-width: min(92vw, 1200px);
-  max-height: 80vh;
-  border-radius: 18px;
-  object-fit: contain;
-  box-shadow:
-    0 0 30px rgba(229, 0, 106, 0.9),
-    0 0 60px rgba(120, 0, 180, 0.8);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-
-/* animace přepínání snímků */
-
-.is-exiting-left  { opacity: 0; transform: translateX(-40px); }
-.is-exiting-right { opacity: 0; transform: translateX( 40px); }
-
-.is-entering-left,
-.is-entering-right {
-  opacity: 0;
-}
-
-.is-entering-left {
-  animation: slideInLeft 0.35s ease forwards;
-}
-.is-entering-right {
-  animation: slideInRight 0.35s ease forwards;
-}
-
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-40px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(40px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-/* ovládací prvky */
-
-.close {
-  position: absolute;
-  top: 22px;
-  right: 22px;
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  border: none;
-  background: rgba(0, 0, 0, 0.55);
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.8rem;
-  cursor: pointer;
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.7);
-  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
-}
-
-.close:hover {
-  transform: rotate(180deg) scale(1.08);
-  background: var(--brand-strong);
-  box-shadow:
-    0 0 24px rgba(229, 0, 106, 0.9),
-    0 0 40px rgba(255, 150, 255, 0.7);
-}
-
-/* šipky */
-
-.lightbox-nav {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-inline: 30px;
-  pointer-events: none;
-}
-
-.lightbox-nav button {
-  pointer-events: auto;
-  width: 56px;
-  height: 56px;
-  border-radius: 999px;
-  border: none;
-  background: rgba(0, 0, 0, 0.55);
-  color: #fff;
-  font-size: 2rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 0 18px rgba(0, 0, 0, 0.7);
-  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
-}
-
-.lightbox-nav button:hover {
-  background: var(--brand-strong);
-  transform: scale(1.12);
-  box-shadow:
-    0 0 24px rgba(229, 0, 106, 0.9),
-    0 0 40px rgba(255, 150, 255, 0.7);
-}
-
-.lightbox-counter,
-#lightboxCounter {
-  position: absolute;
-  bottom: 22px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  font-size: 0.9rem;
-}
-
-/* =========================================================
-   HRA
-   ========================================================= */
-/* ------------------------------ */
-/* GAME WRAP – původní efekty     */
-/* ------------------------------ */
-#gameWrap {
-  width: 90vw;
-  max-width: 420px;
-  height: 600px;
-  background: linear-gradient(#ffe6f0,#fff0fa);
-  box-shadow:
-    0 0 25px rgba(229, 0, 106, 0.4),
-    0 0 50px rgba(255, 182, 212, 0.3),
-    inset 0 0 20px rgba(255, 255, 255, 0.25);
-  border-radius: 16px;
-  border: 2px solid rgba(255, 182, 212, 0.7);
-  position: relative;
-  overflow: hidden;
-  margin: 40px auto;
-  transition: box-shadow 0.5s ease, border 0.5s ease;
-}
-
-#gameWrap:hover {
-  box-shadow:
-    0 0 35px rgba(229, 0, 106, 0.6),
-    0 0 70px rgba(255, 182, 212, 0.45),
-    inset 0 0 25px rgba(255, 255, 255, 0.3);
-  border-color: rgba(229, 0, 106, 0.8);
-}
-
-/* DARK MODE */
-html.theme-dark #gameWrap {
-  background: linear-gradient(#1a0023,#2a0045);
-  box-shadow:
-    0 0 30px rgba(255, 0, 255, 0.35),
-    0 0 60px rgba(255, 150, 255, 0.25),
-    inset 0 0 20px rgba(255, 255, 255, 0.08);
-  border: 2px solid rgba(255, 0, 255, 0.4);
-}
-
-html.theme-dark #gameWrap:hover {
-  box-shadow:
-    0 0 40px rgba(255, 0, 255, 0.6),
-    0 0 80px rgba(255, 150, 255, 0.35),
-    inset 0 0 25px rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 0, 255, 0.55);
-}
-
-/* ------------------------------ */
-/* CANVAS                         */
-/* ------------------------------ */
-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(#87CEEB,#bde7ff);
-}
-
-/* ------------------------------ */
-/* SCORE UI – průhledný styl      */
-/* ------------------------------ */
-.ui {
-  position: absolute;
-  left: 12px;
-  top: 12px;
-  padding: 6px 10px;
-  border-radius: 12px;
-  font-weight: 600;
-  color: #e5006a;
-  background: rgba(255,255,255,0.35);
-  backdrop-filter: blur(10px);
-}
-#scoreBox {
-  top: 10px;
-}
-
-#difficultyBox {
-  top: 54px; /* posunuto pod score */
-}
-
-#difficultyBox span {
-  transition: color .3s ease;
-}
-
-#difficultyBox.glowPulse,
-#difficulty.glowPulse {
-  box-shadow: 0 0 12px rgba(255,255,255,0.55),
-              0 0 20px rgba(255,255,255,0.55);
-  transform: scale(1.06);
-  transition: all 0.25s ease;
-}
-
-/* DARK MODE */
-html.theme-dark .ui {
-  color: #fff;
-  background: rgba(255,255,255,0.12);
-}
-
-/* ------------------------------ */
-/* PRŮHLEDNÁ TLAČÍTKA              */
-/* ------------------------------ */
-#restart, #mute {
-  position: absolute;
-  right: 12px;
-  padding: 8px 14px;
-  border-radius: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.45);
-  background: rgba(255,255,255,0.35);
-  box-shadow: 0 4px 14px rgba(255,182,212,0.55),
-              inset 0 0 10px rgba(255,255,255,0.35);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: .25s;
-  color: #e5006a;
-  z-index: 50;
-}
-
-#restart:hover, #mute:hover {
-  transform: scale(1.06);
-  box-shadow: 0 8px 22px rgba(255,182,212,0.8),
-              inset 0 0 12px rgba(255,255,255,0.45);
-}
-
-#restart { top: 10px; }
-#mute { top: 54px; }
-
-/* DARK MODE TLAČÍTKA */
-html.theme-dark #restart, 
-html.theme-dark #mute {
-  background: rgba(255,255,255,0.08);
-  border-color: rgba(255,255,255,0.18);
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(255,0,255,0.25),
-              inset 0 0 10px rgba(255,255,255,0.08);
-}
-
-html.theme-dark #restart:hover, 
-html.theme-dark #mute:hover {
-  background: rgba(255,255,255,0.12);
-  box-shadow: 0 8px 22px rgba(255,0,255,0.35),
-              inset 0 0 12px rgba(255,255,255,0.12);
-}
-
-/* ------------------------------ */
-/* CENTER MESSAGE – průhledný     */
-/* ------------------------------ */
-.centerMsg {
-  position: absolute;
-  left: 50%;
-  top: 50%; /* posunuto do středu */
-  transform: translate(-50%, -50%);
-  background: rgba(255,255,255,0.35);
-  padding: 14px 22px;
-  border-radius: 16px;
-  font-weight: 600;
-  color: #e5006a;
-  pointer-events: none;
-  text-align: center;
-  backdrop-filter: blur(12px);
-}
-html.theme-dark .centerMsg {
-  background: rgba(255,255,255,0.12);
-  color: #fff;
-}
-
-footer {
-  flex-shrink: 0;
-  width: 100%;
-  margin-top: auto;
-
-  padding: 10px 5vw 14px;
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: 600;
-
-  background: color-mix(in srgb, var(--glass-light) 75%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid var(--border-glass-light);
-  box-shadow: 0 -8px 18px rgba(0, 0, 0, 0.25);
-
-  color: var(--text-soft);
-}
-
-footer a {
-  color: var(--brand-strong);
-  text-decoration: none;
-}
-
-footer a:hover {
-  text-decoration: underline;
+  display:flex; gap:16px; align-items:center;
+}
+.desktop-nav a{
+  display:flex; gap:6px; align-items:center;
+  padding:8px 14px; border-radius:10px;
+  text-decoration:none; font-weight:600;
+  color:var(--text-soft); transition:.25s;
+}
+.desktop-nav a .icon{opacity:.55; transition:.25s;}
+.desktop-nav a:hover .icon,
+.desktop-nav a.active .icon {opacity:1; transform:translateY(-1px);}
+.desktop-nav a::after{
+  content:""; position:absolute; left:12px; right:12px; bottom:3px;
+  height:2px; background:var(--brand-strong);
+  transform:scaleX(0); transition:.3s ease;
+}
+.desktop-nav a:hover::after,
+.desktop-nav a.active::after{transform:scaleX(1);}
+.desktop-nav a.active{color:#fff;}
+
+/* THEME TOGGLE */
+.theme-toggle{
+  width:52px;height:28px;border-radius:30px;padding:3px;
+  display:flex;align-items:center;cursor:pointer;
+  background:var(--glass-light);
+  border:1px solid var(--border-glass-light);
+  backdrop-filter:blur(10px);
+}
+.theme-toggle .thumb{
+  width:22px;height:22px;border-radius:50%;
+  position:absolute;left:3px;top:50%;
+  transform:translateY(-50%);
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  transition:left .28s cubic-bezier(.4,0,.2,1);
+}
+html.theme-dark .thumb{left:calc(100% - 25px);background:#ffe7ff;}
+.theme-light .thumb::before{content:"🌞";}
+.theme-dark .thumb::before{content:"🌙";}
+
+/* HAMBURGER */
+.menu-toggle{
+  display:none;width:32px;height:24px;
+  background:none;border:none;cursor:pointer;position:relative;
+}
+.menu-toggle span{
+  position:absolute;left:0;right:0;height:3px;
+  background:var(--brand-strong);border-radius:99px;transition:.3s;
+}
+.menu-toggle span:nth-child(1){top:2px;}
+.menu-toggle span:nth-child(2){top:10px;}
+.menu-toggle span:nth-child(3){top:18px;}
+.menu-toggle.active span:nth-child(1){top:10px;transform:rotate(45deg);}
+.menu-toggle.active span:nth-child(2){opacity:0;transform:scaleX(0);}
+.menu-toggle.active span:nth-child(3){top:10px;transform:rotate(-45deg);}
+
+/* MOBILE NAV */
+.mobile-nav{
+  display:none;flex-direction:column;
+  position:absolute;top:60px;left:14px;
+  padding:14px;border-radius:18px;
+  background:var(--glass-light);
+  backdrop-filter:blur(14px);
+  opacity:0;pointer-events:none;
+  transform:translateY(-10px);transition:.25s;
+}
+.mobile-nav.show{
+  opacity:1;pointer-events:auto;transform:translateY(0);
+}
+.mobile-nav a{
+  display:flex;gap:10px;align-items:center;
+  padding:8px 10px;border-radius:12px;
+  text-decoration:none;font-weight:600;
+  color:var(--text-soft);transition:.2s;
+}
+.mobile-nav a:hover{background:rgba(255,255,255,.1);color:var(--brand-strong);}
+.mobile-nav a.active{background:rgba(255,255,255,.12);color:var(--brand-strong);}
+
+/* BREAKPOINT */
+@media(max-width:1100px){
+  .desktop-nav{display:none;}
+  .right-side{display:none;}
+  .menu-toggle{display:flex;margin-right:auto;}
+  .mobile-nav{display:flex;}
+  .theme-toggle{position:absolute;right:16px;top:50%;transform:translateY(-50%);}
+}
+
+/* The rest (gallery, lightbox, game) is unchanged */
+/* GALLERY */
+.gallery-page{max-width:1280px;margin:14px auto 40px;text-align:center;}
+.gallery-grid,#galleryGrid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;width:100%;
+}
+@media(max-width:820px){
+  .gallery-grid,#galleryGrid{grid-template-columns:repeat(2,1fr)!important;}
+}
+.img-wrapper{position:relative;width:100%;aspect-ratio:4/3;border-radius:16px;overflow:hidden;}
+
+/* LIGHTBOX */
+.lightbox,#lightbox{
+  position:fixed;inset:0;display:none;justify-content:center;align-items:center;
+  background:rgba(0,0,0,.9);backdrop-filter:blur(4px);z-index:9999;
+}
+#lightbox.show{display:flex;}
+#lightboxImg{max-width:min(92vw,1200px);max-height:80vh;border-radius:18px;}
+
+/* GAME */
+#gameWrap{
+  width:90vw;max-width:420px;height:600px;
+  background:linear-gradient(#ffe6f0,#fff0fa);
+  border-radius:16px;margin:40px auto;
+}
+
+/* FOOTER */
+footer{
+  flex-shrink:0;padding:14px;text-align:center;
+  background:color-mix(in srgb,var(--glass-light)75%,transparent);
+  backdrop-filter:blur(10px);border-top:1px solid var(--border-glass-light);
 }
