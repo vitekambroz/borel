@@ -195,43 +195,52 @@ body.animate-title .site-title span {
   text-decoration: none;
   font-weight: 600;
   color: var(--text-soft);
-  transition: 0.25s ease;
-}
-.desktop-nav a .icon {
-  opacity: 0.55;
-  margin-right: 6px;
-  font-size: 1.15rem;
-  transition: opacity .25s ease, transform .25s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color .28s ease;
 }
 
-.desktop-nav a:hover .icon,
-.desktop-nav a.active .icon {
+/* jemný glow ikony */
+.desktop-nav a .icon {
+  opacity: .55;
+  transition: .28s ease;
+}
+
+.desktop-nav a:hover .icon {
   opacity: 1;
   transform: translateY(-1px);
 }
 
+.desktop-nav a.active .icon {
+  opacity: 1;
+}
+
+/* silky underline */
 .desktop-nav a::after {
   content: "";
   position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: 4px;
+  left: 12px;
+  right: 12px;
+  bottom: 3px;
   height: 2px;
   background: var(--brand-strong);
-  border-radius: 10px;
-
+  border-radius: 20px;
   transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.28s cubic-bezier(.25,.46,.45,.94);
+  transform-origin: center;
+  transition: transform .35s cubic-bezier(.25,.46,.45,.94);
 }
 
+/* hover */
 .desktop-nav a:hover::after {
   transform: scaleX(1);
+  opacity: .9;
 }
 
+/* active */
 .desktop-nav a.active::after {
   transform: scaleX(1);
-  background: #fff;
+  background: var(--brand-strong);
 }
 
 /* ACTIVE (neon styl) */
@@ -322,6 +331,14 @@ body.animate-title .site-title span {
   border-radius: 12px;
   transition: 0.2s;
   }
+
+.mobile-nav a.active {
+  color: var(--brand-strong);
+  background: rgba(255, 255, 255, 0.1);
+}
+.mobile-nav a.active .icon {
+  opacity: 1;
+}
 
   .mobile-nav a:hover {
     background: rgba(255,255,255,0.1);
