@@ -409,16 +409,6 @@ html.theme-dark .desktop-nav a.active::after {
   z-index: 1000;
   }
 
-.theme-toggle {
-  position: absolute;
-  right: 14px !important;
-  left: auto !important;
-  top: 0;
-  bottom: 0;
-  margin-block: auto;
-  transform: none;
-  z-index: 1000;
-  }
 }
   /* MOBILE MENU PANEL */
 .mobile-nav {
@@ -776,27 +766,29 @@ html.theme-dark .desktop-nav a:hover::after {
 
 /* Vnitřní lišta */
 .theme-toggle .switch {
-  width: 100%;
-  height: 100%;
-  position: relative;
+  width: 70px;
+  height: 34px;
+  background: var(--switch-bg);
+  border-radius: 999px;
+  padding: 4px;
+  box-shadow: 0 0 22px rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  transition: background 0.3s ease;
 }
 
 /* Tečka (thumb) */
 .theme-toggle .thumb {
-  width: 28px;
-  height: 28px;
-  background: var(--switch-thumb);
+  width: 26px;
+  height: 26px;
+  background: var(--thumb-bg);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   transition: transform 0.3s ease, background 0.3s ease;
-}
-
-/* Světlý mód → sluníčko */
-.theme-light .thumb::before {
-  content: "🌞";
+  box-shadow: 0 0 12px rgba(0,0,0,0.45);
 }
 
 /* Tmavý mód → měsíc */
@@ -804,32 +796,43 @@ html.theme-dark .desktop-nav a:hover::after {
   content: "🌙";
 }
 
+.theme-dark .thumb {
+  left: 26px;
+  background: #ffdbff; /* jemná světle růžová */
+  box-shadow:
+    0 0 10px rgba(255, 0, 255, 0.55),
+    0 0 20px rgba(229, 0, 106, 0.6);
+}
+
+.theme-dark .theme-toggle {
+  --switch-bg: #12001a; /* hluboká fialová */
+  --switch-thumb: #ff39b6;
+  border-color: rgba(255, 0, 255, 0.45);
+  box-shadow:
+    0 0 12px rgba(255, 0, 255, 0.5),
+    0 0 35px rgba(229, 0, 106, 0.4);
+}
+
+/* Světlý mód → sluníčko */
+.theme-light .thumb::before {
+  content: "🌞";
+}
+
 .theme-light .thumb {
   left: 4px;
-  background: #fff0f6;
-  box-shadow: 0 0 12px rgba(229,0,106,0.6);
+  background: #ffffff; /* čistá bílá */
+  box-shadow:
+    0 0 8px rgba(229, 0, 106, 0.35),
+    0 0 15px rgba(255, 140, 255, 0.25);
   transform: translateX(34px);
 }
 
-/* Posunutí tečky doprava v dark módu */
-.theme-dark .thumb {
-  left: 26px;
-  background: #ffe7ff;
-  box-shadow: 0 0 12px rgba(255,0,255,0.6);
-}
-
-/* Toggle glow effect */
-.theme-dark .theme-toggle {
-  --switch-bg: #1a0026;
-  --switch-thumb: var(--brand-strong);
-  border-color: rgba(255,0,255,0.5);
-  box-shadow: 0 0 15px rgba(255,0,255,0.6);
-}
-
 .theme-light .theme-toggle {
-  --switch-bg: #ffd6f7;
+  --switch-bg: #ffe2f5; /* jemná růžová, ne bílá */
   --switch-thumb: #ffffff;
-  box-shadow: none;
+  border-color: rgba(229, 0, 106, 0.25);
+  box-shadow:
+    0 0 6px rgba(255, 100, 255, 0.25);
 }
 
 /* Animation smooth */
