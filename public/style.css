@@ -274,30 +274,26 @@ body.animate-title .site-title span {
   }
 
 .menu-toggle {
+  display: flex !important;
   position: absolute;
   left: 14px;
-
   top: 0;
   bottom: 0;
-  margin-block: auto;   /* vycentruje mezi top a bottom */
+  margin-block: auto;
   transform: none;
-
-  display: flex;
   z-index: 1000;
   }
 
 .theme-toggle {
   position: absolute;
-  right: 14px;
-
+  right: 14px !important;
+  left: auto !important;
   top: 0;
   bottom: 0;
-  margin-block: auto;   /* vycentruje mezi top a bottom */
+  margin-block: auto;
   transform: none;
-
-  display: flex;
   z-index: 1000;
-}
+  }
 }
   /* MOBILE MENU PANEL */
 .mobile-nav {
