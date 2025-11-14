@@ -13,6 +13,7 @@
   --bg-dark-solid: #120018;
   --bg-dark-grad: radial-gradient(circle at top, #3a005a, #120018 50%, #050008 100%);
   --glow:none;
+  --nav-height: 70px;
   --text: #2b0020;
   --text-soft: #5a1140;
   --text-dark: #fce9f6;
@@ -762,6 +763,10 @@ html.theme-dark .desktop-nav a:hover::after {
   transition: background 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 0 20px rgba(0,0,0,0.35);
   z-index: 99999;
+  top:calc(var (--nav-height) / 2);
+  transform: translateY(-50%);
+
+  z-index: 9999;
 }
 
 /* Vnitřní lišta */
@@ -811,6 +816,15 @@ html.theme-dark .desktop-nav a:hover::after {
   box-shadow:
     0 0 12px rgba(255, 0, 255, 0.5),
     0 0 35px rgba(229, 0, 106, 0.4);
+}
+
+@media (max-width: 768px) {
+  .theme-toggle {
+    top: auto;              /* zruší zarovnání do nav */
+    bottom: 20px;           /* například dole */
+    transform: none;
+    right: 20px;
+  }
 }
 
 /* Světlý mód → sluníčko */
