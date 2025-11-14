@@ -585,9 +585,26 @@ nav a.active::before {
 }
 
 /* Úplný reset starého hover/active pozadí */
-/* ================================================
-   DESKTOP NAV — FINÁLNÍ ČISTÁ VERZE
-   ================================================ */
+.desktop-nav a {
+  background: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+/* reset starého hover pozadí */
+.desktop-nav a:hover {
+  background: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  transform: none !important;
+}
+
+/* reset starého active pozadí */
+.desktop-nav a.active {
+  background: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
 
 .desktop-nav {
   display: flex;
@@ -595,36 +612,75 @@ nav a.active::before {
   gap: 22px;
 }
 
-/* ZÁKLAD */
 .desktop-nav a {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-
   padding: 8px 16px;
-  border-radius: 10px;
-
+  border-radius: 14px;
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--text-soft);
   text-decoration: none;
-
-  cursor: pointer;
   overflow: hidden;
-
-  transition: color .25s ease, transform .25s ease;
+  cursor: pointer;
+  transition: color 0.25s ease, transform 0.25s ease;
 }
 
-/* Ikonky */
 .desktop-nav a .icon,
 .desktop-nav a .nav-icon {
-  opacity: .55;
-  margin-right: 6px;
-  transition: opacity .25s ease, color .25s ease, transform .25s ease;
+  margin-right: 8px;
+  opacity: 0.6;
+  transition: color 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
+}
+.desktop-nav a::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 4px;
+  height: 2px;
+  border-radius: 10px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(.25,.46,.45,.94),
+              background 0.35s ease,
+              box-shadow 0.35s ease;
 }
 
-/* Hover */
+/* Light mode → bílé podtržení + glow */
+html.theme-light .desktop-nav a.active::after,
+html.theme-light .desktop-nav a:hover::after {
+  transform: scaleX(1);
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(255,255,255,0.8);
+}
+
+html.theme-light .desktop-nav a.active::after {
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(255,255,255,0.8);
+}
+
+/* Dark mode → růžové neon podtržení */
+html.theme-dark .desktop-nav a:hover::after {
+  transform: scaleX(1);
+  background: var(--brand-strong);
+  box-shadow: 0 0 14px rgba(255,0,200,0.7);
+}
+
+html.theme-dark .desktop-nav a.active::after {
+  background: var(--brand-strong);
+  box-shadow: 0 0 14px rgba(255,0,200,.7);
+}
+
+/* Aktivní odkaz = bez podtržení */
+.desktop-nav a.active::after {
+  width: 0 !important;
+  transform: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
 .desktop-nav a:hover {
   color: var(--brand-strong);
   transform: translateY(-2px);
@@ -633,76 +689,62 @@ nav a.active::before {
 .desktop-nav a:hover .icon,
 .desktop-nav a:hover .nav-icon {
   opacity: 1;
-  color: var(--brand-strong);
   transform: translateY(-1px);
+  color: var(--brand-strong);
 }
-
-/* Podtržení (pouze hover) */
-.desktop-nav a::after {
-  content: "";
-  position: absolute;
-  left: 12px;
-  bottom: 4px;
-
-  height: 2px;
-  width: 0;
-  border-radius: 4px;
-
-  transition: width .28s ease, background .28s ease, box-shadow .28s ease;
-}
-
-/* Hover underline */
-.desktop-nav a:hover::after {
-  width: calc(100% - 24px);
-}
-
-/* Light underline */
-html.theme-light .desktop-nav a:hover::after {
-  background: #fff;
-  box-shadow: 0 0 8px rgba(255,255,255,0.7);
-}
-
-/* Dark underline */
-html.theme-dark .desktop-nav a:hover::after {
-  background: var(--brand-strong);
-  box-shadow: 0 0 12px rgba(255,0,200,0.6);
-}
-
-/* === ACTIVE === */
 .desktop-nav a.active {
-  color: #fff !important;
+  color: #ffffff !important;
   background: rgba(255, 0, 140, 0.22);
   backdrop-filter: blur(6px);
-
-  padding-bottom: 6px;
-  border-radius: 10px;
-  background-clip: padding-box;
-
   box-shadow:
     0 0 12px rgba(255, 0, 170, 0.35),
     0 0 25px rgba(255, 0, 140, 0.25);
+  border-radius: 10px;
+  padding-bottom: 6px;
+  background-clip: padding-box;
 }
 
-/* Ikonky v active */
 .desktop-nav a.active .icon,
 .desktop-nav a.active .nav-icon {
   opacity: 1;
-  color: #fff !important;
+  color: #ffffff !important;
+}
+.desktop-nav a {
+  position: relative;
+  overflow: hidden;
 }
 
-/* ACTIVE = bez podtržení */
-.desktop-nav a.active::after {
-  width: 0 !important;
-  background: none !important;
-  box-shadow: none !important;
+.desktop-nav a::before {
+  content: "";
+  position: absolute;
+  width: 260%;
+  height: 260%;
+  left: 50%;
+  top: 50%;
+  background: rgba(255,255,255,0.25);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
 }
 
-/* === Reset všeho starého === */
-.desktop-nav a::before,
-.desktop-nav a:active::after,
 .desktop-nav a:focus-visible::before {
-  content: none !important;
-  display: none !important;
+  animation: slowRipple 0.6s ease-out forwards;
+}
+
+@keyframes slowRipple {
+  0% { transform: translate(-50%, -50%) scale(0.1); opacity: 0.55; }
+  40% { opacity: 0.35; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+html.theme-light .desktop-nav a .icon,
+html.theme-light .desktop-nav a .nav-icon {
+  color: var(--text-soft);
+}
+
+html.theme-dark .desktop-nav a .icon,
+html.theme-dark .desktop-nav a .nav-icon {
+  color: rgba(255,255,255,0.75);
 }
 
 /* ------------------------- */
@@ -1414,4 +1456,169 @@ footer a {
 
 footer a:hover {
   text-decoration: underline;
+}
+
+/* ----------------------------------------------------
+   DESKTOP NAV – FINAL CLEAN VERSION (Spotify style)
+---------------------------------------------------- */
+
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+/* základ linku */
+.desktop-nav a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+/* ikonky */
+.desktop-nav a .icon,
+.desktop-nav a .nav-icon {
+  margin-right: 8px;
+  opacity: 0.6;
+  transition:
+    color 0.25s ease,
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+/* -------------------------------------------
+   Spotify underline (scaleX animation)
+------------------------------------------- */
+.desktop-nav a::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 4px;
+  height: 2px;
+  border-radius: 10px;
+  background: transparent;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition:
+    transform 0.32s cubic-bezier(.25,.46,.45,.94),
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* LIGHT MODE underline */
+html.theme-light .desktop-nav a:hover::after {
+  transform: scaleX(1);
+  background: #fff;
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+
+html.theme-light .desktop-nav a.active::after {
+  transform: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* DARK MODE underline */
+html.theme-dark .desktop-nav a:hover::after {
+  transform: scaleX(1);
+  background: var(--brand-strong);
+  box-shadow: 0 0 12px rgba(255,0,200,0.7);
+}
+
+html.theme-dark .desktop-nav a.active::after {
+  transform: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* -------------------------------------------
+   Hover effects (text + icon)
+------------------------------------------- */
+.desktop-nav a:hover {
+  color: var(--brand-strong);
+  transform: translateY(-2px);
+}
+
+.desktop-nav a:hover .icon,
+.desktop-nav a:hover .nav-icon {
+  opacity: 1;
+  transform: translateY(-1px);
+  color: var(--brand-strong);
+}
+
+/* -------------------------------------------
+   ACTIVE BUTTON – růžový neonový rectangle
+------------------------------------------- */
+.desktop-nav a.active {
+  color: #fff;
+  background: rgba(255, 0, 150, 0.20);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  box-shadow:
+    0 0 14px rgba(255, 0, 160, 0.45),
+    0 0 22px rgba(255, 0, 200, 0.25);
+  padding-bottom: 6px;
+}
+
+.desktop-nav a.active .icon,
+.desktop-nav a.active .nav-icon {
+  opacity: 1;
+  color: #fff !important;
+}
+
+/* -------------------------------------------
+   SLOW ripple (only on keyboard focus)
+------------------------------------------- */
+.desktop-nav a::before {
+  content: "";
+  position: absolute;
+  width: 260%;
+  height: 260%;
+  left: 50%;
+  top: 50%;
+  background: rgba(255,255,255,0.25);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.desktop-nav a:focus-visible::before {
+  animation: slowRipple 0.6s ease-out forwards;
+}
+
+@keyframes slowRipple {
+  0% {
+    transform: translate(-50%, -50%) scale(0.1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* -------------------------------------------
+   Icon coloring for themes
+------------------------------------------- */
+html.theme-light .desktop-nav a .icon,
+html.theme-light .desktop-nav a .nav-icon {
+  color: var(--text-soft);
+}
+
+html.theme-dark .desktop-nav a .icon,
+html.theme-dark .desktop-nav a .nav-icon {
+  color: rgba(255,255,255,0.75);
 }
