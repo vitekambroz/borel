@@ -758,20 +758,20 @@ html.theme-dark .desktop-nav a:hover::after {
 --------------------------------------------------- */
 
 .theme-toggle {
-  width: 52px;
-  height: 28px;
-  border-radius: 30px;
-  padding: 3px;
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  width: 70px;
+  height: 36px;
+  background: var(--switch-bg);
+  border-radius: 999px;
   cursor: pointer;
-
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(10px);
-
   display: flex;
   align-items: center;
-  transition: background .35s ease, border .35s ease;
-  position: relative;
+  padding: 4px;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 20px rgba(0,0,0,0.35);
+  z-index: 99999;
 }
 
 /* Vnitřní lišta */
@@ -783,25 +783,15 @@ html.theme-dark .desktop-nav a:hover::after {
 
 /* Tečka (thumb) */
 .theme-toggle .thumb {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
+  background: var(--switch-thumb);
   border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 3px;
-  transform: translateY(-50%);
-
-  background: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
-
-  transition: left .28s cubic-bezier(.4, 0, .2, 1),
-              background .35s ease,
-              box-shadow .35s ease;
-
-  box-shadow: 0 0 6px rgba(0,0,0,0.15);
+  font-size: 1.2rem;
+  transition: transform 0.3s ease, background 0.3s ease;
 }
 
 /* Světlý mód → sluníčko */
@@ -814,6 +804,13 @@ html.theme-dark .desktop-nav a:hover::after {
   content: "🌙";
 }
 
+.theme-light .thumb {
+  left: 4px;
+  background: #fff0f6;
+  box-shadow: 0 0 12px rgba(229,0,106,0.6);
+  transform: translateX(34px);
+}
+
 /* Posunutí tečky doprava v dark módu */
 .theme-dark .thumb {
   left: 26px;
@@ -823,11 +820,15 @@ html.theme-dark .desktop-nav a:hover::after {
 
 /* Toggle glow effect */
 .theme-dark .theme-toggle {
+  --switch-bg: #1a0026;
+  --switch-thumb: var(--brand-strong);
   border-color: rgba(255,0,255,0.5);
   box-shadow: 0 0 15px rgba(255,0,255,0.6);
 }
 
 .theme-light .theme-toggle {
+  --switch-bg: #ffd6f7;
+  --switch-thumb: #ffffff;
   box-shadow: none;
 }
 
