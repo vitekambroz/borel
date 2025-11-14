@@ -1022,6 +1022,13 @@ canvas {
   background: rgba(255,255,255,0.35);
   backdrop-filter: blur(10px);
 }
+.ui.score {
+  top: 12px;
+}
+
+.ui.difficulty {
+  top: 50px;       /* posun pod score */
+}
 
 /* DARK MODE */
 html.theme-dark .ui {
@@ -1081,21 +1088,18 @@ html.theme-dark #mute:hover {
 /* ------------------------------ */
 .centerMsg {
   position: absolute;
-  left: 0; right: 0;
-  top: 40%;
-  text-align: center;
-  font-size: 18px;
+  left: 50%;
+  top: 62%; /* posunuto do středu */
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.35);
+  padding: 14px 22px;
+  border-radius: 16px;
+  font-weight: 600;
   color: #e5006a;
   pointer-events: none;
-  line-height: 1.5;
-  background: rgba(255,255,255,0.35);
-  padding: 12px 18px;
-  border-radius: 14px;
-  font-weight: 600;
-  backdrop-filter: blur(10px);
+  text-align: center;
+  backdrop-filter: blur(12px);
 }
-
-/* DARK MODE */
 html.theme-dark .centerMsg {
   background: rgba(255,255,255,0.12);
   color: #fff;
