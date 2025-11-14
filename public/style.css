@@ -190,7 +190,7 @@ body.animate-title .site-title span {
   display: flex;
   align-items: center;
   gap: 28px;
-  padding-right: 58px; /* mezera od togglu */
+  padding-right: 62px; /* mezera od togglu */
 }
 
 /* ---- SPOTIFY UNDERLINE ANIMATION ---- */
