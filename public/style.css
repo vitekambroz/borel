@@ -381,16 +381,6 @@ html.theme-dark .desktop-nav a.active::after {
 /* MOBILNÍ MENU                              */
 /* ========================================= */
 
-.mobile-toggle-row {
-  width: 100%;
-  padding: 18px 0;
-  display: flex;
-  justify-content: center;   /* toggle uprostřed */
-  align-items: center;
-  border-top: 1px solid rgba(255,255,255,0.15); /* jemná oddělovací linka */
-  margin-top: 10px;
-}
-
 .mobile-nav {
   display: none;
 }
@@ -832,21 +822,9 @@ html.theme-dark .desktop-nav a:hover::after {
 
 @media (max-width: 1100px) {
   .theme-toggle {
-    position: relative !important;
-    right: 0 !important;
-    top: 0 !important;
-    transform: none !important;
-    margin: 0 auto;        /* pojistka centrování */
+    display: none; /* skryj toggle na mobilech/tabletech */
   }
 }
-
-@media (max-width: 1100px) {
-  header {
-    justify-content: flex-start;   /* NAV + logo budou u sebe, nic se neroztáhne */
-    gap: 16px;                     /* malá mezera mezi hamburgerem a logem */
-  }
-}
-
 /* Světlý mód → sluníčko */
 .theme-light .thumb::before {
   content: "🌞";
