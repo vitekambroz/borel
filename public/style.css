@@ -1068,7 +1068,8 @@ canvas {
 }
 
 #difficultyBox {
-  top: 50px; /* posunuto pod score */
+  top: 12px; /* posunuto pod score */
+  margin-left: 18px;
 }
 
 #difficultyBox span {
