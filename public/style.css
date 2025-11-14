@@ -175,7 +175,8 @@ body.animate-title .site-title span {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 22px;
+  padding-right: 16px;
+  gap: 14px;
 }
 
 /* DESKTOP NAV */
