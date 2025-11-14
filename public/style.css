@@ -203,7 +203,7 @@ body.animate-title .site-title span {
   display: inline-flex;
   align-items: center;
   gap: 8px;                     /* text a ikonka = jeden celek */
-  transition: color .25s ease, transform .25s ease;
+  transition: color .25s ease;
 }
 
 /* ikonka nemá dělat transform! */
@@ -214,10 +214,9 @@ body.animate-title .site-title span {
 
 .desktop-nav a .nav-icon {
   transition: 
-    color 0.25s ease,
+    color inherit,
     background 0.25s ease,
     box-shadow 0.25s ease,
-    transform 0.25s ease,
     opacity 0.25s ease;
 }
 
@@ -245,7 +244,8 @@ body.animate-title .site-title span {
   height: 240%;
   left: 50%;
   top: 50%;
-  background: rgba(255, 255, 255, 0.25);
+  background: transparent;
+  box-shadow: none;
   border-radius: 50%;
   transform: translate(-50%, -50%) scale(0);
   opacity: 0;
@@ -274,12 +274,7 @@ body.animate-title .site-title span {
 /* -------------------------------------------------- */
 .desktop-nav a.active {
   color: #fff !important;
-  background: rgba(255, 0, 150, 0.22);
   backdrop-filter: blur(6px);
-  box-shadow:
-    0 0 12px rgba(255, 0, 170, 0.35),
-    0 0 24px rgba(255, 0, 150, 0.25);
-  transform: translateY(-1px);
 }
 
 /* ikonka zbělá taky */
