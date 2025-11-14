@@ -276,17 +276,25 @@ body.animate-title .site-title span {
 .menu-toggle {
   position: absolute;
   left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
+
+  top: 0;
+  bottom: 0;
+  margin-block: auto;   /* vycentruje mezi top a bottom */
+  transform: none;
+
   display: flex;
   z-index: 1000;
-}
+  }
 
 .theme-toggle {
   position: absolute;
   right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
+
+  top: 0;
+  bottom: 0;
+  margin-block: auto;   /* vycentruje mezi top a bottom */
+  transform: none;
+
   display: flex;
   z-index: 1000;
 }
@@ -609,10 +617,6 @@ html {
   nav a {
     justify-content: flex-start;
     min-width: 150px;
-  }
-
-  .menu-toggle {
-    display: flex;
   }
 }
 
