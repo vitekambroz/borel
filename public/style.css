@@ -470,14 +470,15 @@ nav a.active::before {
   padding: 3px;
   cursor: pointer;
 
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(12px);
 
   display: flex;
   align-items: center;
   transition: background .35s ease, border .35s ease;
   position: relative;
+  margin-top: 2px;
   margin-left: 10px;
 }
 
@@ -566,16 +567,17 @@ html {
 }
 
   nav {
-    position: absolute;
+    position: sticky;
     right: 14px;
     top: 64px;
+    z-index: 100;
     flex-direction: column;
     align-items: stretch;
     padding: 12px 16px;
     border-radius: 18px;
     background: var(--glass-light);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border: 1px solid var(--border-glass-light);
     box-shadow: var(--shadow-soft);
     gap: 10px;
