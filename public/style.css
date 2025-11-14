@@ -75,6 +75,58 @@ img {
 /* HEADER + NAV              */
 /* ------------------------- */
 
+/* =====================================================
+   🔥 HARD RESET všech starých stylů desktop-nav
+   (Zabije staré hover, active, before, after styly)
+===================================================== */
+
+.desktop-nav a,
+.desktop-nav a:hover,
+.desktop-nav a:active,
+.desktop-nav a:focus,
+.desktop-nav a.active {
+  background: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  transform: none !important;
+}
+
+/* staré podtržení – vypnout */
+.desktop-nav a::after,
+.desktop-nav a:hover::after,
+.desktop-nav a.active::after {
+  width: 0 !important;
+  height: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  transform: none !important;
+  opacity: 0 !important;
+}
+
+/* staré pseudo-elementy (šedé rohy) – kompletní vypnutí */
+.desktop-nav a::before,
+.desktop-nav a:hover::before,
+.desktop-nav a.active::before {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  opacity: 0 !important;
+}
+
+/* starý SVG hover reset */
+.desktop-nav a .nav-icon,
+.desktop-nav a:hover .nav-icon,
+.desktop-nav a.active .nav-icon {
+  transform: none !important;
+}
+
+/* toto zabrání „probliknutí“ při pohybu těsně pod linky */
+.desktop-nav * {
+  transition: none !important;
+}
+
 /* ========================================= */
 /* HEADER LAYOUT (DESKTOP + MOBIL)           */
 /* ========================================= */
