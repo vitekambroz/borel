@@ -464,150 +464,87 @@ nav a.active::before {
   transform: rotate(-45deg);
 }
 
-/* ============================================
-   THEME TOGGLE — NEON SUN/MOON BUTTON (FINAL)
-   ============================================ */
+/* ---------------------------------------------------
+   THEME SWITCH (iOS style)
+--------------------------------------------------- */
 
 .theme-toggle {
-  position: relative;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  border: none;
+  width: 52px;
+  height: 28px;
+  border-radius: 30px;
+  padding: 3px;
   cursor: pointer;
-  background: radial-gradient(circle at 30% 30%, #fff, #ffe6f0);
+
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+
+  display: flex;
+  align-items: center;
+  transition: background .35s ease, border .35s ease;
+  position: relative;
+}
+
+/* Vnitřní lišta */
+.theme-toggle .switch {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Tečka (thumb) */
+.theme-toggle .thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  transform: translateY(-50%);
+
+  background: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.6rem;
-  color: var(--brand);
-  box-shadow:
-    0 0 6px rgba(229, 0, 106, 0.2),
-    inset 0 0 6px rgba(255, 255, 255, 0.4);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.3s ease;
+  font-size: 0.9rem;
+
+  transition: left .28s cubic-bezier(.4, 0, .2, 1),
+              background .35s ease,
+              box-shadow .35s ease;
+
+  box-shadow: 0 0 6px rgba(0,0,0,0.15);
 }
 
-/* Hover efekt */
-.theme-toggle:hover {
-  transform: scale(1.1);
-  box-shadow:
-    0 0 10px rgba(255, 100, 200, 0.4),
-    0 0 20px rgba(255, 182, 212, 0.3);
+/* Světlý mód → sluníčko */
+.theme-light .thumb::before {
+  content: "🌞";
 }
 
-
-/* ===========================
-   IKONA SLUNCE/MĚSÍCE
-   =========================== */
-
-.theme-toggle .icon {
-  position: relative;
-  z-index: 1;
-  transition: transform .25s ease, opacity .2s ease;
+/* Tmavý mód → měsíc */
+.theme-dark .thumb::before {
+  content: "🌙";
 }
 
-/* Indikátor automatického režimu */
-
-.theme-toggle .mode-indicator {
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--brand-strong);
-  box-shadow: 0 0 6px var(--brand-strong);
-  opacity: 0;             /* defaultně schovaný (MANUAL MODE) */
-  transition: opacity 0.25s ease, transform 0.25s ease;
+/* Posunutí tečky doprava v dark módu */
+.theme-dark .thumb {
+  left: 26px;
+  background: #ffe7ff;
+  box-shadow: 0 0 12px rgba(255,0,255,0.6);
 }
 
-/* ===========================
-   TMAVÝ REŽIM
-   =========================== */
-
-   .theme-dark .neon {
-  box-shadow: var(--glow);
+/* Toggle glow effect */
+.theme-dark .theme-toggle {
+  border-color: rgba(255,0,255,0.5);
+  box-shadow: 0 0 15px rgba(255,0,255,0.6);
 }
 
-html.theme-dark .theme-toggle {
-  background: radial-gradient(circle at 70% 70%, #2a0042, #16001e);
-  color: #ffb8ff;
-  box-shadow:
-    0 0 12px rgba(255, 0, 255, 0.45),
-    inset 0 0 12px rgba(255, 255, 255, 0.15);
+.theme-light .theme-toggle {
+  box-shadow: none;
 }
 
-html.theme-dark .theme-toggle::before {
-  background: conic-gradient(
-    from 0deg,
-    #ff00ff,
-    #ff33cc,
-    #a600ff,
-    #ff66ff,
-    #ff00ff
-  );
-  filter: blur(6px);
-  opacity: 0.6;
-}
-
-html.theme-dark .theme-toggle:hover {
-  transform: scale(1.07);
-  box-shadow:
-    0 0 20px rgba(255, 150, 255, 0.6),
-    0 0 35px rgba(255, 0, 255, 0.3);
-}
-
-/* LIGHT režim – sluníčko */
-html:not(.theme-dark) .theme-toggle .icon {
-  transform: rotate(0deg) scale(1);
-  color: var(--brand-strong);
-  filter: drop-shadow(0 0 12px rgba(229, 0, 106, 0.65));
-}
-
-/* DARK režim – měsíček */
-html.theme-dark .theme-toggle .icon {
-  transform: rotate(230deg) scale(1.15);
-  transition: transform 0.45s ease, filter 0.4s ease;
-  color: #fff;
-  filter: drop-shadow(0 0 18px rgba(255, 150, 255, 0.8));
-}
-/* Indikátor AUTOMATICKÉHO režimu */
-html.theme-dark .theme-toggle .mode-indicator {
-  background: #ff99ff;
-  box-shadow: 0 0 8px #ff99ff;
-}
-
-/* Flash při přepnutí */
-.theme-toggle.switching .icon {
-  opacity: 0.7;
-  transform: rotate(420deg) scale(1.6);
-}
-
-.theme-toggle:hover {
-  transform: translateY(-1px) scale(1.06);
-  box-shadow:
-    0 0 14px rgba(229, 0, 106, 0.65),
-    0 0 32px rgba(255, 182, 212, 0.6);
-}
-
-html.theme-dark .theme-toggle {
-  background: radial-gradient(circle at 70% 80%, #2a0040, #090010);
-  color: #ffe4ff;
-  box-shadow:
-    0 0 15px rgba(255, 0, 255, 0.55),
-    inset 0 0 10px rgba(255, 255, 255, 0.15);
-}
-.theme-toggle.auto-mode .mode-indicator {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* MANUAL mód → skrýt */
-.theme-toggle.manual-mode .mode-indicator {
-  opacity: 0;
-  transform: scale(0.5);
+/* Animation smooth */
+html {
+  transition: background .35s ease, color .35s ease;
 }
 
 
