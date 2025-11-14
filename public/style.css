@@ -1146,7 +1146,8 @@ html.theme-dark .info-box {
 .close {
   position: absolute;
   top: 22px;
-  right: 22px;
+  left: 50%;
+  transform: translateX(-50%); /* centrování */
   width: 44px;
   height: 44px;
   border-radius: 999px;
@@ -1169,8 +1170,6 @@ html.theme-dark .info-box {
     0 0 24px rgba(229, 0, 106, 0.9),
     0 0 40px rgba(255, 150, 255, 0.7);
 }
-
-/* šipky */
 
 .lightbox-nav {
   position: absolute;
