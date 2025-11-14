@@ -580,12 +580,12 @@ body.animate-title header h1 span:nth-child(5){ animation-delay: 0.25s; }
 
 /* Nav */
 
-nav {
+/*nav {
   display: flex;
   align-items: center;
   gap: 18px;
-  margin-right: auto; /* <<< NAV DOPRAVA */
-  padding-left: 40px; /* <<< rezerva, aby nenarážel do TITLE */
+  margin-right: auto;
+  padding-left: 40px; 
 }
 
 nav a {
@@ -634,7 +634,7 @@ nav a.active::before {
   opacity: 1;
   transform: scale(1);
   background: linear-gradient(135deg, var(--brand), var(--brand-strong));
-}
+}*/ /*-puvodni nav*/
 
 /* Úplný reset starého hover/active pozadí */
 .desktop-nav a {
