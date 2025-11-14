@@ -72,81 +72,7 @@ img {
 }
 
 /* ------------------------- */
-/* HEADER + NAV              */
-/* ------------------------- */
-
-/* =====================================================
-   🔥 HARD RESET všech starých stylů desktop-nav
-   (Zabije staré hover, active, before, after styly)
-===================================================== */
-
-.desktop-nav a,
-.desktop-nav a:hover,
-.desktop-nav a:active,
-.desktop-nav a:focus,
-.desktop-nav a.active {
-  background: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  transform: none !important;
-}
-
-/* staré podtržení – vypnout */
-.desktop-nav a::after,
-.desktop-nav a:hover::after,
-.desktop-nav a.active::after {
-  width: 0 !important;
-  height: 0 !important;
-  background: none !important;
-  box-shadow: none !important;
-  border: none !important;
-  transform: none !important;
-  opacity: 0 !important;
-}
-
-/* staré pseudo-elementy (šedé rohy) – kompletní vypnutí */
-.desktop-nav a::before,
-.desktop-nav a:hover::before,
-.desktop-nav a.active::before {
-  content: none !important;
-  display: none !important;
-  background: none !important;
-  box-shadow: none !important;
-  opacity: 0 !important;
-}
-
-/* starý SVG hover reset */
-.desktop-nav a .nav-icon,
-.desktop-nav a:hover .nav-icon,
-.desktop-nav a.active .nav-icon {
-  transform: none !important;
-}
-
-/* toto zabrání „probliknutí“ při pohybu těsně pod linky */
-.desktop-nav * {
-  transition: none !important;
-}
-
-/* ========================================= */
-/* HEADER LAYOUT (DESKTOP + MOBIL)           */
-/* ========================================= */
-
-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-
-  padding: 10px 16px;
-  min-height: 58px;
-  background: color-mix(in srgb, var(--glass-light) 75%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-glass-light);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
-
+/* HEADER +
 /* CENTER TITLE */
 /* TITLE — apple style */
 .title-wrap {
@@ -227,22 +153,8 @@ body.animate-title .site-title span {
   margin-right: 10px;
   opacity: 0.9;
 }
-/* RIGHT SIDE -> NAV*/
-.right-side {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  padding-right: 16px;
-  gap: 14px;
-}
-
-/* DESKTOP NAV */
-.desktop-nav {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
+/* RIGHT SIDE ->
+/* DESKTOP
 /* ---- SPOTIFY UNDERLINE ANIMATION ---- */
 .desktop-nav a {
   overflow: hidden;
@@ -521,25 +433,17 @@ html.theme-dark .desktop-nav a.active::after {
     color: var(--brand-strong);
   }
 
-/* TABLET NAV – hamburger aktivní už od 1100px */
-@media (max-width: 1100px) {
-
-  .desktop-nav {
-    display: none !important;
-  }
-
+/* TABLET
   .menu-toggle {
     display: flex !important;
   }
 
   .right-side {
     display: none !important; /* theme toggle na tablet vlevo/vpravo si doladíme */
-  }
 
   .mobile-nav {
     display: flex !important;
   }
-}
 
 /* Hover – ještě více neonového výbuchu */
 header h1:hover {
@@ -578,64 +482,7 @@ body.animate-title header h1 span:nth-child(5){ animation-delay: 0.25s; }
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Nav */
-
-/*nav {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  margin-right: auto;
-  padding-left: 40px; 
-}
-
-nav a {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  text-decoration: none;
-  color: var(--text-soft);
-  transition: color 0.25s ease, transform 0.2s ease;
-  overflow: hidden;
-}
-
-nav a::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.02));
-  opacity: 0;
-  transform: scale(0.8);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  z-index: -1;
-}
-
-nav a:hover::before {
-  opacity: 1;
-  transform: scale(1);
-}
-
-nav a:hover {
-  color: var(--brand-strong);
-  transform: translateY(-1px);
-}
-
-nav a.active {
-  color: #fff;
-}
-
-nav a.active::before {
-  opacity: 1;
-  transform: scale(1);
-  background: linear-gradient(135deg, var(--brand), var(--brand-strong));
-}*/ /*-puvodni nav*/
-
+/*
 /* Úplný reset starého hover/active pozadí */
 .desktop-nav a {
   background: none !important;
@@ -952,37 +799,9 @@ html {
     0 0 26px rgba(255, 150, 255, 0.5);
 }
 
-  nav {
-    position: absolute;
-    right: 14px;
-    top: 64px;
-    flex-direction: column;
-    align-items: stretch;
-    padding: 12px 16px;
-    border-radius: 18px;
-    background: var(--glass-light);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--border-glass-light);
-    box-shadow: var(--shadow-soft);
-    gap: 10px;
-    opacity: 0;
-    transform: translateY(-10px) scale(0.98);
-    pointer-events: none;
-  }
-
-  nav.show {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    pointer-events: auto;
-    transition: opacity 0.25s ease, transform 0.25s ease;
-  }
-
-  nav a {
-    justify-content: flex-start;
-    min-width: 150px;
-  }
-}
+ 
+ 
+ }
 
 /* ------------------------- */
 /* WIDGET NA HOMEPAGE        */
@@ -1508,169 +1327,4 @@ footer a {
 
 footer a:hover {
   text-decoration: underline;
-}
-
-/* ----------------------------------------------------
-   DESKTOP NAV – FINAL CLEAN VERSION (Spotify style)
----------------------------------------------------- */
-
-.desktop-nav {
-  display: flex;
-  align-items: center;
-  gap: 22px;
-}
-
-/* základ linku */
-.desktop-nav a {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 16px;
-  border-radius: 14px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--text-soft);
-  text-decoration: none;
-  cursor: pointer;
-  overflow: hidden;
-  transition:
-    color 0.25s ease,
-    transform 0.25s ease;
-}
-
-/* ikonky */
-.desktop-nav a .icon,
-.desktop-nav a .nav-icon {
-  margin-right: 8px;
-  opacity: 0.6;
-  transition:
-    color 0.25s ease,
-    opacity 0.25s ease,
-    transform 0.25s ease;
-}
-
-/* -------------------------------------------
-   Spotify underline (scaleX animation)
-------------------------------------------- */
-.desktop-nav a::after {
-  content: "";
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 4px;
-  height: 2px;
-  border-radius: 10px;
-  background: transparent;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition:
-    transform 0.32s cubic-bezier(.25,.46,.45,.94),
-    background 0.25s ease,
-    box-shadow 0.25s ease;
-}
-
-/* LIGHT MODE underline */
-html.theme-light .desktop-nav a:hover::after {
-  transform: scaleX(1);
-  background: #fff;
-  box-shadow: 0 0 10px rgba(255,255,255,0.6);
-}
-
-html.theme-light .desktop-nav a.active::after {
-  transform: none !important;
-  background: none !important;
-  box-shadow: none !important;
-}
-
-/* DARK MODE underline */
-html.theme-dark .desktop-nav a:hover::after {
-  transform: scaleX(1);
-  background: var(--brand-strong);
-  box-shadow: 0 0 12px rgba(255,0,200,0.7);
-}
-
-html.theme-dark .desktop-nav a.active::after {
-  transform: none !important;
-  background: none !important;
-  box-shadow: none !important;
-}
-
-/* -------------------------------------------
-   Hover effects (text + icon)
-------------------------------------------- */
-.desktop-nav a:hover {
-  color: var(--brand-strong);
-  transform: translateY(-2px);
-}
-
-.desktop-nav a:hover .icon,
-.desktop-nav a:hover .nav-icon {
-  opacity: 1;
-  transform: translateY(-1px);
-  color: var(--brand-strong);
-}
-
-/* -------------------------------------------
-   ACTIVE BUTTON – růžový neonový rectangle
-------------------------------------------- */
-.desktop-nav a.active {
-  color: #fff;
-  background: rgba(255, 0, 150, 0.20);
-  backdrop-filter: blur(6px);
-  border-radius: 12px;
-  box-shadow:
-    0 0 14px rgba(255, 0, 160, 0.45),
-    0 0 22px rgba(255, 0, 200, 0.25);
-  padding-bottom: 6px;
-}
-
-.desktop-nav a.active .icon,
-.desktop-nav a.active .nav-icon {
-  opacity: 1;
-  color: #fff !important;
-}
-
-/* -------------------------------------------
-   SLOW ripple (only on keyboard focus)
-------------------------------------------- */
-.desktop-nav a::before {
-  content: "";
-  position: absolute;
-  width: 260%;
-  height: 260%;
-  left: 50%;
-  top: 50%;
-  background: rgba(255,255,255,0.25);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.desktop-nav a:focus-visible::before {
-  animation: slowRipple 0.6s ease-out forwards;
-}
-
-@keyframes slowRipple {
-  0% {
-    transform: translate(-50%, -50%) scale(0.1);
-    opacity: 0.5;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0;
-  }
-}
-
-/* -------------------------------------------
-   Icon coloring for themes
-------------------------------------------- */
-html.theme-light .desktop-nav a .icon,
-html.theme-light .desktop-nav a .nav-icon {
-  color: var(--text-soft);
-}
-
-html.theme-dark .desktop-nav a .icon,
-html.theme-dark .desktop-nav a .nav-icon {
-  color: rgba(255,255,255,0.75);
 }
