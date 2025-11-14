@@ -244,8 +244,12 @@ body.animate-title .site-title span {
 }
 
 html.theme-light .desktop-nav a.active {
-  background: rgba(255, 0, 140, 0.15); /* světlejší verze pro light-mode */
-  color: var(--brand);
+  background: rgba(255, 0, 140, 0.12); /* jemné růžové pozadí */
+  color: #9b0060;                      /* tmavší růžová – dobře čitelná */
+}
+html.theme-light .desktop-nav a.active .icon {
+  opacity: 1;                          /* ikona musí být vidět */
+  color: #9b0060;
 }
 
 .desktop-nav a.active::after {
