@@ -87,7 +87,7 @@ header {
   align-items: center;
 
   padding: 10px 16px;
-  min-height: 56px;
+  min-height: 52px;
   background: color-mix(in srgb, var(--glass-light) 75%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -273,20 +273,20 @@ body.animate-title .site-title span {
     display: none;
   }
 
-.theme-toggle {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);   /* 🔥 perfektně vycentruje */
-  display: flex;
-  z-index: 1000;
-}
-
 .menu-toggle {
   position: absolute;
   left: 14px;
   top: 50%;
-  transform: translateY(-50%);   /* 🔥 perfektně vycentruje */
+  transform: translateY(-50%);
+  display: flex;
+  z-index: 1000;
+}
+
+.theme-toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   z-index: 1000;
 }
