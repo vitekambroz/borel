@@ -255,19 +255,11 @@ body.animate-title .site-title span {
   .desktop-nav {
     display: none;
   }
-  /* Schovat šipky pro mobil */
-  .lightbox-nav button {
-    display: none;
-  }
-    .lightbox-nav {
+  .lightbox-nav,
+  .lightbox-nav button,
+  #lightbox .close {
     display: none !important;
   }
-
-  /* Schovat křížek vpravo nahoře */
-  #lightbox .close {
-    display: none;
-  }
-
   /* right-side = toggle viditelný! */
   .right-side {
     display: none;
@@ -1095,7 +1087,7 @@ html.theme-dark #mute:hover {
 .centerMsg {
   position: absolute;
   left: 50%;
-  top: 62%; /* posunuto do středu */
+  top: 50%; /* posunuto do středu */
   transform: translate(-50%, -50%);
   background: rgba(255,255,255,0.35);
   padding: 14px 22px;
@@ -1109,4 +1101,32 @@ html.theme-dark #mute:hover {
 html.theme-dark .centerMsg {
   background: rgba(255,255,255,0.12);
   color: #fff;
+}
+
+footer {
+  flex-shrink: 0;
+  width: 100%;
+  margin-top: auto;
+
+  padding: 10px 5vw 14px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  background: color-mix(in srgb, var(--glass-light) 75%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border-glass-light);
+  box-shadow: 0 -8px 18px rgba(0, 0, 0, 0.25);
+
+  color: var(--text-soft);
+}
+
+footer a {
+  color: var(--brand-strong);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }
