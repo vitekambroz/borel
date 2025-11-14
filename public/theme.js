@@ -4,7 +4,7 @@
 const themeToggle = document.querySelector(".theme-toggle");
 const menuBtn = document.querySelector(".menu-toggle");
 const mobileNav = document.querySelector(".mobile-nav");
-const mobileToggleSlot = document.querySelector(".mobile-toggle-slot");
+const mobileToggleRow = document.querySelector(".mobile-toggle-row");  // ↓ sem se přenáší toggle
 const siteTitle = document.querySelector(".site-title");
 const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -36,6 +36,7 @@ function applyTheme(mode, save = false) {
   html.classList.toggle("theme-dark", isDark);
   html.classList.toggle("theme-light", !isDark);
 
+  // neon glow proměnná
   html.style.setProperty("--glow",
     isDark ? "0 0 18px rgba(255,0,255,0.7)" : "none"
   );
@@ -60,7 +61,7 @@ function applyTheme(mode, save = false) {
 
 
 // ===============================================
-// SYSTÉMOVÁ ZMĚNA
+// AUTO ZMĚNA SYSTÉM TÉMA
 // ===============================================
 prefersDark.addEventListener("change", e => {
   if (localStorage.getItem("theme-mode") === "manual") return;
@@ -69,7 +70,7 @@ prefersDark.addEventListener("change", e => {
 
 
 // ===============================================
-// PŘEPÍNAČ TÉMATA
+// PŘEPÍNAČ TÉMATU
 // ===============================================
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
@@ -78,6 +79,7 @@ if (themeToggle) {
 
     applyTheme(nowDark ? "dark" : "light", true);
 
+    // bounce animace
     const thumb = document.querySelector(".theme-toggle .thumb");
     if (thumb) {
       thumb.classList.remove("bounce");
@@ -89,29 +91,32 @@ if (themeToggle) {
 
 
 // ===============================================
-// MOBILE NAV MENU + PŘESUN TOGGLE
+// MOBILE NAV MENU + PŘESUN TOGGLE DOVNITŘ
 // ===============================================
 if (menuBtn && mobileNav) {
   menuBtn.addEventListener("click", () => {
+
+    const opening = !mobileNav.classList.contains("show");
+
     mobileNav.classList.toggle("show");
     menuBtn.classList.toggle("active");
 
-    const isOpen = mobileNav.classList.contains("show");
-
+    // ---- Funguje POUZE do 1100px ----
     if (window.innerWidth <= 1100) {
-      if (isOpen) {
-        // přesunout toggle do mobilního menu
-        mobileToggleSlot.appendChild(themeToggle);
-        themeToggle.style.display = "flex";
+
+      if (opening) {
+        // ▼ PŘESUN DO MOBILNÍHO MENU (dole uprostřed)
+        mobileToggleRow.appendChild(themeToggle);
         themeToggle.style.position = "relative";
+        themeToggle.style.display = "flex";
         themeToggle.style.top = "0";
         themeToggle.style.right = "0";
         themeToggle.style.transform = "none";
       } else {
-        // vrátit toggle zpět do headeru
+        // ▲ NÁVRAT DO HEADERU
         document.querySelector("header").appendChild(themeToggle);
-        themeToggle.style.display = "";
         themeToggle.style.position = "";
+        themeToggle.style.display = "";
         themeToggle.style.top = "";
         themeToggle.style.right = "";
         themeToggle.style.transform = "";
@@ -119,7 +124,6 @@ if (menuBtn && mobileNav) {
     }
   });
 }
-
 
 // zavření menu kliknutím na odkaz
 document.querySelectorAll(".mobile-nav a").forEach(link => {
@@ -131,7 +135,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ===============================================
-// FADE TITLE
+// FADE TITLE ON SCROLL
 // ===============================================
 window.addEventListener("scroll", () => {
   const y = Math.min(window.scrollY, 120);
@@ -162,7 +166,7 @@ window.addEventListener("scroll", () => {
 
 
 // ===============================================
-// VÝŠKA NAVU → CSS VARIABLE (ponechávám)
+// VÝŠKA NAVU → CSS VARIABLE
 // ===============================================
 const nav = document.querySelector("nav");
 if (nav) {
