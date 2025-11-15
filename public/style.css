@@ -372,7 +372,7 @@ html.theme-light .mobile-nav a.active{
 /* Domů – trochu výš */
 .mobile-nav a[data-page="/"] .nav-icon {
     position: relative;
-    top: -0.8px !important;   
+    top: -3.2px !important;   
 }
 
 /* Fotogalerie – trochu dolů */
