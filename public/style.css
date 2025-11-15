@@ -54,6 +54,27 @@ body{
   background:var(--bg-light);
   overflow-x:hidden;
   transition:background .6s,color .4s;
+  scrollbar-width: thin;               /* Firefox */
+  scrollbar-color: rgba(255,0,200,.4) transparent;
+}
+
+/* Chrome, Edge */
+body::-webkit-scrollbar {
+    width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: rgba(255,0,200,.45);
+    border-radius: 100px;
+    box-shadow: 0 0 12px rgba(255,0,200,.6);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,0,200,.7);
 }
 
 main{flex:1;width:100%;padding:20px 5vw 40px;}
@@ -658,13 +679,6 @@ html.theme-dark .theme-toggle .thumb svg{
 .theme-toggle.mobile-toggle .thumb{
   width:24px;
   height:24px;
-}
-
-/* lehká aura i za mobile switch v dark režimu (slabší než desktop) */
-html.theme-dark .theme-toggle.mobile-toggle{
-  box-shadow:
-    0 0 24px rgba(229,0,106,.7),
-    0 0 45px rgba(120,0,180,.55);
 }
 
 /* oddělovací čára dole v menu */
