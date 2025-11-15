@@ -100,7 +100,6 @@ html.theme-dark .desktop-nav a{color:var(--nav-dark)}
   transition:width .28s,background .28s,box-shadow .28s;
 }
 .desktop-nav a:hover::after{width:calc(100% - 24px)}
-.desktop-nav a.active::after{width:0!important;background:none!important;box-shadow:none!important}
 html.theme-light .desktop-nav a:hover::after{
   box-shadow:0 0 8px rgba(255,120,200,.35),0 0 16px rgba(255,120,200,.25)
 }
@@ -345,6 +344,12 @@ body.animate-title .site-title span{
          NAVIGATION
 ============================= */
 
+.desktop-nav a.active {
+  color: var(--brand-strong) !important;
+  transform: translateY(-2px);
+  text-shadow: 0 0 8px rgba(255, 120, 200, 0.35);
+}
+
 .nav-icon{
   width:20px;height:20px;margin-right:8px;opacity:.65;
   transition:opacity .25s,transform .25s;
@@ -377,13 +382,6 @@ html.theme-dark .desktop-nav a.active .icon {
   color: var(--nav-dark-active) !important;
   opacity: 1 !important;
   transform: translateY(-1px);
-}
-
-/* odstranění underline u active */
-.desktop-nav a.active::after {
-  width: 0 !important;
-  background: none !important;
-  box-shadow: none !important;
 }
 
 .right-side{
@@ -424,7 +422,10 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark)}
 .desktop-nav a.active::after {
   width: 0 !important;
   background: none !important;
-  box-shadow: none !important;
+  box-shadow:
+    0 0 12px rgba(255, 0, 200, 0.45),
+    0 0 28px rgba(255, 0, 255, 0.25) !important;
+  width: calc(100% - 24px) !important;
 }
 
 html.theme-light .desktop-nav a:hover::after{
