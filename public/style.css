@@ -206,23 +206,21 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
   line-height: 1;
 }
 
-/* správné zarovnání SVG */
-.desktop-nav a .nav-icon {
-  vertical-align: middle;
-  display: inline-block;
-  margin-top: -1px;  /* jemné dorovnání */
+/* ===========================================
+   ULTRA PRECISE ICON ALIGN FIX
+=========================================== */
+
+/* Domů (home icon) – největší rozdíl */
+.desktop-nav a[data-page="/"] .nav-icon {
+    position: relative;
+    top: -1.8px;
 }
 
-/* Zarovnání ikon v navigaci – individuální doladění */
-.desktop-nav a[data-page="/"] .nav-icon { /* Domů */
-    margin-top: -1px;
+/* Minihra – lehký rozdíl */
+.desktop-nav a[data-page="minihra"] .nav-icon {
+    position: relative;
+    top: -1.2px;
 }
-
-.desktop-nav a[data-page="minihra"] .nav-icon { /* Minihra */
-    margin-top: -1.2px;
-}
-
-/* Galerie je OK, necháváme beze změny */
 
 .desktop-nav a .icon {
   display: flex;
