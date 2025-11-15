@@ -1,6 +1,6 @@
 // =====================================================
 //  Minihra.js – rage-bait verze
-//  Opravy: fallback když chybí buttony / ikony + fix trubky
+//  Opravy: flip ikon, fallback, fix trubek
 // =====================================================
 
 const cvs = document.getElementById("game");
@@ -57,6 +57,7 @@ const msgBox = document.getElementById("centerMsg");
 const muteBtn = document.getElementById("mute");
 const vibBtn = document.getElementById("vibrate");
 
+// SVG ikony
 const soundOnIcon = document.getElementById("soundOn");
 const soundOffIcon = document.getElementById("soundOff");
 const vibOn = document.getElementById("vibOn");
@@ -93,22 +94,23 @@ let level = 1;
 let distanceSinceLastPipe = 0;
 
 // =====================================================
-//  Persistentní zvuk + vibrace
+//  Persistentní stav
 // =====================================================
 let isMuted = localStorage.getItem("mutedState") === "1";
 let hapticsEnabled = localStorage.getItem("hapticsEnabled") !== "0";
 
 // =====================================================
-//  SVG flip helper
+//  SVG flip – správné přepínání hidden
 // =====================================================
-function showFlip(onSvg, offSvg, isOn) {
-    if (!onSvg || !offSvg) return;
-    if (isOn) {
-        onSvg.hidden = false;
-        offSvg.hidden = true;
+function setIcon(onIcon, offIcon, enabled) {
+    if (!onIcon || !offIcon) return;
+
+    if (enabled) {
+        onIcon.hidden = false;
+        offIcon.hidden = true;
     } else {
-        onSvg.hidden = true;
-        offSvg.hidden = false;
+        onIcon.hidden = true;
+        offIcon.hidden = false;
     }
 }
 
@@ -118,7 +120,7 @@ function showFlip(onSvg, offSvg, isOn) {
 function doHaptic(ms) {
     if (!hapticsEnabled) return;
     if (!("vibrate" in navigator)) return;
-    if (!(window.matchMedia && matchMedia("(pointer: coarse)").matches)) return; // jen mobily
+    if (!(window.matchMedia && matchMedia("(pointer: coarse)").matches)) return;
     navigator.vibrate(ms);
 }
 
@@ -126,7 +128,7 @@ function doHaptic(ms) {
 //  Mute toggle
 // =====================================================
 function applyMuteState() {
-    showFlip(soundOnIcon, soundOffIcon, !isMuted);
+    setIcon(soundOnIcon, soundOffIcon, !isMuted);
 }
 applyMuteState();
 
@@ -142,7 +144,7 @@ if (muteBtn) {
 //  Vibrace toggle
 // =====================================================
 function applyVibrationState() {
-    showFlip(vibOn, vibOff, hapticsEnabled);
+    setIcon(vibOn, vibOff, hapticsEnabled);
 }
 applyVibrationState();
 
@@ -151,6 +153,7 @@ if (vibBtn) {
         hapticsEnabled = !hapticsEnabled;
         localStorage.setItem("hapticsEnabled", hapticsEnabled ? "1" : "0");
         applyVibrationState();
+
         if (hapticsEnabled) doHaptic(35);
     });
 }
@@ -202,11 +205,10 @@ window.addEventListener("focus", () => {
 });
 
 // =====================================================
-//  Trubky – rage-bait
+//  Trubky
 // =====================================================
 function currentPipeSettings() {
     const capped = Math.min(score, 80);
-
     return {
         gap: 170 - (170 - 110) * (capped / 80),
         spacing: 260 - (260 - 160) * (capped / 80),
@@ -220,8 +222,7 @@ function spawnPipe() {
     let maxTop = H - GROUND_HEIGHT - gap - 20;
     const top = margin + Math.random() * (maxTop - margin);
 
-    // spodní trubka nesmí vlézt pod trávu
-    let bottom = Math.min(top + gap, H - GROUND_HEIGHT - 20);
+    const bottom = Math.min(top + gap, H - GROUND_HEIGHT - 20);
 
     pipes.push({
         x: W + 10,

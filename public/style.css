@@ -966,110 +966,92 @@ html.theme-dark .ui{
    UNIFIKOVANÉ UI BUTTONS
 ========================== */
 .ui-btn {
-  position: absolute;
-  right: 12px;
-
-  width: 48px;
-  height: 48px;
-
-  padding: 0;
-  border-radius: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  z-index: 50;
-
-  border: 1px solid rgba(255,255,255,.45);
-  background: rgba(255,255,255,.35);
-  color: #e5006a;
-
-  box-shadow:
-    0 4px 14px rgba(255,182,212,.55),
-    inset 0 0 10px rgba(255,255,255,.35);
-
-  backdrop-filter: blur(10px);
-  transition: transform .25s, box-shadow .25s;
-  
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    position: absolute;
+    right: 12px;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,.35);
+    border: 1px solid rgba(255,255,255,.45);
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 4px 14px rgba(255,182,212,.55),
+        inset 0 0 10px rgba(255,255,255,.35);
+    color: #e5006a;
+    cursor: pointer;
+    z-index: 50;
+    transition: .25s;
 }
 
 /* hover */
 .ui-btn:hover {
-  transform: scale(1.06);
-  box-shadow:
-    0 8px 22px rgba(255,182,212,.8),
-    inset 0 0 12px rgba(255,255,255,.45);
+    transform: scale(1.06);
+    box-shadow:
+        0 8px 22px rgba(255,182,212,.8),
+        inset 0 0 12px rgba(255,255,255,.45);
 }
 
-/* dark mode */
+/* pozice */
+#mute { top: 10px; }
+#vibrate { top: 54px; }
+
+/* ==========================
+   DARK MODE
+========================== */
 html.theme-dark .ui-btn {
-  background: rgba(255,255,255,.08);
-  border-color: rgba(255,255,255,.18);
-  color: #fff;
-  box-shadow:
-    0 4px 14px rgba(255,0,255,.25),
-    inset 0 0 10px rgba(255,255,255,.08);
+    background: rgba(255,255,255,.08);
+    border-color: rgba(255,255,255,.18);
+    color: #fff;
+    box-shadow:
+        0 4px 14px rgba(255,0,255,.25),
+        inset 0 0 10px rgba(255,255,255,.08);
 }
 
 html.theme-dark .ui-btn:hover {
-  background: rgba(255,255,255,.12);
-  box-shadow:
-    0 8px 22px rgba(255,0,255,.35),
-    inset 0 0 12px rgba(255,255,255,.12);
+    background: rgba(255,255,255,.12);
+    box-shadow:
+        0 8px 22px rgba(255,0,255,.35),
+        inset 0 0 12px rgba(255,255,255,.12);
 }
 
 /* ==========================
-   IKONY – stabilní layout
+   IKONY – stabilní layout + FLIP
 ========================== */
 .ui-btn svg {
-  width: 24px;
-  height: 24px;
-  display: block;
-  fill: currentColor;
-
-  /* animace flipu */
-  transition: transform .35s ease, opacity .2s ease;
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    transition: transform .35s ease, opacity .25s ease;
+    position: absolute; /* aby se layout nehýbal */
 }
 
-/* schovaná ikona */
+/* skrytá ikona */
 .ui-btn svg[hidden] {
-  opacity: 0;
-  transform: rotateY(90deg);
-  position: absolute; /* aby neshazovala layout */
+    opacity: 0;
+    transform: rotateY(90deg);
 }
 
 /* viditelná ikona */
 .ui-btn svg:not([hidden]) {
-  opacity: 1;
-  transform: rotateY(0deg);
+    opacity: 1;
+    transform: rotateY(0deg);
 }
 
-#mute { top:10px; }
-#vibrate { top:54px; }
-
-/* Dark mode */
-html.theme-dark .ui-btn {
-  background:rgba(255,255,255,.08);
-  border-color:rgba(255,255,255,.18);
-  color:#fff;
-  box-shadow:0 4px 14px rgba(255,0,255,.25),
-             inset 0 0 10px rgba(255,255,255,.08);
-}
-
-html.theme-dark .ui-btn:hover {
-  background:rgba(255,255,255,.12);
-}
-
-/* vibrace tlačítko jen na mobilech */
+/* ==========================
+   MOBIL ONLY (vibrace)
+========================== */
 .mobile-only {
-  display:none;
+    display: none;
 }
 
-@media(max-width:820px){
-  .mobile-only {
-    display:flex;
-  }
+@media (max-width: 820px) {
+    .mobile-only {
+        display: flex;
+    }
 }
 
 #scoreBox{top:10px;}
