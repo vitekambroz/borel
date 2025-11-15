@@ -107,7 +107,7 @@ html.theme-light .desktop-nav a:hover::after{
 html.theme-dark .desktop-nav a:hover::after{
   box-shadow:0 0 12px rgba(255,0,200,.45),0 0 28px rgba(255,0,255,.25)
 }
-.desktop-nav a.active .icon,.desktop-nav a.active .nav-icon{color:#fff!important;opacity:1!important}
+.desktop-nav a.active .icon,.desktop-nav a.active .nav-icon{opacity:1!important}
 
 /* ===== MOBILE / TABLET NAV ===== */
 @media(max-width:1100px){
