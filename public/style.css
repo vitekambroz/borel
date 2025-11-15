@@ -369,22 +369,22 @@ html.theme-light .mobile-nav a.active{
    MOBILE NAV ICON ALIGNMENT FIX
 ================================ */
 
-/* Domů – trochu výš */
+/* Domů – baseline */
 .mobile-nav a[data-page="/"] .nav-icon {
     position: relative;
-    top: -1.2px;   
+    top: -1.0px;   
 }
 
-/* Fotogalerie – trochu dolů */
+/* Fotogalerie – výš než Domů */
 .mobile-nav a[data-page="fotogalerie"] .nav-icon {
     position: relative;
-    top: -1.1px;    
+    top: -1.8px;   /* zvýšeno, protože byla níž */
 }
 
-/* Minihra – víc nahoru */
+/* Minihra – mezi Domů a Fotogalerií */
 .mobile-nav a[data-page="minihra"] .nav-icon {
     position: relative;
-    top: -3.7px;  
+    top: -2.4px;   /* upraveno, protože byla moc nahoře */
 }
 
 /* ============================================================
