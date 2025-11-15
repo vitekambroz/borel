@@ -482,6 +482,21 @@ html.theme-dark .desktop-nav a:hover::after{
   transition:transform .3s,background .3s;
 }
 
+.theme-toggle .thumb::before {
+  display: block;
+  transform: scale(1.15); /* zvětší emoji obecně */
+}
+
+/* měsíček trochu zmenšit (je defaultně větší) */
+html.theme-dark .theme-toggle .thumb::before {
+  transform: scale(1.0);
+}
+
+/* sluníčko trochu zvětšit (je menší) */
+html.theme-light .theme-toggle .thumb::before {
+  transform: scale(1.25);
+}
+
 /* světlý / tmavý emoji a barvy */
 html.theme-light .theme-toggle .thumb::before{content:"🌞";}
 html.theme-dark  .theme-toggle .thumb::before{content:"🌙";}
