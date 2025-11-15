@@ -445,7 +445,6 @@ html.theme-dark .desktop-nav a:hover::after{
 .menu-toggle.active span:nth-child(3){
   top:10px;transform:rotate(-45deg)
 }
-
 /* ===== THEME TOGGLE – SPOLEČNÝ ZÁKLAD ===== */
 
 .theme-toggle{
@@ -510,19 +509,26 @@ html.theme-dark .theme-toggle .thumb{
 }
 .bounce{animation:toggle-bounce .3s ease;}
 
-/* ===== DESKTOP VARIANTA ===== */
+
+/* ===== DESKTOP VARIANTA (upraveno – varianta A) ===== */
 
 .theme-toggle.desktop-toggle{
   position:absolute;
   right:16px;
   top:50%;
   transform:translateY(-50%);
-  width:70px;
-  height:36px;
-  padding:4px;
+  width:56px;     /* bylo 70px */
+  height:32px;    /* bylo 36px */
+  padding:3px;    /* bylo 4px */
 }
 
-/* ===== MOBILNÍ VARIANTA V MENU ===== */
+.theme-toggle.desktop-toggle .thumb{
+  width:24px;     /* bylo 26 */
+  height:24px;
+}
+
+
+/* ===== MOBILNÍ VARIANTA V MENU (upraveno – varianta A) ===== */
 
 .mobile-theme-row{
   width:100%;
@@ -539,9 +545,9 @@ html.theme-dark .theme-toggle .thumb{
 
 .theme-toggle.mobile-toggle{
   position:relative;
-  margin-left: 20px;
-  width:60px;
-  height:32px;
+  margin-left:20px;
+  width:52px;     /* bylo 60 */
+  height:28px;    /* bylo 32 */
   padding:3px;
 }
 
@@ -550,8 +556,8 @@ html.theme-dark .theme-toggle .thumb{
 }
 
 .theme-toggle.mobile-toggle .thumb{
-  width:24px;
-  height:24px;
+  width:22px;     /* bylo 24 */
+  height:22px;
 }
 
 /* jemný glow v dark módu v menu */
@@ -586,6 +592,7 @@ html.theme-dark .mobile-separator{
   .theme-toggle.mobile-toggle{display:none;}
 }
 
+
 /* =============================
         RESPONSIVE HEADER
 ============================= */
@@ -611,8 +618,6 @@ html.theme-dark .mobile-separator{
   }
   nav a{justify-content:flex-start;min-width:150px}
 }
-
-.nav-right{margin-right:24px}
 
 
 /* =============================
