@@ -93,25 +93,42 @@ if (muteBtn) {
 }
 
 // =====================================================
-//  Ovládání – skok
+//  Ovládání – skok + restart po smrti
 // =====================================================
-function flap() {
+function flapOrRestart() {
+  // restart po smrti
+  if (gameOver) {
+    reset();
+    return;
+  }
+
+  // první start hry
   if (!running && !gameOver) {
     running = true;
     msgBox.style.display = 'none';
   }
-  if (gameOver) return;
+
+  // normální skok
   bird.vy = jump;
 }
 
 window.addEventListener('keydown', (e) => {
   if (e.code === 'Space') {
     e.preventDefault();
-    flap();
+    flapOrRestart();
   }
 });
-cvs.addEventListener('mousedown', flap);
-cvs.addEventListener('touchstart', (e) => { e.preventDefault(); flap(); }, { passive: false });
+
+cvs.addEventListener('mousedown', flapOrRestart);
+
+cvs.addEventListener(
+  'touchstart',
+  (e) => {
+    e.preventDefault();
+    flapOrRestart();
+  },
+  { passive: false }
+);
 
 // =====================================================
 //  Auto-pause při ztrátě focusu
