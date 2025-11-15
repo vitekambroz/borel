@@ -555,8 +555,8 @@ html.theme-light .theme-toggle .switch{
 html.theme-light .theme-toggle.desktop-toggle,
 html.theme-light .theme-toggle.mobile-toggle{
   box-shadow:
-    0 0 30px rgba(255,0,140,.55),
-    0 0 60px rgba(255,160,220,.5);
+    0 0 20px rgba(255,0,140,.30),
+    0 0 40px rgba(255,160,220,.25);
 }
 
 html.theme-light .theme-toggle .thumb .sun{
@@ -585,8 +585,8 @@ html.theme-dark .theme-toggle .switch{
 html.theme-dark .theme-toggle.desktop-toggle,
 html.theme-dark .theme-toggle.mobile-toggle{
   box-shadow:
-    0 0 30px rgba(229,0,106,.9),
-    0 0 60px rgba(120,0,180,.8);
+    0 0 24px rgba(229,0,106,.35),
+    0 0 45px rgba(120,0,180,.30);
 }
 
 html.theme-dark .theme-toggle .thumb .moon{
