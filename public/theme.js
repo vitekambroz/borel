@@ -133,14 +133,35 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 // ===============================================
 // FADE TITLE
 // ===============================================
-window.addEventListener("scroll", () => {
-  const y = Math.min(window.scrollY, 400);
+let lastScroll = 0;
 
-  if (siteTitle) {
-    siteTitle.style.opacity = 1 - y / 400;
-    if (y > 120) siteTitle.classList.add("shrunk");
-    else siteTitle.classList.remove("shrunk");
+window.addEventListener("scroll", () => {
+  const current = window.scrollY;
+
+  const header = document.querySelector("header");
+  const title = document.querySelector(".site-title");
+
+  // 1) Fade-out based on absolute scroll amount (200px = total fade)
+  const fadePoint = 200;
+  const opacity = Math.max(0, 1 - current / fadePoint);
+  title.style.opacity = opacity;
+
+  // Title shrinking (much smoother)
+  if (current > 50) title.classList.add("shrunk");
+  else title.classList.remove("shrunk");
+
+  // 2) Smart hide (hide when scrolling down, show when scrolling up)
+  if (current > lastScroll && current > 80) {
+    // scrolling down
+    header.style.opacity = "0";
+    header.style.transform = "translateY(-15px)";
+  } else {
+    // scrolling up
+    header.style.opacity = "1";
+    header.style.transform = "translateY(0)";
   }
+
+  lastScroll = current;
 });
 
 
