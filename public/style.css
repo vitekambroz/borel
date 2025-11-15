@@ -184,7 +184,7 @@ body.animate-title .site-title span {
   margin-left: auto;
   display: flex;
   align-items: center;
-  padding-right: 62px;
+  padding-right: 28px;
   gap: 14px;
 }
 
@@ -193,7 +193,7 @@ body.animate-title .site-title span {
   display: flex;
   align-items: center;
   gap: 28px;
-  padding-right: 62px; /* mezera od togglu */
+  padding-right: 28px; /* mezera od togglu */
 }
 
 /* ---- SPOTIFY UNDERLINE ANIMATION ---- */
@@ -777,12 +777,13 @@ html.theme-dark .desktop-nav a:hover::after {
   height: 34px;
   background: var(--switch-bg);
   border-radius: 999px;
-  padding: 4px;
-  box-shadow: 0 0 22px rgba(0,0,0,0.45);
+  position: relative;
   display: flex;
   align-items: center;
+  justify-content: space-between; /* rozdělí dvě pozice */
+  padding: 4px; /* zachová tvůj design */
+  box-shadow: 0 0 22px rgba(0,0,0,0.45);
   transition: background 0.3s ease;
-  position: relative;
 }
 
 /* Tečka (thumb) */
@@ -795,10 +796,12 @@ html.theme-dark .desktop-nav a:hover::after {
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
-  transition: transform 0.3s ease, background 0.3s ease;
-  box-shadow: 0 0 12px rgba(0,0,0,0.45);
   position: absolute;
-  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 4px; /* výchozí pro light */
+  transition: transform .3s ease, background .3s ease;
+  box-shadow: 0 0 12px rgba(0,0,0,0.45);
 }
 
 /* Tmavý mód → měsíc */
@@ -807,11 +810,7 @@ html.theme-dark .desktop-nav a:hover::after {
 }
 
 .theme-dark .thumb {
-  left: 38px; /* ✔ tak akorát doprava 26 puvodne*/
-  background: #ffdbff;
-  box-shadow:
-      0 0 10px rgba(255, 0, 255, 0.55),
-      0 0 20px rgba(229, 0, 106, 0.6);
+  transform: translate(calc(100% + 4px), -50%);
 }
 
 .theme-dark .theme-toggle {
@@ -834,11 +833,7 @@ html.theme-dark .desktop-nav a:hover::after {
 }
 
 .theme-light .thumb {
-  left: 4px;
-  background: #ffffff;
-  box-shadow:
-    0 0 8px rgba(229, 0, 106, 0.35),
-    0 0 15px rgba(255, 140, 255, 0.25);
+  transform: translate(0, -50%);
 }
 
 .theme-light .theme-toggle {
@@ -882,7 +877,7 @@ html {
     top: 64px;
     flex-direction: column;
     align-items: stretch;
-    padding: 12px 62px;
+    padding: 12px 28px;
     border-radius: 18px;
     background: var(--glass-light);
     backdrop-filter: blur(12px);
