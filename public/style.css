@@ -874,8 +874,12 @@ html.theme-dark .desktop-nav a:hover::after {
 }
 
 /* text vlevo */
-.mobile-theme-row .mobile-theme-label {
-  font-weight: 500;
+html.theme-light .mobile-theme-label {
+  color: #5a004e;    /* stejná barva jako neaktivní text v nav */
+}
+
+html.theme-dark .mobile-theme-label {
+  color: #ffffff;    /* stejně jako zbytek nav textu */
 }
 
 /* přepínač uvnitř menu */
@@ -924,7 +928,9 @@ html.theme-light .mobile-theme-row .thumb {
 
 /* Dark posun – AUTO */
 html.theme-dark .mobile-theme-row .thumb {
-  transform: translate(calc(100% - 24px), -50%);
+  left: auto;
+  right: 3px;          /* stejné jako padding */
+  transform: translateY(-50%);
 }
 
 /* Emoji */
