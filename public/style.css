@@ -896,7 +896,6 @@ html.theme-dark .info-box{
   }
 }
 
-
 /* ============================================================
    GAME STYLES
 ============================================================ */
@@ -978,7 +977,7 @@ html.theme-dark .ui{
     background: rgba(255,255,255,.35);
     border: 1px solid rgba(255,255,255,.45);
     backdrop-filter: blur(10px);
-    box-shadow: 
+    box-shadow:
         0 4px 14px rgba(255,182,212,.55),
         inset 0 0 10px rgba(255,255,255,.35);
     color: #e5006a;
@@ -987,7 +986,7 @@ html.theme-dark .ui{
     transition: .25s;
 }
 
-/* hover */
+/* hover efekt */
 .ui-btn:hover {
     transform: scale(1.06);
     box-shadow:
@@ -1025,8 +1024,12 @@ html.theme-dark .ui-btn:hover {
     width: 24px;
     height: 24px;
     fill: currentColor;
+
+    /* FLIP animace */
     transition: transform .35s ease, opacity .25s ease;
-    position: absolute; /* aby se layout nehýbal */
+
+    /* abso aby ikonky neskákaly */
+    position: absolute;
 }
 
 /* skrytá ikona */
