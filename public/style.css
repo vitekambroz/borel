@@ -873,6 +873,16 @@ html.theme-dark .desktop-nav a:hover::after {
   opacity: 0.95;
 }
 
+html.theme-light .mobile-separator {
+  background: rgba(255, 0, 140, 0.28);   /* růžová linka */
+  box-shadow: 0 0 6px rgba(255, 0, 140, 0.18);
+}
+
+html.theme-dark .mobile-separator {
+  background: rgba(255, 100, 255, 0.22); /* neon pink/purple */
+  box-shadow: 0 0 6px rgba(255, 100, 255, 0.18);
+}
+
 /* text vlevo */
 html.theme-light .mobile-theme-label {
   color: #5a004e;    /* stejná barva jako neaktivní text v nav */
