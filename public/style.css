@@ -1041,6 +1041,23 @@ html.theme-dark #mute:hover{
     inset 0 0 12px rgba(255,255,255,.12);
 }
 
+#mute .icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#mute svg {
+  stroke: currentColor;
+  width: 20px;
+  height: 20px;
+  transition: transform .25s, opacity .25s;
+}
+
+#mute:hover svg {
+  transform: scale(1.12);
+}
+
 .centerMsg{
   position:absolute;
   left:50%;
