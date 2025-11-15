@@ -186,8 +186,23 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
 /* active link */
 .desktop-nav a.active{
   color:var(--brand-strong) !important;
-  transform:translateY(-2px);
-  text-shadow:0 0 8px rgba(255,120,200,.35);
+  transform:none;
+  background:rgba(255,255,255,.28);
+  backdrop-filter:blur(6px);
+  padding:10px 18px;
+  box-shadow:0 4px 12px rgba(229,0,106,.28);
+}
+
+html.theme-light .desktop-nav a.active{
+  background:rgba(255,0,140,.18);
+  box-shadow:0 4px 12px rgba(255,0,140,.28);
+  color:var(--brand-strong) !important;
+}
+
+html.theme-dark .desktop-nav a.active{
+  background:rgba(255,0,255,.16);
+  box-shadow:0 4px 14px rgba(255,0,255,.28);
+  color:var(--brand-strong) !important;
 }
 
 html.theme-dark .desktop-nav a.active{
