@@ -257,23 +257,24 @@
         <span id="difficulty">Obtížnost: 1</span>
       </div>
 
-      <button id="restart">Restart</button>
-      <button id="mute" title="Ztlumit / Zapnout zvuk">
-  <span class="icon-wrap">
-    <!-- Zvuk zapnutý (výchozí) -->
-    <svg id="soundOn" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M11 5L6 9H3v6h3l5 4V5z"></path>
-      <path d="M15 9.354a4 4 0 010 5.292"></path>
-      <path d="M17.657 7.05a8 8 0 010 9.9"></path>
+<button id="mute" class="ui-btn" title="Zvuk zap/vyp">
+    <svg id="soundOn" viewBox="0 0 24 24">
+        <path d="M11 5L6 9H3v6h3l5 4V5zm6.54 1.46L16.12 8.88A4.94 4.94 0 0 1 17 12c0 1.07-.34 2.07-.88 2.88l1.42 1.42A6.96 6.96 0 0 0 19 12a6.96 6.96 0 0 0-1.46-4.54z"/>
     </svg>
 
-    <!-- Zvuk vypnutý (skrytý) -->
-    <svg id="soundOff" style="display:none;" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M11 5L6 9H3v6h3l5 4V5z"></path>
-      <line x1="15" y1="9" x2="19" y2="15"></line>
-      <line x1="19" y1="9" x2="15" y2="15"></line>
+    <svg id="soundOff" viewBox="0 0 24 24" style="display:none">
+        <path d="M16.5 12a4.5 4.5 0 0 1-.88 2.62l1.42 1.42A6.96 6.96 0 0 0 19 12a6.96 6.96 0 0 0-1.96-4.88l-1.42 1.42A4.5 4.5 0 0 1 16.5 12zm-2.12-6.12L12 8.26V5l-5 4H3v6h3l4.26 3.26-2.62 2.62 1.41 1.41 10-10-1.41-1.41-3-3z"/>
     </svg>
-  </span>
+</button>
+
+<button id="vibrate" class="ui-btn mobile-only" title="Vibrace zap/vyp">
+    <svg id="vibOn" viewBox="0 0 24 24">
+        <path d="M3 8l1.5 1.5L3 11l1.5 1.5L3 14l1.5 1.5L3 17l2.5-2.5V10.5L3 8zm18 0l-1.5 1.5L21 11l-1.5 1.5L21 14l-1.5 1.5L21 17l-2.5-2.5V10.5L21 8zM7 5h2v14H7zm8 0h2v14h-2z"/>
+    </svg>
+
+    <svg id="vibOff" viewBox="0 0 24 24" style="display:none">
+        <path d="M2.1 3.51L3.52 2.1 21.9 20.48 20.49 21.9l-3.1-3.1V19h-2V9.41L9.59 4H7v1.41zm5.9 3.31V19h2V9.41zM17 5h-2v6l2 2z"/>
+    </svg>
 </button>
 
       <div class="centerMsg" id="centerMsg">

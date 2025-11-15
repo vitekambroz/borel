@@ -962,6 +962,59 @@ html.theme-dark .ui{
   color:#fff;
 }
 
+.ui-btn {
+  position:absolute;
+  right:12px;
+  padding:8px 14px;
+  border-radius:14px;
+  font-weight:600;
+  cursor:pointer;
+  z-index:50;
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(255,255,255,.35);
+  color:#e5006a;
+  box-shadow:0 4px 14px rgba(255,182,212,.55),
+             inset 0 0 10px rgba(255,255,255,.35);
+  backdrop-filter:blur(10px);
+  transition:.25s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.ui-btn svg {
+  width:22px;
+  height:22px;
+  fill:currentColor;
+}
+
+#mute { top:10px; }
+#vibrate { top:54px; }
+
+/* Dark mode */
+html.theme-dark .ui-btn {
+  background:rgba(255,255,255,.08);
+  border-color:rgba(255,255,255,.18);
+  color:#fff;
+  box-shadow:0 4px 14px rgba(255,0,255,.25),
+             inset 0 0 10px rgba(255,255,255,.08);
+}
+
+html.theme-dark .ui-btn:hover {
+  background:rgba(255,255,255,.12);
+}
+
+/* vibrace tlačítko jen na mobilech */
+.mobile-only {
+  display:none;
+}
+
+@media(max-width:820px){
+  .mobile-only {
+    display:flex;
+  }
+}
+
 #scoreBox{top:10px;}
 #difficultyBox{top:54px;}
 
