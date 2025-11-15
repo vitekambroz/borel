@@ -489,21 +489,19 @@ html.theme-light .mobile-nav a.active{
 
 
 /* ============================================================
-   THEME TOGGLE – UNIFIED GLOW VERSION
+   THEME TOGGLE – BASE (SE SILNÝM NEONEM)
 ============================================================ */
-
 .theme-toggle{
   display:flex;
   align-items:center;
   border-radius:999px;
   cursor:pointer;
-  position:relative;
-  overflow:visible; /* důležité pro glow */
+  background:var(--switch-bg);
+  /* základní stín, když není žádný theme specifický */
+  box-shadow:0 0 16px rgba(0,0,0,.35);
+  transition:background .35s, box-shadow .35s, transform .35s;
 }
 
-/* ------------------------------
-   SWITCH BACKGROUND
------------------------------- */
 .theme-toggle .switch{
   width:100%;
   height:100%;
@@ -512,32 +510,9 @@ html.theme-light .mobile-nav a.active{
   position:relative;
   display:flex;
   align-items:center;
-  justify-content:flex-start;
-  background:var(--switch-bg);
-  transition:background .3s;
+  background:var(--switch-bg) !important;
 }
 
-/* společný glow kolem celého togglu */
-.theme-toggle::before{
-  content:"";
-  position:absolute;
-  inset:-12px;
-  border-radius:inherit;
-  background:radial-gradient(
-    circle,
-    rgba(255,0,180,.55),
-    rgba(120,0,180,.35),
-    rgba(0,0,0,0)
-  );
-  filter:blur(22px);
-  opacity:.75;
-  transition:opacity .35s,transform .35s;
-  pointer-events:none;
-}
-
-/* ------------------------------
-   THUMB = KOLEČKO
------------------------------- */
 .theme-toggle .thumb{
   width:28px;
   height:28px;
@@ -549,10 +524,8 @@ html.theme-light .mobile-nav a.active{
   align-items:center;
   justify-content:center;
   background:var(--thumb-bg);
-  box-shadow:
-    0 0 20px rgba(255,0,200,.65),
-    0 0 40px rgba(255,0,255,.45);
-  transition:transform .3s, background .3s, box-shadow .3s;
+  box-shadow:var(--thumb-glow);
+  transition:transform .3s,background .3s,box-shadow .3s;
 }
 
 .theme-toggle .thumb svg{
@@ -561,51 +534,86 @@ html.theme-light .mobile-nav a.active{
 }
 
 .theme-toggle .thumb .sun,
-.theme-toggle .thumb .moon{
-  display:none;
-}
+.theme-toggle .thumb .moon{display:none;}
 
-/* thumb pozice */
-html.theme-light .theme-toggle .thumb{ left:3px; }
-html.theme-dark  .theme-toggle .thumb{ right:3px; }
+/* thumb position */
+html.theme-light .theme-toggle .thumb{left:3px;right:auto;}
+html.theme-dark  .theme-toggle .thumb{right:3px;left:auto;}
 
-/* ------------------------------
+/* ============================================================
    LIGHT MODE
------------------------------- */
+============================================================ */
 html.theme-light .theme-toggle .switch{
   --switch-bg:#ffe4f9;
   --thumb-bg:#ffffff;
+  --thumb-glow:
+    0 0 10px rgba(255,0,140,.35),
+    0 0 18px rgba(255,0,200,.3);
+}
+
+/* neon aura za CELÝM přepínačem v light režimu */
+html.theme-light .theme-toggle.desktop-toggle,
+html.theme-light .theme-toggle.mobile-toggle{
+  box-shadow:
+    0 0 30px rgba(255,0,140,.55),
+    0 0 60px rgba(255,160,220,.5);
 }
 
 html.theme-light .theme-toggle .thumb .sun{
   display:block;
+  stroke-width:1.4 !important;
 }
 
 html.theme-light .theme-toggle .thumb svg{
-  fill:#000;
-  stroke:#000;
+  fill:#000 !important;
+  stroke:#000 !important;
 }
 
-/* ------------------------------
+/* ============================================================
    DARK MODE
------------------------------- */
+============================================================ */
 html.theme-dark .theme-toggle .switch{
   --switch-bg:#1b0023;
   --thumb-bg:#ff00ff;
+  --thumb-glow:
+    0 0 14px rgba(255,0,255,.6),
+    0 0 28px rgba(255,0,255,.4);
+}
+
+/* neon aura za CELÝM přepínačem v dark režimu
+   – přesně tvůj styl: 0 0 30px + 0 0 60px */
+html.theme-dark .theme-toggle.desktop-toggle,
+html.theme-dark .theme-toggle.mobile-toggle{
+  box-shadow:
+    0 0 30px rgba(229,0,106,.9),
+    0 0 60px rgba(120,0,180,.8);
 }
 
 html.theme-dark .theme-toggle .thumb .moon{
   display:block;
+  stroke-width:1.4 !important;
+  transform:translateY(-1px);
+  opacity:1 !important;
 }
 
 html.theme-dark .theme-toggle .thumb svg{
-  fill:#fff;
-  stroke:#fff;
+  fill:#fff !important;
+  stroke:#fff !important;
+  opacity:1 !important;
 }
 
-/* ------------------------------
-   DESKTOP VERSION
------------------------------- */
+/* mírný bounce při přepnutí */
+@keyframes toggle-bounce{
+  0%{transform:translateY(-50%) scale(1);}
+  50%{transform:translateY(-50%) scale(1.2);}
+  100%{transform:translateY(-50%) scale(1);}
+}
+
+.bounce{animation:toggle-bounce .3s ease;}
+
+/* ============================================================
+   DESKTOP VARIANTA
+============================================================ */
 .theme-toggle.desktop-toggle{
   position:absolute;
   right:16px;
@@ -616,26 +624,75 @@ html.theme-dark .theme-toggle .thumb svg{
   padding:4px;
 }
 
-/* ------------------------------
-   MOBILE VERSION
------------------------------- */
+.theme-toggle.desktop-toggle .thumb{
+  width:26px;
+  height:26px;
+}
+
+/* ============================================================
+   MOBILE VARIANTA
+============================================================ */
+.mobile-theme-row{
+  width:100%;
+  padding:14px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.mobile-theme-label{
+  font-size:1.1rem;
+  font-weight:600;
+}
+
 .theme-toggle.mobile-toggle{
   position:relative;
+  margin-left:22px;
   width:54px;
   height:30px;
   padding:3px;
 }
 
-.theme-toggle.mobile-toggle::before{
-  inset:-8px; /* menší glow pro mobil */
-  filter:blur(16px);
-  opacity:.55;
-}
+.theme-toggle.mobile-toggle .switch{padding:3px;}
 
-/* mobile thumb zmenšení */
 .theme-toggle.mobile-toggle .thumb{
   width:24px;
   height:24px;
+}
+
+/* lehká aura i za mobile switch v dark režimu (slabší než desktop) */
+html.theme-dark .theme-toggle.mobile-toggle{
+  box-shadow:
+    0 0 24px rgba(229,0,106,.7),
+    0 0 45px rgba(120,0,180,.55);
+}
+
+/* oddělovací čára dole v menu */
+.mobile-separator{
+  width:100%;
+  height:1px;
+  margin:10px 0 6px;
+  border:none;
+  background:rgba(255,255,255,.12);
+}
+
+html.theme-light .mobile-separator{
+  background:rgba(255,0,140,.28);
+  box-shadow:0 0 6px rgba(255,0,140,.18);
+}
+
+html.theme-dark .mobile-separator{
+  background:rgba(255,100,255,.22);
+  box-shadow:0 0 6px rgba(255,100,255,.18);
+}
+
+/* responsivita */
+@media(max-width:1100px){
+  .theme-toggle.desktop-toggle{display:none;}
+}
+
+@media(min-width:1101px){
+  .theme-toggle.mobile-toggle{display:none;}
 }
 
 /* ============================================================
