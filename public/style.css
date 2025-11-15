@@ -207,16 +207,22 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
 }
 
 /* ===========================================
-   ULTRA PRECISE ICON ALIGN FIX
+   FINAL PIXEL-PERFECT ALIGN
 =========================================== */
 
-/* Domů (home icon) – největší rozdíl */
+/* Domů – o trochu níž */
 .desktop-nav a[data-page="/"] .nav-icon {
     position: relative;
-    top: -1.8px;
+    top: -1.2px;   /* původně -1.8 → posunuto dolů o +0.6 */
 }
 
-/* Minihra – lehký rozdíl */
+/* Fotogalerie – o malinko výš */
+.desktop-nav a[data-page="fotogalerie"] .nav-icon {
+    position: relative;
+    top: -2.0px;   /* původně ideální, teď -0.6 navíc nahoru */
+}
+
+/* Minihra necháváme */
 .desktop-nav a[data-page="minihra"] .nav-icon {
     position: relative;
     top: -1.2px;
