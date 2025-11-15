@@ -880,20 +880,67 @@ html.theme-dark .desktop-nav a:hover::after {
 
 /* přepínač uvnitř menu */
 .mobile-theme-row .theme-toggle {
-  position: relative;
-  top: 0;
-  right: 0;
-  transform: none;
   width: 60px;
   height: 32px;
   padding: 3px;
-  box-shadow: none;
+  position: relative;
+  transform: none;
+  right: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+}
+
+.mobile-theme-row .switch {
+  width: 100%;
+  height: 100%;
+  padding: 3px;
+  border-radius: 999px;
+  position: relative;
+  background: var(--switch-bg);
 }
 
 /* menší tečka */
 .mobile-theme-row .thumb {
-  width: 22px !important;
-  height: 22px !important;
+  width: 24px !important;
+  height: 24px !important;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 3px;
+  border-radius: 50%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--thumb-bg);
+  font-size: 1rem;
+  transition: transform .25s ease, background .25s ease;
+}
+
+/* Light posun */
+html.theme-light .mobile-theme-row .thumb {
+  transform: translate(0, -50%);
+}
+
+/* Dark posun – AUTO */
+html.theme-dark .mobile-theme-row .thumb {
+  transform: translate(calc(100% - 24px), -50%);
+}
+
+/* Emoji */
+html.theme-light .mobile-theme-row .thumb::before {
+  content: "🌞";
+}
+
+html.theme-dark .mobile-theme-row .thumb::before {
+  content: "🌙";
+}
+
+/* Soft glow */
+html.theme-dark .mobile-theme-row .switch {
+  box-shadow:
+    0 0 12px rgba(255, 0, 180, 0.25),
+    0 0 24px rgba(255, 0, 255, 0.20);
 }
 
 @media (max-width: 1100px) {

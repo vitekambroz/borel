@@ -1,7 +1,7 @@
 // ===============================================
 // SELECTORY
 // ===============================================
-const themeToggle = document.querySelector(".theme-toggle");
+const toggles = document.querySelectorAll(".theme-toggle");
 const menuBtn = document.querySelector(".menu-toggle");
 const mobileNav = document.querySelector(".mobile-nav");
 const mobileToggleSlot = document.querySelector(".mobile-toggle-slot");
@@ -71,21 +71,22 @@ prefersDark.addEventListener("change", e => {
 // ===============================================
 // PŘEPÍNAČ TÉMATA
 // ===============================================
-if (themeToggle) {
-  themeToggle.addEventListener("click", () => {
+toggles.forEach(toggle => {
+  toggle.addEventListener("click", () => {
     const html = document.documentElement;
     const nowDark = !html.classList.contains("theme-dark");
 
     applyTheme(nowDark ? "dark" : "light", true);
 
-    const thumb = document.querySelector(".theme-toggle .thumb");
+    // bounce efekt tečky
+    const thumb = toggle.querySelector(".thumb");
     if (thumb) {
       thumb.classList.remove("bounce");
       void thumb.offsetWidth;
       thumb.classList.add("bounce");
     }
   });
-}
+});
 
 
 // ===============================================
