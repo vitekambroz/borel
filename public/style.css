@@ -943,6 +943,16 @@ html.theme-dark .mobile-theme-row .switch {
     0 0 24px rgba(255, 0, 255, 0.20);
 }
 
+@keyframes toggle-bounce {
+  0% { transform: translateY(-50%) scale(1); }
+  50% { transform: translateY(-50%) scale(1.2); }
+  100% { transform: translateY(-50%) scale(1); }
+}
+
+.bounce {
+  animation: toggle-bounce .3s ease;
+}
+
 @media (max-width: 1100px) {
 .theme-toggle:not(.mobile-toggle) {
   display: none;
