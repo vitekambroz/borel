@@ -57,7 +57,6 @@ const msgBox = document.getElementById("centerMsg");
 const muteBtn = document.getElementById("mute");
 const vibBtn = document.getElementById("vibrate");
 
-// SVG ikony
 const soundOnIcon = document.getElementById("soundOn");
 const soundOffIcon = document.getElementById("soundOff");
 const vibOn = document.getElementById("vibOn");
@@ -100,18 +99,12 @@ let isMuted = localStorage.getItem("mutedState") === "1";
 let hapticsEnabled = localStorage.getItem("hapticsEnabled") !== "0";
 
 // =====================================================
-//  SVG flip – správné přepínání hidden
+//  SVG flip – hidden přepínání
 // =====================================================
 function setIcon(onIcon, offIcon, enabled) {
     if (!onIcon || !offIcon) return;
-
-    if (enabled) {
-        onIcon.hidden = false;
-        offIcon.hidden = true;
-    } else {
-        onIcon.hidden = true;
-        offIcon.hidden = false;
-    }
+    onIcon.hidden = !enabled;
+    offIcon.hidden = enabled;
 }
 
 // =====================================================
@@ -153,7 +146,6 @@ if (vibBtn) {
         hapticsEnabled = !hapticsEnabled;
         localStorage.setItem("hapticsEnabled", hapticsEnabled ? "1" : "0");
         applyVibrationState();
-
         if (hapticsEnabled) doHaptic(35);
     });
 }
