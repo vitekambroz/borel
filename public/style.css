@@ -210,22 +210,22 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
    FINAL PIXEL-PERFECT ALIGN
 =========================================== */
 
-/* Domů – o trochu níž */
+/* Domů – necháváme, už bylo přesně doladěno */
 .desktop-nav a[data-page="/"] .nav-icon {
     position: relative;
-    top: -1.2px;   /* původně -1.8 → posunuto dolů o +0.6 */
+    top: -1.2px;
 }
 
-/* Fotogalerie – o malinko výš */
+/* Fotogalerie – trochu dolů */
 .desktop-nav a[data-page="fotogalerie"] .nav-icon {
     position: relative;
-    top: -2.0px;   /* původně ideální, teď -0.6 navíc nahoru */
+    top: -1.0px;   /* bylo -2.0, posunuto o +1px dolů */
 }
 
-/* Minihra necháváme */
+/* Minihra – trochu nahoru */
 .desktop-nav a[data-page="minihra"] .nav-icon {
     position: relative;
-    top: -1.2px;
+    top: -1.8px;  /* bylo -1.2, posunuto o -0.6px nahoru */
 }
 
 .desktop-nav a .icon {
