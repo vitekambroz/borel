@@ -134,11 +134,11 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 // FADE TITLE
 // ===============================================
 window.addEventListener("scroll", () => {
-  const y = Math.min(window.scrollY, 120);
+  const y = Math.min(window.scrollY, 400);
 
   if (siteTitle) {
-    siteTitle.style.opacity = 1 - y / 120;
-    if (y > 40) siteTitle.classList.add("shrunk");
+    siteTitle.style.opacity = 1 - y / 400;
+    if (y > 120) siteTitle.classList.add("shrunk");
     else siteTitle.classList.remove("shrunk");
   }
 });
