@@ -4,10 +4,11 @@
 const menuBtn = document.querySelector(".menu-toggle");
 const mobileNav = document.querySelector(".mobile-nav");
 
-// === 2 samostatné toggly ===
-const toggles = document.querySelectorAll(".theme-toggle");
+const header = document.querySelector("header");
+const themeToggle = document.querySelector(".theme-toggle");
+const mobileToggleSlot = document.querySelector(".mobile-toggle-slot");
 
-// systémové téma
+const toggles = document.querySelectorAll(".theme-toggle");
 const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 
 
@@ -37,10 +38,6 @@ function applyTheme(mode, save = false) {
 
   html.classList.toggle("theme-dark", isDark);
   html.classList.toggle("theme-light", !isDark);
-
-  html.style.setProperty("--glow",
-    isDark ? "0 0 18px rgba(255,0,255,0.7)" : "none"
-  );
 
   if (save) saveManualTheme(mode);
 }
@@ -93,19 +90,28 @@ toggles.forEach(toggle => {
 
 
 // ===============================================
-// MOBILE NAV MENU
+// MOBILE NAV MENU + PŘESUN TOGGLE
 // ===============================================
+if (menuBtn && mobileNav && themeToggle && mobileToggleSlot) {
 
-mobileToggleSlot.appendChild(themeToggle);
-themeToggle.classList.add("mobile-toggle");
-
-header.appendChild(themeToggle);
-themeToggle.classList.remove("mobile-toggle");
-
-if (menuBtn && mobileNav) {
   menuBtn.addEventListener("click", () => {
+
     mobileNav.classList.toggle("show");
     menuBtn.classList.toggle("active");
+
+    const isOpen = mobileNav.classList.contains("show");
+
+    if (window.innerWidth <= 1100) {
+      if (isOpen) {
+        // přesunout do mobilu
+        mobileToggleSlot.appendChild(themeToggle);
+        themeToggle.classList.add("mobile-toggle");
+      } else {
+        // vrátit zpět do headeru
+        header.appendChild(themeToggle);
+        themeToggle.classList.remove("mobile-toggle");
+      }
+    }
   });
 }
 
@@ -115,6 +121,10 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   link.addEventListener("click", () => {
     mobileNav.classList.remove("show");
     menuBtn.classList.remove("active");
+
+    // vrácení toggle při zavření odkazu (bez kliknutí mimo)
+    header.appendChild(themeToggle);
+    themeToggle.classList.remove("mobile-toggle");
   });
 });
 
@@ -126,14 +136,12 @@ let lastScroll = 0;
 
 window.addEventListener("scroll", () => {
   const current = window.scrollY;
-  const header = document.querySelector("header");
   const title = document.querySelector(".site-title");
 
   const fadeRange = 250;
   const fade = Math.max(0, 1 - current / fadeRange);
 
   title.style.opacity = fade;
-  header.style.opacity = fade > 0.2 ? 1 : fade + 0.2;
 
   if (current > 40) title.classList.add("shrunk");
   else title.classList.remove("shrunk");
@@ -157,7 +165,6 @@ window.addEventListener("scroll", () => {
 // ===============================================
 (function setActiveLink() {
   let page = window.location.pathname;
-
   page = page.replace(/\/+$/, "").replace("/", "");
   if (page === "") page = "/";
 
