@@ -378,13 +378,13 @@ html.theme-light .mobile-nav a.active{
 /* Fotogalerie – trochu dolů */
 .mobile-nav a[data-page="fotogalerie"] .nav-icon {
     position: relative;
-    top: -3.2px;    
+    top: -2.8px;    
 }
 
 /* Minihra – víc nahoru */
 .mobile-nav a[data-page="minihra"] .nav-icon {
     position: relative;
-    top: -3.4px;  
+    top: -4.0px;  
 }
 
 /* ============================================================
