@@ -1221,9 +1221,16 @@ html.theme-dark .info-box {
   align-items: center;
   justify-content: center;
   line-height: 0;
+  padding: 0;
   cursor: pointer;
   box-shadow: 0 0 18px rgba(0, 0, 0, 0.7);
   transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  transform-origin: center center;
+}
+.arrow-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
 }
 
 .lightbox-nav button:hover {
