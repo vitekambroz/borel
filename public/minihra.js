@@ -1,6 +1,6 @@
 // =====================================================
-//  Minihra.js – agresivní rage-bait verze
-//  Zvuk + vibrace s uložením, žádný restart button
+//  Minihra.js – rage-bait verze
+//  Opravy: správné OFF ikony + fix spodní trubky
 // =====================================================
 
 const cvs = document.getElementById("game");
@@ -75,6 +75,8 @@ const MAX_RISE_SPEED = -12;
 const PIPE_WIDTH = 70;
 const BASE_PIPE_SPEED = 2.4;
 
+const GROUND_HEIGHT = 80;
+
 let pipes = [];
 let score = 0;
 let bestScore = Number(localStorage.getItem("bestScore")) || 0;
@@ -94,9 +96,7 @@ let distanceSinceLastPipe = 0;
 //  Persistentní zvuk + vibrace
 // =====================================================
 let isMuted = localStorage.getItem("mutedState") === "1";
-
-let hapticsEnabled =
-  localStorage.getItem("hapticsEnabled") !== "0"; // default ON
+let hapticsEnabled = localStorage.getItem("hapticsEnabled") !== "0";
 
 // =====================================================
 //  Vibrace helper
@@ -166,7 +166,6 @@ window.addEventListener("keydown", (e) => {
 });
 
 cvs.addEventListener("mousedown", flapOrRestart);
-
 cvs.addEventListener(
     "touchstart",
     (e) => {
@@ -188,7 +187,7 @@ window.addEventListener("focus", () => {
 });
 
 // =====================================================
-//  Rage-bait trubky
+//  Trubky – rage-bait
 // =====================================================
 function currentPipeSettings() {
     const capped = Math.min(score, 80);
@@ -203,13 +202,16 @@ function spawnPipe() {
     const { gap } = currentPipeSettings();
     const margin = 60;
 
-    const maxTop = H - margin - gap;
+    let maxTop = H - GROUND_HEIGHT - gap - 20;
     const top = margin + Math.random() * (maxTop - margin);
+
+    // FIX: spodní trubka nikdy nesmí vlézt pod trávu
+    let bottom = Math.min(top + gap, H - GROUND_HEIGHT - 20);
 
     pipes.push({
         x: W + 10,
         top,
-        bottom: top + gap,
+        bottom,
         scored: false,
     });
 }
@@ -291,7 +293,12 @@ function update() {
 
         for (const p of pipes) {
             const topRect = { x: p.x, y: 0, w: PIPE_WIDTH, h: p.top };
-            const botRect = { x: p.x, y: p.bottom, w: PIPE_WIDTH, h: H - p.bottom };
+            const botRect = {
+                x: p.x,
+                y: p.bottom,
+                w: PIPE_WIDTH,
+                h: H - GROUND_HEIGHT - p.bottom,
+            };
 
             const inset = 6;
             const b = {
@@ -410,11 +417,10 @@ function draw() {
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
 
-    const groundHeight = 80;
     ctx.fillStyle = "#ded895";
-    ctx.fillRect(0, H - groundHeight, W, groundHeight);
+    ctx.fillRect(0, H - GROUND_HEIGHT, W, GROUND_HEIGHT);
     ctx.fillStyle = "#3ec73e";
-    ctx.fillRect(0, H - groundHeight, W, 20);
+    ctx.fillRect(0, H - GROUND_HEIGHT, W, 20);
 
     for (const p of pipes) {
         ctx.fillStyle = "#3bb300";
@@ -424,8 +430,8 @@ function draw() {
         ctx.lineWidth = 4;
         ctx.strokeRect(p.x, 0, PIPE_WIDTH, p.top);
 
-        ctx.fillRect(p.x, p.bottom, PIPE_WIDTH, H - p.bottom);
-        ctx.strokeRect(p.x, p.bottom, PIPE_WIDTH, H - p.bottom);
+        ctx.fillRect(p.x, p.bottom, PIPE_WIDTH, H - GROUND_HEIGHT - p.bottom);
+        ctx.strokeRect(p.x, p.bottom, PIPE_WIDTH, H - GROUND_HEIGHT - p.bottom);
 
         ctx.fillStyle = "#4cff4c";
         ctx.fillRect(p.x - 3, p.top - 20, PIPE_WIDTH + 6, 20);
