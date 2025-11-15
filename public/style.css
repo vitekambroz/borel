@@ -134,6 +134,10 @@ body.animate-title .site-title span{
   margin-right:8px;
   opacity:.65;
   transition:opacity .25s,transform .25s;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  top: 1px;
 }
 
 .right-side{
@@ -191,6 +195,13 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
   box-shadow: 0 4px 12px rgba(229,0,106,0.28);
   transform: none !important;
   padding: 10px 18px;
+}
+
+.desktop-nav a .icon,
+.desktop-nav a .nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 html.theme-light .desktop-nav a.active{
