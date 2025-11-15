@@ -749,15 +749,14 @@ html.theme-dark .desktop-nav a:hover::after {
 }
 
 /* =========================================================
-   THEME TOGGLE — AUTO-CENTROVÁNÍ + LIGHT/DARK
+   PERFECT THEME TOGGLE – AUTO CENTER + VISIBLE DARK MODE
    ========================================================= */
 
 .theme-toggle {
-  position: absolute;        /* zarovnání k headeru */
+  position: absolute;
   right: 16px;
   top: 50%;
   transform: translateY(-50%);
-
   width: 70px;
   height: 36px;
   border-radius: 999px;
@@ -768,74 +767,68 @@ html.theme-dark .desktop-nav a:hover::after {
   padding: 4px;
 
   background: var(--switch-bg);
-  transition: background 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 0 20px rgba(0,0,0,0.35);
-
+  transition: background .3s ease, box-shadow .3s ease;
+  box-shadow: 0 0 16px rgba(0,0,0,0.35);
   z-index: 9999;
 }
 
-/* Vnitřní lišta */
+/* vnitřní lišta */
 .theme-toggle .switch {
   width: 100%;
   height: 100%;
   padding: 4px;
-  border-radius: inherit;
-
   position: relative;
+  border-radius: inherit;
   display: flex;
   align-items: center;
-
-  background: var(--switch-bg);
-  box-shadow: 0 0 22px rgba(0,0,0,0.45);
-  transition: background .3s ease;
+  background: var(--switch-bg) !important;
 }
 
-/* Tečka (thumb) — vždy uprostřed vertikálně */
+/* tečka */
 .theme-toggle .thumb {
   width: 26px;
   height: 26px;
   border-radius: 50%;
   background: var(--thumb-bg);
-
   position: absolute;
+
+  /* vždy přesně uprostřed vertikálně */
   top: 50%;
-  transform: translateY(-50%);      /* výchozí pozice v LIGHT */
-  left: 4px;
+  transform: translateY(-50%);
+  left: 4px; /* výchozí */
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   transition: transform .3s ease, background .3s ease;
-  box-shadow: 0 0 12px rgba(0,0,0,0.45);
 }
 
-/* Emoji LIGHT */
+/* LIGHT emoji + barvy */
 .theme-light .thumb::before {
   content: "🌞";
 }
 
-/* Emoji DARK */
-.theme-dark .thumb::before {
-  content: "🌙";
-}
-
-/* Tmavý mód → posun AUTOMATICKY doprava */
-.theme-dark .thumb {
-  transform: translate(calc(100% - 26px), -50%);
-}
-
-/* LIGHT barvy */
 .theme-light .theme-toggle .switch {
   --switch-bg: #ffe2f5;
   --thumb-bg: #ffffff;
 }
 
-/* DARK barvy */
+/* DARK emoji + barvy */
+.theme-dark .thumb::before {
+  content: "🌙";
+}
+
 .theme-dark .theme-toggle .switch {
-  --switch-bg: #12001a;
+  --switch-bg: #2a0038;   /* lepší viditelnost */
   --thumb-bg: #ffdbff;
+}
+
+/* DARK → tečka vpravo (AUTO) */
+.theme-dark .thumb {
+  left: auto;   /* zrušíme left */
+  right: 4px;   /* automatická pravá mezera */
 }
 
 @media (max-width: 1100px) {
