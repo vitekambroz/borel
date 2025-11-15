@@ -210,22 +210,25 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
    FINAL PIXEL-PERFECT ALIGN
 =========================================== */
 
-/* Domů – necháváme, už bylo přesně doladěno */
+/* Globální vyrovnání všech ikon */
+.desktop-nav a .nav-icon {
+  position: relative;
+  top: 0.5px;   /* lehké dorovnání na střed */
+}
+
+/* Domů – o kousíček níž */
 .desktop-nav a[data-page="/"] .nav-icon {
-    position: relative;
-    top: -1.2px;
+  top: 1.2px;
 }
 
-/* Fotogalerie – trochu dolů */
+/* Fotogalerie – zůstává ideální střed */
 .desktop-nav a[data-page="fotogalerie"] .nav-icon {
-    position: relative;
-    top: -1.0px;   /* bylo -2.0, posunuto o +1px dolů */
+  top: 0.0px;
 }
 
-/* Minihra – trochu nahoru */
+/* Minihra – o kousíček výš */
 .desktop-nav a[data-page="minihra"] .nav-icon {
-    position: relative;
-    top: -1.8px;  /* bylo -1.2, posunuto o -0.6px nahoru */
+  top: -0.8px;
 }
 
 .desktop-nav a .icon {
