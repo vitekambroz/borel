@@ -1,6 +1,6 @@
 // =====================================================
 //  Minihra.js – rage-bait verze
-//  Opravy: flip animace ikon + fix spodní trubky
+//  Opravy: fallback když chybí buttony / ikony + fix trubky
 // =====================================================
 
 const cvs = document.getElementById("game");
@@ -102,6 +102,7 @@ let hapticsEnabled = localStorage.getItem("hapticsEnabled") !== "0";
 //  SVG flip helper
 // =====================================================
 function showFlip(onSvg, offSvg, isOn) {
+    if (!onSvg || !offSvg) return;
     if (isOn) {
         onSvg.hidden = false;
         offSvg.hidden = true;
@@ -117,7 +118,7 @@ function showFlip(onSvg, offSvg, isOn) {
 function doHaptic(ms) {
     if (!hapticsEnabled) return;
     if (!("vibrate" in navigator)) return;
-    if (!matchMedia("(pointer: coarse)").matches) return; // jen mobilní
+    if (!(window.matchMedia && matchMedia("(pointer: coarse)").matches)) return; // jen mobily
     navigator.vibrate(ms);
 }
 
@@ -129,11 +130,13 @@ function applyMuteState() {
 }
 applyMuteState();
 
-muteBtn.addEventListener("click", () => {
-    isMuted = !isMuted;
-    localStorage.setItem("mutedState", isMuted ? "1" : "0");
-    applyMuteState();
-});
+if (muteBtn) {
+    muteBtn.addEventListener("click", () => {
+        isMuted = !isMuted;
+        localStorage.setItem("mutedState", isMuted ? "1" : "0");
+        applyMuteState();
+    });
+}
 
 // =====================================================
 //  Vibrace toggle
@@ -143,13 +146,14 @@ function applyVibrationState() {
 }
 applyVibrationState();
 
-vibBtn.addEventListener("click", () => {
-    hapticsEnabled = !hapticsEnabled;
-    localStorage.setItem("hapticsEnabled", hapticsEnabled ? "1" : "0");
-    applyVibrationState();
-
-    if (hapticsEnabled) doHaptic(35);
-});
+if (vibBtn) {
+    vibBtn.addEventListener("click", () => {
+        hapticsEnabled = !hapticsEnabled;
+        localStorage.setItem("hapticsEnabled", hapticsEnabled ? "1" : "0");
+        applyVibrationState();
+        if (hapticsEnabled) doHaptic(35);
+    });
+}
 
 // =====================================================
 //  Start / skok / restart
@@ -216,7 +220,7 @@ function spawnPipe() {
     let maxTop = H - GROUND_HEIGHT - gap - 20;
     const top = margin + Math.random() * (maxTop - margin);
 
-    // FIX: spodní trubka nesmí vlézt pod trávu
+    // spodní trubka nesmí vlézt pod trávu
     let bottom = Math.min(top + gap, H - GROUND_HEIGHT - 20);
 
     pipes.push({
