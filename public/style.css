@@ -445,164 +445,168 @@ html.theme-dark .desktop-nav a:hover::after{
 .menu-toggle.active span:nth-child(3){
   top:10px;transform:rotate(-45deg)
 }
-/* ===== THEME TOGGLE – SPOLEČNÝ ZÁKLAD ===== */
+/* ============================================================
+   THEME TOGGLE – SPOLEČNÝ ZÁKLAD
+============================================================ */
 
-.theme-toggle{
-  display:flex;
-  align-items:center;
-  border-radius:999px;
-  cursor:pointer;
-  background:var(--switch-bg);
-  box-shadow:0 0 16px rgba(0,0,0,.35);
-  transition:background .3s,box-shadow .3s;
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  border-radius: 999px;
+  cursor: pointer;
+  background: var(--switch-bg);
+  box-shadow: 0 0 16px rgba(0, 0, 0, .35);
+  transition: background .3s, box-shadow .3s;
 }
 
-.theme-toggle .switch{
-  width:100%;
-  height:100%;
-  padding:4px;
-  border-radius:inherit;
-  position:relative;
-  display:flex;
-  align-items:center;
-  background:var(--switch-bg)!important;
+.theme-toggle .switch {
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+  border-radius: inherit;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--switch-bg) !important;
 }
 
-.theme-toggle .thumb{
-  position:absolute;
-  top:50%;
-  left:4px;
-  transform:translateY(-50%);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  background:var(--thumb-bg);
-  font-size:1.2rem;
-  transition:transform .3s,background .3s;
+/* univerzální velikost kolečka */
+.theme-toggle .thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--thumb-bg);
+  font-size: 1.35rem;
+  transition: transform .3s, background .3s;
 }
 
-/* LIGHT režim – zvětšená bílá kulička */
-html.theme-light .theme-toggle .thumb {
-  width: 30px;
-  height: 30px;
-}
-
+/* emoji stejné velikosti */
 .theme-toggle .thumb::before {
   display: block;
-  transform: scale(1.15); /* zvětší emoji obecně */
+  font-size: 1.35rem;
 }
 
-/* měsíček trochu zmenšit (je defaultně větší) */
-html.theme-dark .theme-toggle .thumb::before {
-  transform: scale(1.0);
+/* světlý / tmavý mód — emoji */
+html.theme-light .theme-toggle .thumb::before { content: "🌞"; }
+html.theme-dark  .theme-toggle .thumb::before { content: "🌙"; }
+
+/* přesné zarovnání */
+html.theme-light .theme-toggle .thumb { left: 6px; }
+html.theme-dark  .theme-toggle .thumb { right: 6px; left: auto; }
+
+/* světlý mód barvy */
+html.theme-light .theme-toggle .switch {
+  --switch-bg: #ffe2f5;
+  --thumb-bg: #ffffff;
 }
 
-/* sluníčko trochu zvětšit (je menší) */
-html.theme-light .theme-toggle .thumb::before {
-  transform: scale(1.25);
-}
-
-/* světlý / tmavý emoji a barvy */
-html.theme-light .theme-toggle .thumb::before{content:"🌞";}
-html.theme-dark  .theme-toggle .thumb::before{content:"🌙";}
-
-html.theme-light .theme-toggle .switch{
-  --switch-bg:#ffe2f5;
-  --thumb-bg:#ffffff;
-}
-html.theme-dark .theme-toggle .switch{
-  --switch-bg:#2a0038;
-  --thumb-bg:#ffdbff;
-}
-
-/* posun tečky v dark režimu */
-html.theme-dark .theme-toggle .thumb{
-  left:auto;
-  right:4px;
+/* tmavý mód barvy */
+html.theme-dark .theme-toggle .switch {
+  --switch-bg: #2a0038;
+  --thumb-bg: #ffdbff;
 }
 
 /* bounce animace */
-@keyframes toggle-bounce{
-  0%{transform:translateY(-50%) scale(1);}
-  50%{transform:translateY(-50%) scale(1.2);}
-  100%{transform:translateY(-50%) scale(1);}
+@keyframes toggle-bounce {
+  0%   { transform: translateY(-50%) scale(1); }
+  50%  { transform: translateY(-50%) scale(1.2); }
+  100% { transform: translateY(-50%) scale(1); }
 }
-.bounce{animation:toggle-bounce .3s ease;}
+.bounce { animation: toggle-bounce .3s ease; }
 
 
-/* ===== DESKTOP VARIANTA (upraveno – varianta A) ===== */
+/* ============================================================
+   DESKTOP VARIANTA
+============================================================ */
 
-.theme-toggle.desktop-toggle{
-  position:absolute;
-  right:16px;
-  top:50%;
-  transform:translateY(-50%);
-  width:56px;     /* bylo 70px */
-  height:32px;    /* bylo 36px */
-  padding:3px;    /* bylo 4px */
-}
-
-.theme-toggle.desktop-toggle .thumb{
-  width:24px;     /* bylo 26 */
-  height:24px;
+.theme-toggle.desktop-toggle {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 62px;
+  height: 34px;
+  padding: 4px;
 }
 
-
-/* ===== MOBILNÍ VARIANTA V MENU (upraveno – varianta A) ===== */
-
-.mobile-theme-row{
-  width:100%;
-  padding:14px 20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+.theme-toggle.desktop-toggle .thumb {
+  width: 26px;
+  height: 26px;
 }
 
-.mobile-theme-label{
-  font-size:1.1rem;
-  font-weight:600;
+
+/* ============================================================
+   MOBILNÍ VARIANTA (MENU)
+============================================================ */
+
+.mobile-theme-row {
+  width: 100%;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.theme-toggle.mobile-toggle{
-  position:relative;
-  margin-left:20px;
-  width:52px;     /* bylo 60 */
-  height:28px;    /* bylo 32 */
-  padding:3px;
+.mobile-theme-label {
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
-.theme-toggle.mobile-toggle .switch{
-  padding:3px;
+.theme-toggle.mobile-toggle {
+  position: relative;
+  margin-left: 22px;
+  width: 54px;
+  height: 30px;
+  padding: 3px;
 }
 
-.theme-toggle.mobile-toggle .thumb{
-  width:22px;     /* bylo 24 */
-  height:22px;
+.theme-toggle.mobile-toggle .switch { padding: 3px; }
+
+.theme-toggle.mobile-toggle .thumb {
+  width: 24px;
+  height: 24px;
 }
 
-/* jemný glow v dark módu v menu */
-html.theme-dark .theme-toggle.mobile-toggle .switch{
+/* glow – dark mode */
+html.theme-dark .theme-toggle.mobile-toggle .switch {
   box-shadow:
-    0 0 12px rgba(255,0,180,.25),
-    0 0 24px rgba(255,0,255,.20);
+    0 0 12px rgba(255, 0, 180, .25),
+    0 0 24px rgba(255, 0, 255, .20);
 }
 
-/* separator v menu */
-.mobile-separator{
-  width:100%;
-  height:1px;
-  margin:10px 0 6px;
-  border:none;
-  background:rgba(255,255,255,.12);
+/* separator */
+.mobile-separator {
+  width: 100%;
+  height: 1px;
+  margin: 10px 0 6px;
+  border: none;
+  background: rgba(255, 255, 255, .12);
 }
-html.theme-light .mobile-separator{
-  background:rgba(255,0,140,.28);
-  box-shadow:0 0 6px rgba(255,0,140,.18);
+html.theme-light .mobile-separator {
+  background: rgba(255, 0, 140, .28);
+  box-shadow: 0 0 6px rgba(255, 0, 140, .18);
 }
-html.theme-dark .mobile-separator{
-  background:rgba(255,100,255,.22);
-  box-shadow:0 0 6px rgba(255,100,255,.18);
+html.theme-dark .mobile-separator {
+  background: rgba(255, 100, 255, .22);
+  box-shadow: 0 0 6px rgba(255, 100, 255, .18);
+}
+
+
+/* ===== visibility podle šířky ===== */
+@media (max-width: 1100px) {
+  .theme-toggle.desktop-toggle { display: none; }
+}
+@media (min-width: 1101px) {
+  .theme-toggle.mobile-toggle { display: none; }
 }
 
 /* viditelnost podle šířky */
