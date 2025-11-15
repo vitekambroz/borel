@@ -378,7 +378,7 @@ html.theme-light .mobile-nav a.active{
 /* Fotogalerie – trochu dolů */
 .mobile-nav a[data-page="fotogalerie"] .nav-icon {
     position: relative;
-    top: -1.8px !important;    
+    top: -1px !important;    
 }
 
 /* Minihra – víc nahoru */
