@@ -974,15 +974,15 @@ html.theme-dark .ui{
   40% {
     transform: scale(1.12);
     box-shadow:
-      0 0 10px rgba(255,0,200,0.45),
-      0 0 20px rgba(255,0,255,0.35),
-      0 0 30px rgba(255,0,255,0.25);
+      0 0 14px rgba(255,0,200,0.45),
+      0 0 28px rgba(255,0,255,0.35),
+      0 0 36px rgba(255,0,255,0.22);
   }
   70% {
     transform: scale(1.06);
     box-shadow:
-      0 0 6px rgba(255,0,200,0.30),
-      0 0 14px rgba(255,0,255,0.20);
+      0 0 8px rgba(255,0,200,0.30),
+      0 0 18px rgba(255,0,255,0.18);
   }
   100% {
     transform: scale(1);
@@ -990,10 +990,9 @@ html.theme-dark .ui{
   }
 }
 
-/* Třída, která animaci aplikuje */
 .difficultyPulse {
   animation: levelUpPulse .45s ease-out;
-  border-radius: 16px; /* aby efekt obepínal pilulku, NE čtverec */
+  border-radius: inherit; /* ← respektuje pilulku */
 }
 
 #restart,#mute{
