@@ -5,23 +5,11 @@ const menuBtn = document.querySelector(".menu-toggle");
 const mobileNav = document.querySelector(".mobile-nav");
 
 const toggles = document.querySelectorAll(".theme-toggle");
-const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 
 
-// ===============================================
-// SYSTÉMOVÉ TÉMA
-// ===============================================
-function systemPrefersDark() {
-  return prefersDark.matches;
-}
-
-
-// ===============================================
-// ULOŽENÍ MANUÁLNÍHO TÉMATA
-// ===============================================
-function saveManualTheme(mode) {
-  localStorage.setItem("theme-mode", "manual");
-  localStorage.setItem("theme", mode);
+// MEDIA QUERY musí být uložený jako funkce → kvůli iOS bugům
+function prefersDarkQuery() {
+  return window.matchMedia("(prefers-color-scheme: dark)");
 }
 
 
@@ -35,29 +23,39 @@ function applyTheme(mode, save = false) {
   html.classList.toggle("theme-dark", isDark);
   html.classList.toggle("theme-light", !isDark);
 
-  if (save) saveManualTheme(mode);
+  if (save) {
+    localStorage.setItem("theme-mode", "manual");
+    localStorage.setItem("theme", mode);
+  }
 }
 
 
 // ===============================================
-// INIT – první načtení
+// INIT – FUNGUJE NA IPHONE I ANDROID
 // ===============================================
-(function initTheme() {
+function initTheme() {
   const savedMode = localStorage.getItem("theme-mode");
   const savedTheme = localStorage.getItem("theme");
 
+  // manuální mód má přednost
   if (savedMode === "manual" && savedTheme) {
     applyTheme(savedTheme);
-  } else {
-    applyTheme(systemPrefersDark() ? "dark" : "light");
+    return;
   }
-})();
+
+  // správná detekce systémového tématu
+  const systemDark = prefersDarkQuery().matches;
+  applyTheme(systemDark ? "dark" : "light");
+}
+
+// spustíme až po načtení → iOS Safari opravuje hodnotu
+document.addEventListener("DOMContentLoaded", initTheme);
 
 
 // ===============================================
 // SYSTÉMOVÁ ZMĚNA
 // ===============================================
-prefersDark.addEventListener("change", e => {
+prefersDarkQuery().addEventListener("change", e => {
   if (localStorage.getItem("theme-mode") === "manual") return;
   applyTheme(e.matches ? "dark" : "light");
 });
@@ -95,7 +93,6 @@ if (menuBtn && mobileNav) {
   });
 }
 
-// zavření mobilního menu po kliknutí na odkaz
 document.querySelectorAll(".mobile-nav a").forEach(link => {
   link.addEventListener("click", () => {
     mobileNav.classList.remove("show");
