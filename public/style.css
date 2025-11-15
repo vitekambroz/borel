@@ -215,13 +215,13 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
 /* Domů – mírně nahoru */
 .desktop-nav a[data-page="/"] .nav-icon {
     position: relative;
-    top: -3.2px !important;   
+    top: -3px !important;   
 }
 
 /* Fotogalerie – téměř přesně */
 .desktop-nav a[data-page="fotogalerie"] .nav-icon {
     position: relative;
-    top: -1.1px !important;    
+    top: -1px !important;    
 }
 
 /* Minihra – trochu výš */
