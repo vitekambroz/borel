@@ -154,6 +154,10 @@ body.animate-title .site-title span{
 /* ============================================================
    DESKTOP NAVIGATION
 ============================================================ */
+/* ================================
+   DESKTOP NAV
+================================ */
+
 .desktop-nav{
   display:flex;
   align-items:center;
@@ -161,21 +165,27 @@ body.animate-title .site-title span{
   padding-right:48px;
 }
 
+/* perfektní vertikální centrování */
 .desktop-nav a{
-  line-height: 1;
   position: relative;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+
   padding: 10px 18px;
   border-radius: 12px;
+
   font-weight: 500;
+  line-height: 20px; /* výška ikon = dokonalé srovnání */
+
   transition: color .25s, background .25s, box-shadow .25s;
 }
 
 html.theme-light .desktop-nav a{color:var(--nav-light);}
 html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
 
+/* hover */
 .desktop-nav a:hover:not(.active){
   color: var(--brand-strong);
   background: rgba(255,255,255,0.1);
@@ -189,7 +199,7 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
   color:var(--brand-strong);
 }
 
-/* active link */
+/* active */
 .desktop-nav a.active{
   background: rgba(255,255,255,0.28);
   color: var(--brand-strong) !important;
@@ -198,19 +208,11 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
   padding: 10px 18px;
 }
 
-/* perfektní vycentrování ikona + text */
-.desktop-nav a {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  line-height: 1;
-}
-
 /* ===========================================
    FINAL PIXEL-PERFECT ALIGN
 =========================================== */
 
-/* Domů – malinko nahoru */
+/* Domů – malinko nahoru 
 .desktop-nav a[data-page="/"] .nav-icon {
     position: relative !important;
     top: -1.2px !important;
@@ -218,7 +220,7 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
     align-items: center !important;
 }
 
-/* Fotogalerie – o trošku dolů */
+/* Fotogalerie – o trošku dolů 
 .desktop-nav a[data-page="fotogalerie"] .nav-icon {
     position: relative !important;
     top: -0.3px !important;
@@ -226,7 +228,7 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
     align-items: center !important;
 }
 
-/* Minihra – trochu výš */
+/* Minihra – trochu výš 
 .desktop-nav a[data-page="minihra"] .nav-icon {
     position: relative !important;
     top: -2.1px !important;
@@ -271,7 +273,7 @@ html.theme-dark .desktop-nav a.active .icon{
   color:var(--brand-strong) !important;
   opacity:1 !important;
   transform:none !important;
-}
+}*/
 
 /* underline */
 .desktop-nav a::after{
