@@ -1,40 +1,36 @@
-/* ===============================================
-   SELECTORY
-   =============================================== */
+// ===============================================
+// SELECTORY
+// ===============================================
 const menuBtn = document.querySelector(".menu-toggle");
 const mobileNav = document.querySelector(".mobile-nav");
-const mobileToggleSlot = document.querySelector(".mobile-toggle-slot");
 
-// máme JEDEN toggle, jen se přesouvá
-const themeToggle = document.querySelector(".theme-toggle");
-
+// === 2 samostatné toggly ===
 const toggles = document.querySelectorAll(".theme-toggle");
+
+// systémové téma
 const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 
 
-
-/* ===============================================
-   SYSTÉMOVÉ TÉMA
-   =============================================== */
+// ===============================================
+// SYSTÉMOVÉ TÉMA
+// ===============================================
 function systemPrefersDark() {
   return prefersDark.matches;
 }
 
 
-
-/* ===============================================
-   ULOŽENÍ MANUÁLNÍHO TÉMATA
-   =============================================== */
+// ===============================================
+// ULOŽENÍ MANUÁLNÍHO TÉMATA
+// ===============================================
 function saveManualTheme(mode) {
   localStorage.setItem("theme-mode", "manual");
   localStorage.setItem("theme", mode);
 }
 
 
-
-/* ===============================================
-   APLIKACE TÉMATU
-   =============================================== */
+// ===============================================
+// APLIKACE TÉMATU
+// ===============================================
 function applyTheme(mode, save = false) {
   const html = document.documentElement;
   const isDark = mode === "dark";
@@ -50,10 +46,9 @@ function applyTheme(mode, save = false) {
 }
 
 
-
-/* ===============================================
-   INIT – první načtení
-   =============================================== */
+// ===============================================
+// INIT – první načtení
+// ===============================================
 (function initTheme() {
   const savedMode = localStorage.getItem("theme-mode");
   const savedTheme = localStorage.getItem("theme");
@@ -66,27 +61,27 @@ function applyTheme(mode, save = false) {
 })();
 
 
-
-/* ===============================================
-   SYSTÉMOVÁ ZMĚNA
-   =============================================== */
+// ===============================================
+// SYSTÉMOVÁ ZMĚNA
+// ===============================================
 prefersDark.addEventListener("change", e => {
   if (localStorage.getItem("theme-mode") === "manual") return;
   applyTheme(e.matches ? "dark" : "light");
 });
 
 
-
-/* ===============================================
-   PŘEPÍNAČ TÉMATA
-   =============================================== */
+// ===============================================
+// PŘEPÍNAČ TÉMATA (desktop + mobile)
+// ===============================================
 toggles.forEach(toggle => {
   toggle.addEventListener("click", () => {
+
     const html = document.documentElement;
     const nowDark = !html.classList.contains("theme-dark");
 
     applyTheme(nowDark ? "dark" : "light", true);
 
+    // animace tečky
     const thumb = toggle.querySelector(".thumb");
     if (thumb) {
       thumb.classList.remove("bounce");
@@ -97,38 +92,18 @@ toggles.forEach(toggle => {
 });
 
 
-
-/* ===============================================
-   MOBILE NAV MENU + PŘESUN TOGGLE
-   =============================================== */
-if (menuBtn && mobileNav && themeToggle) {
-
-  const header = document.querySelector("header");
-
+// ===============================================
+// MOBILE NAV MENU
+// ===============================================
+if (menuBtn && mobileNav) {
   menuBtn.addEventListener("click", () => {
     mobileNav.classList.toggle("show");
     menuBtn.classList.toggle("active");
-
-    const isOpen = mobileNav.classList.contains("show");
-
-    if (window.innerWidth <= 1100) {
-
-      if (isOpen) {
-        // přesunout toggle do mobilního menu
-        mobileToggleSlot.appendChild(themeToggle);
-        themeToggle.classList.add("mobile-toggle");
-      } else {
-        // vrátit toggle do headeru
-        header.appendChild(themeToggle);
-        themeToggle.classList.remove("mobile-toggle");
-      }
-    }
   });
 }
 
 
-
-/* ZAVŘENÍ MOBILNÍHO MENU KLIKNUTÍM NA ODKAZ */
+// zavření mobilního menu po kliknutí na odkaz
 document.querySelectorAll(".mobile-nav a").forEach(link => {
   link.addEventListener("click", () => {
     mobileNav.classList.remove("show");
@@ -137,10 +112,9 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 });
 
 
-
-/* ===============================================
-   FADE TITLE
-   =============================================== */
+// ===============================================
+// FADE TITLE + SMART HEADER HIDE
+// ===============================================
 let lastScroll = 0;
 
 window.addEventListener("scroll", () => {
@@ -157,11 +131,9 @@ window.addEventListener("scroll", () => {
   if (current > 40) title.classList.add("shrunk");
   else title.classList.remove("shrunk");
 
-  if (current > fadeRange) {
-    if (current > lastScroll) {
-      header.style.opacity = "0";
-      header.style.transform = "translateY(-20px)";
-    }
+  if (current > fadeRange && current > lastScroll) {
+    header.style.opacity = "0";
+    header.style.transform = "translateY(-20px)";
   }
 
   if (current < lastScroll) {
@@ -173,10 +145,9 @@ window.addEventListener("scroll", () => {
 });
 
 
-
-/* ===============================================
-   ACTIVE NAV
-   =============================================== */
+// ===============================================
+// ACTIVE NAV
+// ===============================================
 (function setActiveLink() {
   let page = window.location.pathname;
 
@@ -189,10 +160,9 @@ window.addEventListener("scroll", () => {
 })();
 
 
-
-/* ===============================================
-   NAV HEIGHT → CSS VARIABLE
-   =============================================== */
+// ===============================================
+// NAV HEIGHT → CSS VARIABLE
+// ===============================================
 const nav = document.querySelector("nav");
 if (nav) {
   const height = nav.offsetHeight;

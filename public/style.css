@@ -494,96 +494,189 @@ html.theme-dark .desktop-nav a:hover::after{
   top:10px;transform:rotate(-45deg)
 }
 
-
-/* ===========================================================
-      JEDNOTNÝ A OPRAVENÝ THEME TOGGLE (DESKTOP + MOBIL)
-=========================================================== */
+/* =========================================================
+   DESKTOP THEME TOGGLE (HEADER)
+   ========================================================= */
 
 header .theme-toggle {
-  position:absolute;right:16px;top:50%;transform:translateY(-50%);
-  width:70px;height:36px;padding:4px;border-radius:999px;
-  display:flex;align-items:center;cursor:pointer;
-  background:var(--switch-bg);box-shadow:0 0 16px rgba(0,0,0,.35);
-  transition:background .3s,box-shadow .3s;z-index:9999;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 70px;
+  height: 36px;
+  padding: 4px;
+  border-radius: 999px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+
+  background: var(--switch-bg);
+  box-shadow: 0 0 16px rgba(0,0,0,0.35);
+
+  transition: background .3s, box-shadow .3s;
+  z-index: 9999;
 }
 
-header .theme-toggle .switch{
-  width:100%;height:100%;padding:4px;border-radius:inherit;
-  display:flex;align-items:center;position:relative;
-  background:var(--switch-bg)!important;
+header .theme-toggle .switch {
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+  border-radius: inherit;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: var(--switch-bg) !important;
 }
 
-header .theme-toggle .thumb{
-  width:26px;height:26px;border-radius:50%;
-  position:absolute;top:50%;left:4px;transform:translateY(-50%);
-  background:var(--thumb-bg);display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;transition:transform .3s,background .3s;
+header .theme-toggle .thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  transform: translateY(-50%);
+  background: var(--thumb-bg);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1.2rem;
+  transition: transform .3s, background .3s;
 }
 
-.mobile-theme-row{
-  width:100%;padding:14px 20px;
-  display:flex;align-items:center;justify-content:space-between;
+
+/* =========================================================
+   MOBILE THEME TOGGLE (INSIDE MENU)
+   ========================================================= */
+
+.mobile-theme-row {
+  width: 100%;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.mobile-theme-label{
-  font-size:1.1rem;font-weight:600;
+.mobile-theme-label {
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
-.mobile-theme-row .theme-toggle{
-  position:relative;top:0;right:0;transform:none;
-  width:60px;height:32px;padding:3px;border-radius:999px;
-  display:flex;align-items:center;background:var(--switch-bg);
+.mobile-theme-row .theme-toggle {
+  width: 60px;
+  height: 32px;
+  padding: 3px;
+
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  position: relative;
+
+  background: var(--switch-bg);
+  box-shadow: none;
 }
 
-.mobile-theme-row .switch{
-  width:100%;height:100%;padding:3px;border-radius:inherit;
-  display:flex;align-items:center;position:relative;
-  background:var(--switch-bg);
+.mobile-theme-row .switch {
+  width: 100%;
+  height: 100%;
+  padding: 3px;
+  border-radius: inherit;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  background: var(--switch-bg);
 }
 
-.mobile-theme-row .thumb{
-  width:24px;height:24px;border-radius:50%;
-  position:absolute;top:50%;left:3px;transform:translateY(-50%);
-  background:var(--thumb-bg);display:flex;justify-content:center;align-items:center;
-  font-size:1rem;transition:transform .25s,background .25s;
+.mobile-theme-row .thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  transform: translateY(-50%);
+
+  background: var(--thumb-bg);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 1rem;
+  transition: transform .25s, background .25s;
 }
 
-.theme-light .theme-toggle .thumb::before{content:"🌞";}
-.theme-dark  .theme-toggle .thumb::before{content:"🌙";}
 
-.theme-light .theme-toggle .switch{
-  --switch-bg:#ffe2f5;--thumb-bg:#ffffff;
-}
-.theme-dark .theme-toggle .switch{
-  --switch-bg:#2a0038;--thumb-bg:#ffdbff;
-}
+/* =========================================================
+   EMOJI & COLORS (LIGHT / DARK)
+   ========================================================= */
 
-.theme-dark header .theme-toggle .thumb{
-  left:auto;right:4px;
-}
-.theme-dark .mobile-theme-row .thumb{
-  left:auto;right:3px;
+.theme-light .theme-toggle .thumb::before { content: "🌞"; }
+.theme-dark  .theme-toggle .thumb::before { content: "🌙"; }
+
+.theme-light .theme-toggle .switch {
+  --switch-bg: #ffe2f5;
+  --thumb-bg: #ffffff;
 }
 
-@media(max-width:1100px){
-  header .theme-toggle{display:none!important;}
+.theme-dark .theme-toggle .switch {
+  --switch-bg: #2a0038;
+  --thumb-bg: #ffdbff;
 }
 
-.mobile-separator{
-  width:100%;height:1px;margin:10px 0 6px;border:none;
-  background:rgba(255,255,255,.12);
+/* DARK thumb position */
+.theme-dark header .theme-toggle .thumb {
+  left: auto;
+  right: 4px;
 }
 
-.theme-light .mobile-separator{
-  background:rgba(255,0,140,.28);
-  box-shadow:0 0 6px rgba(255,0,140,.18);
+.theme-dark .mobile-theme-row .thumb {
+  left: auto;
+  right: 3px;
 }
 
-.theme-dark .mobile-separator{
-  background:rgba(255,100,255,.22);
-  box-shadow:0 0 6px rgba(255,100,255,.18);
+
+/* =========================================================
+   RESPONSIVE — SCHOVAT DESKTOP TOGGLE NA MOBILU
+   ========================================================= */
+
+@media(max-width:1100px) {
+  header .theme-toggle {
+    display: none !important;
+  }
 }
 
+
+/* =========================================================
+   MOBILE MENU SEPARATOR
+   ========================================================= */
+
+.mobile-separator {
+  width: 100%;
+  height: 1px;
+  margin: 10px 0 6px;
+  background: rgba(255,255,255,0.12);
+  border: none;
+}
+
+.theme-light .mobile-separator {
+  background: rgba(255, 0, 140, 0.28);
+  box-shadow: 0 0 6px rgba(255, 0, 140, 0.18);
+}
+
+.theme-dark .mobile-separator {
+  background: rgba(255, 100, 255, 0.22);
+  box-shadow: 0 0 6px rgba(255, 100, 255, 0.18);
+}
 
 /* =============================
         RESPONSIVE HEADER

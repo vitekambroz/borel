@@ -66,7 +66,7 @@
 <body>
 <header>
 
-  <!-- MOBILE Hamburger -->
+  <!-- MOBILE HAMBURGER -->
   <button class="menu-toggle" aria-label="Menu">
     <span></span>
     <span></span>
@@ -80,18 +80,18 @@
     </h1>
   </div>
 
-  <!-- RIGHT SIDE (DESKTOP NAV + TOGGLE) -->
+  <!-- RIGHT SIDE (DESKTOP NAV + DESKTOP TOGGLE) -->
   <div class="right-side">
 
     <nav class="desktop-nav">
 
-      <!-- DOMŮ -->
+      <!-- Domů -->
       <a href="/" data-page="/">
         <span class="icon svg-wrap">
           <svg viewBox="0 0 24 24" class="nav-icon">
             <path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-6v-6H10v6H4a1 1 0 0 1-1-1V10.5z"
               fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linejoin="round" />
+              stroke-linejoin="round"/>
           </svg>
         </span>
         Domů
@@ -102,11 +102,11 @@
         <span class="icon svg-wrap">
           <svg viewBox="0 0 24 24" class="nav-icon">
             <rect x="3" y="3" width="18" height="18" rx="4"
-              fill="none" stroke="currentColor" stroke-width="2" />
-            <circle cx="9" cy="9" r="2" fill="currentColor" />
+              fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9" cy="9" r="2" fill="currentColor"/>
             <path d="M21 16l-5-4-3 3-4-3-6 6"
               fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round" />
+              stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </span>
         Fotogalerie
@@ -117,10 +117,10 @@
         <span class="icon svg-wrap">
           <svg viewBox="0 0 24 24" class="nav-icon">
             <rect x="2.5" y="9" width="19" height="10" rx="4"
-              fill="none" stroke="currentColor" stroke-width="2" />
-            <circle cx="9" cy="14" r="1.5" fill="currentColor" />
-            <circle cx="15" cy="12.5" r="1.3" fill="currentColor" />
-            <circle cx="15" cy="15.5" r="1.3" fill="currentColor" />
+              fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9" cy="14" r="1.5" fill="currentColor"/>
+            <circle cx="15" cy="12.5" r="1.3" fill="currentColor"/>
+            <circle cx="15" cy="15.5" r="1.3" fill="currentColor"/>
           </svg>
         </span>
         Minihra
@@ -128,7 +128,7 @@
 
     </nav>
 
-    <!-- **JEDINÝ** theme toggle (přesouvá se mezi header ↔ mobile menu) -->
+    <!-- DESKTOP THEME TOGGLE (TEN, KTERÝ SE PŘESOUVÁ DO MOBILU) -->
     <div class="theme-toggle">
       <div class="switch">
         <div class="thumb"></div>
@@ -139,7 +139,7 @@
 
 
 
-  <!-- MOBILE NAV -->
+  <!-- MOBILE NAVIGATION -->
   <div class="mobile-nav">
 
     <a href="/" data-page="/">
@@ -147,39 +147,42 @@
         <svg viewBox="0 0 24 24" class="nav-icon">
           <path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-6v-6H10v6H4a1 1 0 0 1-1-1V10.5z"
             fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linejoin="round" />
+            stroke-linejoin="round"/>
         </svg>
-      </span> Domů
+      </span>
+      Domů
     </a>
 
     <a href="/fotogalerie" data-page="fotogalerie">
       <span class="icon svg-wrap">
         <svg viewBox="0 0 24 24" class="nav-icon">
           <rect x="3" y="3" width="18" height="18" rx="4"
-            fill="none" stroke="currentColor" stroke-width="2" />
-          <circle cx="9" cy="9" r="2" fill="currentColor" />
+            fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="9" cy="9" r="2" fill="currentColor"/>
           <path d="M21 16l-5-4-3 3-4-3-6 6"
             fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round" />
+            stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-      </span> Fotogalerie
+      </span>
+      Fotogalerie
     </a>
 
     <a href="/minihra" data-page="minihra">
       <span class="icon svg-wrap">
         <svg viewBox="0 0 24 24" class="nav-icon">
           <rect x="2.5" y="9" width="19" height="10" rx="4"
-            fill="none" stroke="currentColor" stroke-width="2" />
-          <circle cx="9" cy="14" r="1.5" fill="currentColor" />
-          <circle cx="15" cy="12.5" r="1.3" fill="currentColor" />
-          <circle cx="15" cy="15.5" r="1.3" fill="currentColor" />
+            fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="9" cy="14" r="1.5" fill="currentColor"/>
+          <circle cx="15" cy="12.5" r="1.3" fill="currentColor"/>
+          <circle cx="15" cy="15.5" r="1.3" fill="currentColor"/>
         </svg>
-      </span> Minihra
+      </span>
+      Minihra
     </a>
 
     <hr class="mobile-separator">
 
-    <!-- SLOT, kam se *přesune* jediný theme-toggle -->
+    <!-- SLOT KAM SE PŘESUNE TEMA TOGGLE -->
     <div class="mobile-theme-row">
       <span class="mobile-theme-label">Téma</span>
       <div class="mobile-toggle-slot"></div>
