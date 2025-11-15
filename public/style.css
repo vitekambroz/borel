@@ -184,7 +184,7 @@ body.animate-title .site-title span {
   margin-left: auto;
   display: flex;
   align-items: center;
-  padding-right: 28px;
+  padding-right: 110px;
   gap: 14px;
 }
 
@@ -193,7 +193,7 @@ body.animate-title .site-title span {
   display: flex;
   align-items: center;
   gap: 28px;
-  padding-right: 28px; /* mezera od togglu */
+  padding-right: 110px; /* mezera od togglu */
 }
 
 /* ---- SPOTIFY UNDERLINE ANIMATION ---- */
@@ -853,6 +853,21 @@ html.theme-dark .desktop-nav a:hover::after {
     0 0 6px rgba(255, 100, 255, 0.25);
 }
 
+/* DARK MODE – neon efekt kolem přepínače */
+.theme-dark .theme-toggle {
+  box-shadow:
+    0 0 12px rgba(255, 0, 180, 0.35),
+    0 0 26px rgba(255, 0, 220, 0.35),
+    0 0 40px rgba(255, 0, 255, 0.25);
+}
+
+/* Glow kolem tečky */
+.theme-dark .theme-toggle .thumb {
+  box-shadow:
+    0 0 10px rgba(255, 150, 255, 0.9),
+    0 0 22px rgba(229, 0, 106, 0.7);
+}
+
 /* Animation smooth */
 html {
   transition: background .35s ease, color .35s ease;
@@ -886,7 +901,7 @@ html {
     top: 64px;
     flex-direction: column;
     align-items: stretch;
-    padding: 12px 28px;
+    padding: 12px 110px;
     border-radius: 18px;
     background: var(--glass-light);
     backdrop-filter: blur(12px);
