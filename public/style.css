@@ -363,15 +363,7 @@ html.theme-light .desktop-nav a.active {
   text-shadow: 0 0 8px rgba(255, 120, 200, 0.35);
 }
 
-html.theme-light .desktop-nav a.active .nav-icon,
-html.theme-light .desktop-nav a.active .icon {
-  color: var(--brand-strong) !important;
-  opacity: 1 !important;
-  transform: translateY(-1px);
-}
-
 html.theme-dark .desktop-nav a.active {
-  color: var(--nav-dark-active) !important;
   transform: translateY(-2px);
   text-shadow: 0 0 8px rgba(255, 120, 255, 0.35);
 }
@@ -419,11 +411,9 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark)}
 .desktop-nav a:hover::after{width:calc(100% - 24px)}
 
 .desktop-nav a.active::after {
-  background: var(--brand-strong) !important;
-  box-shadow:
-    0 0 12px rgba(255, 0, 200, 0.45),
-    0 0 28px rgba(255, 0, 255, 0.25) !important;
-  width: calc(100% - 24px) !important;
+  width: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
 }
 
 html.theme-light .desktop-nav a:hover::after{
@@ -433,8 +423,6 @@ html.theme-light .desktop-nav a:hover::after{
 html.theme-dark .desktop-nav a:hover::after{
   box-shadow:0 0 12px rgba(255,0,200,.45),0 0 28px rgba(255,0,255,.25)
 }
-
-.desktop-nav a.active .icon,
 
 
 /* =============================
