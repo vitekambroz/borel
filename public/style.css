@@ -152,21 +152,18 @@ body.animate-title .site-title span{
 
 
 /* ============================================================
-   DESKTOP NAVIGATION
+   DESKTOP NAVIGATION (FIXED ALIGN + PERFECT UNDERLINE)
 ============================================================ */
-/* ================================
-   DESKTOP NAV
-================================ */
 
-.desktop-nav{
-  display:flex;
-  align-items:center;
-  gap:28px;
-  padding-right:48px;
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding-right: 48px;
 }
 
 /* perfektní vertikální centrování */
-.desktop-nav a{
+.desktop-nav a {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -177,127 +174,127 @@ body.animate-title .site-title span{
   border-radius: 12px;
 
   font-weight: 500;
-  line-height: 20px; /* výška ikon = dokonalé srovnání */
+  line-height: 20px; /* stejné jako 20px ikona => přesný střed */
 
   transition: color .25s, background .25s, box-shadow .25s;
 }
 
-html.theme-light .desktop-nav a{color:var(--nav-light);}
-html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
+/* LIGHT / DARK default text */
+html.theme-light .desktop-nav a { color: var(--nav-light); }
+html.theme-dark  .desktop-nav a { color: var(--nav-dark); }
 
 /* hover */
-.desktop-nav a:hover:not(.active){
+.desktop-nav a:hover:not(.active) {
   color: var(--brand-strong);
   background: rgba(255,255,255,0.1);
   box-shadow: 0 4px 10px rgba(229,0,106,0.22);
-  transform: none;
 }
 
-.desktop-nav a:hover .icon,
-.desktop-nav a:hover .nav-icon{
-  opacity:1;
-  color:var(--brand-strong);
+.desktop-nav a:hover .nav-icon,
+.desktop-nav a:hover .icon {
+  opacity: 1;
+  color: var(--brand-strong);
 }
 
 /* active */
-.desktop-nav a.active{
+.desktop-nav a.active {
   background: rgba(255,255,255,0.28);
   color: var(--brand-strong) !important;
   box-shadow: 0 4px 12px rgba(229,0,106,0.28);
-  transform: none !important;
-  padding: 10px 18px;
 }
 
-/* ================================
-   ICON ALIGNMENT PER PAGE
-================================ */
+/* theme specific active */
+html.theme-light .desktop-nav a.active {
+  background: rgba(255,0,140,0.18);
+  box-shadow: 0 4px 12px rgba(255,0,140,0.30);
+}
+
+html.theme-dark .desktop-nav a.active {
+  background: rgba(255,0,255,0.16);
+  box-shadow: 0 4px 14px rgba(255,0,255,0.30);
+  text-shadow: 0 0 8px rgba(255,120,255,0.35);
+}
+
+html.theme-dark .desktop-nav a.active .nav-icon,
+html.theme-dark .desktop-nav a.active .icon {
+  color: var(--brand-strong) !important;
+  opacity: 1 !important;
+}
+
+/* ============================================================
+   ICON ALIGNMENT PER PAGE (pixel-perfect)
+============================================================ */
 
 /* Domů – mírně nahoru */
 .desktop-nav a[data-page="/"] .nav-icon {
     position: relative;
-    top: -3px !important;   
+    top: -3px !important;
 }
 
 /* Fotogalerie – téměř přesně */
 .desktop-nav a[data-page="fotogalerie"] .nav-icon {
     position: relative;
-    top: 0.5px !important;    
+    top: 0.5px !important;
 }
 
-/* Minihra – trochu výš */
+/* Minihra – trošku výš */
 .desktop-nav a[data-page="minihra"] .nav-icon {
     position: relative;
-    top: -2.5px !important;  
+    top: -2.5px !important;
 }
 
-.desktop-nav a .icon {
+.desktop-nav a .icon,
+.desktop-nav a .nav-icon {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-html.theme-light .desktop-nav a.active{
-  background: rgba(255,0,140,0.18);
-  box-shadow: 0 4px 12px rgba(255,0,140,0.28);
+/* ============================================================
+   UNDERLINE (PSEUDO ELEMENT – NEPOSOUVÁ TEXT!)
+============================================================ */
+
+.desktop-nav a .label {
+  position: relative;
+  display: inline-block;
 }
 
-html.theme-dark .desktop-nav a.active{
-  background: rgba(255,0,255,0.16);
-  box-shadow: 0 4px 12px rgba(255,0,255,0.28);
+.desktop-nav a .label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+
+  bottom: -3px;  /* pod textem, NEZVEDÁ TEXT */
+  height: 2px;
+  border-radius: 4px;
+  background: var(--brand-strong);
+
+  opacity: 0;
+  transform: scaleX(0);
+  transition: .25s;
 }
 
-html.theme-light .desktop-nav a.active{
-  background:rgba(255,0,140,.18);
-  box-shadow:0 4px 12px rgba(255,0,140,.28);
-  color:var(--brand-strong) !important;
+/* hover underline */
+.desktop-nav a:hover .label::after {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
-html.theme-dark .desktop-nav a.active{
-  background:rgba(255,0,255,.16);
-  box-shadow:0 4px 14px rgba(255,0,255,.28);
-  color:var(--brand-strong) !important;
+/* active NEPOTŘEBUJE underline, pilulka je highlight */
+.desktop-nav a.active .label::after {
+  opacity: 0 !important;
+  transform: scaleX(0) !important;
 }
 
-html.theme-dark .desktop-nav a.active{
-  text-shadow:0 0 8px rgba(255,120,255,.35);
+/* fancy glow on hover – theme based */
+html.theme-light .desktop-nav a:hover .label::after {
+  box-shadow: 0 0 8px rgba(255,120,200,.35), 0 0 16px rgba(255,120,200,.25);
 }
 
-html.theme-dark .desktop-nav a.active .nav-icon,
-html.theme-dark .desktop-nav a.active .icon{
-  color:var(--brand-strong) !important;
-  opacity:1 !important;
-  transform:none !important;
+html.theme-dark .desktop-nav a:hover .label::after {
+  box-shadow: 0 0 12px rgba(255,0,200,.45), 0 0 28px rgba(255,0,255,.25);
 }
-
-/* underline */
-.desktop-nav a::after{
-  content:"";
-  position:absolute;
-  left:12px;
-  bottom:4px;
-  height:2px;
-  width:0;
-  border-radius:4px;
-  background:var(--brand-strong);
-  transition:width .28s,background .28s,box-shadow .28s;
-}
-
-.desktop-nav a:hover::after{width:calc(100% - 24px);}
-
-.desktop-nav a.active::after{
-  width:0 !important;
-  background:none !important;
-  box-shadow:none !important;
-}
-
-html.theme-light .desktop-nav a:hover::after{
-  box-shadow:0 0 8px rgba(255,120,200,.35),0 0 16px rgba(255,120,200,.25);
-}
-
-html.theme-dark .desktop-nav a:hover::after{
-  box-shadow:0 0 12px rgba(255,0,200,.45),0 0 28px rgba(255,0,255,.25);
-}
-
 
 /* ============================================================
    MOBILE NAVIGATION
