@@ -539,6 +539,7 @@ html.theme-dark .theme-toggle .thumb{
 
 .theme-toggle.mobile-toggle{
   position:relative;
+  margin-left: 20px;
   width:60px;
   height:32px;
   padding:3px;
