@@ -162,6 +162,7 @@ body.animate-title .site-title span{
 }
 
 .desktop-nav a{
+  line-height: 1;
   position: relative;
   display: flex;
   align-items: center;
@@ -203,8 +204,13 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
   align-items: center;
   justify-content: center;
   position: relative;
-  top: 0;
+  top: 1px;
   transform: none !important;
+}
+
+.desktop-nav a .nav-icon,
+.desktop-nav a .icon svg {
+  display: block;
 }
 
 html.theme-light .desktop-nav a.active{
