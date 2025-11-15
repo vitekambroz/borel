@@ -1,3 +1,4 @@
+
 /* =========================================================
    BOREL 2025 – Neonový styl (kompletně nový style.css)
    ========================================================= */
@@ -9,25 +10,34 @@
 :root {
   --brand: #e5006a;
   --brand-strong: #ff2f92;
+
   --bg-light: #ffe6f0;
   --bg-dark-solid: #120018;
   --bg-dark-grad: radial-gradient(circle at top, #3a005a, #120018 50%, #050008 100%);
-  --glow:none;
+
+  --glow: none;
+
   --nav-height: 70px;
   --mobile-nav-height: 58px;
-  --nav-light: #5a004e;         /* světlej text */
-  --nav-light-hover: #ff2b84;   /* světlej hover */
-  --nav-light-active: #ff2b84;  /* světlej aktivní */
-  --nav-dark: #ffffff;          /* tmavej text */
-  --nav-dark-hover: #ff7bff;    /* tmavej hover */
-  --nav-dark-active: #ff4bf7;   /* tmavej aktivní */
+
+  --nav-light: #5a004e;
+  --nav-light-hover: #ff2b84;
+  --nav-light-active: #ff2b84;
+
+  --nav-dark: #ffffff;
+  --nav-dark-hover: #ff7bff;
+  --nav-dark-active: #ff4bf7;
+
   --text: #2b0020;
   --text-soft: #5a1140;
   --text-dark: #fce9f6;
+
   --glass-light: rgba(255, 255, 255, 0.7);
   --glass-dark: rgba(8, 0, 16, 0.85);
+
   --border-glass-light: rgba(255, 255, 255, 0.5);
   --border-glass-dark: rgba(255, 150, 255, 0.35);
+
   --shadow-soft: 0 12px 35px rgba(229, 0, 106, 0.25);
   --shadow-strong: 0 0 40px rgba(255, 0, 170, 0.4);
 }
@@ -41,12 +51,16 @@ html.theme-dark {
   --bg-light: var(--bg-dark-grad);
   --text: var(--text-dark);
   --text-soft: #ffe0ff;
+
   --glass-light: var(--glass-dark);
   --border-glass-light: var(--border-glass-dark);
+
   --shadow-soft: 0 12px 40px rgba(255, 0, 255, 0.35);
 }
 
-/* Reset + base */
+/* ------------------------- */
+/* RESET + BASE              */
+/* ------------------------- */
 
 *,
 *::before,
@@ -56,21 +70,25 @@ html.theme-dark {
 
 body {
   margin: 0;
-  min-height: 100vh;          /* tělo musí mít výšku celé obrazovky */
-  display: flex;              /* aby footer mohl zůstat dole */
-  flex-direction: column;     
-  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+
   color: var(--text);
   background: var(--bg-light);
+
   transition: background 0.6s ease, color 0.4s ease;
-  overflow-x: hidden;         /* fix oproti horizontálnímu scrollu na mobilu */
+  overflow-x: hidden;
 }
 
 main {
-  flex: 1 0 auto;             /* main zabere všechno mezi headerem a footerem */
+  flex: 1 0 auto;
   width: 100%;
-  padding: 20px 5vw 40px;     /* tvé původní paddingy */
-  box-sizing: border-box;     /* jistota – žádné posuny */
+  padding: 20px 5vw 40px;
+  box-sizing: border-box;
 }
 
 img {
@@ -83,42 +101,38 @@ img {
 /* HEADER + NAV              */
 /* ------------------------- */
 
-/* ========================================= */
-/* HEADER LAYOUT (DESKTOP + MOBIL)           */
-/* ========================================= */
-
 header {
   position: sticky !important;
   top: 0;
   z-index: 9999;
+
   display: flex;
   align-items: center;
 
   padding: 10px 16px;
   min-height: 58px;
+
   background: color-mix(in srgb, var(--glass-light) 75%, transparent);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+
   border-bottom: 1px solid var(--border-glass-light);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 
   position: relative;
   transition: opacity 0.35s ease, transform 0.35s ease;
-  will-change: opacity, transform;
 }
 
-/* CENTER TITLE */
-/* TITLE — apple style */
 .title-wrap {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  pointer-events: none;
 
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+
+  pointer-events: none;
 }
 
 .site-title {
@@ -126,42 +140,39 @@ header {
   font-size: 2.2rem;
   letter-spacing: 0.20em;
   font-weight: 800;
+
   font-family: "Fredoka", "Poppins", sans-serif;
   color: var(--brand-strong);
 
   pointer-events: auto;
 
-  /* apple-like crisp neon */
   text-shadow:
     0 0 10px rgba(229, 0, 106, 0.5),
     0 0 22px rgba(255, 150, 255, 0.4);
 
   transition: opacity .25s ease, transform .25s ease;
 }
+
 .site-title.shrunk {
   font-size: 1.4rem;
 }
 
 .site-title span {
   display: inline-block;
-  transition: transform .25s ease;
+  transition: transform 0.25s ease;
 }
 
-/* optional mini-hover bounce */
 .site-title span:hover {
   transform: translateY(-2px) scale(1.1);
 }
 
-/* keep your existing cuteLetter animation */
 body.animate-title .site-title span {
   opacity: 0;
   transform: translateY(14px) scale(0.92);
   animation: cuteLetter 0.55s cubic-bezier(.22,1.5,.36,1) forwards;
 }
 
-.title-wrap h1 {
-  pointer-events: auto;
-}
+/* Ikony */
 
 .nav-icon {
   width: 20px;
@@ -176,6 +187,7 @@ body.animate-title .site-title span {
   transform: translateY(-2px);
   color: var(--brand-strong);
 }
+
 .desktop-nav a.active .nav-icon {
   opacity: 1;
   transform: translateY(-1px);
@@ -187,7 +199,9 @@ body.animate-title .site-title span {
   margin-right: 10px;
   opacity: 0.9;
 }
-/* RIGHT SIDE -> NAV*/
+
+/* RIGHT SIDE */
+
 .right-side {
   margin-left: auto;
   display: flex;
@@ -197,22 +211,24 @@ body.animate-title .site-title span {
 }
 
 /* DESKTOP NAV */
+
 .desktop-nav {
   display: flex;
   align-items: center;
   gap: 28px;
-  padding-right: 48px; /* mezera od togglu */
+  padding-right: 48px;
 }
 
-/* ---- SPOTIFY UNDERLINE ANIMATION ---- */
 .desktop-nav a {
   padding: 10px 16px;
   border-radius: 12px;
   font-weight: 500;
-  position: relative;
+
   display: flex;
   align-items: center;
   gap: 8px;
+
+  position: relative;
   transition: color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -224,39 +240,36 @@ html.theme-dark .desktop-nav a {
   color: var(--nav-dark);
 }
 
-/* ikonka nemá dělat transform! */
 .desktop-nav a .icon {
   opacity: 0.55;
-  transition: opacity .25s ease;
+  transition: opacity 0.25s ease;
 }
 
 .desktop-nav a .nav-icon {
-  transition: 
-    color inherit,
+  transition:
+    color 0.25s ease,
     background 0.25s ease,
     box-shadow 0.25s ease,
     opacity 0.25s ease;
 }
 
-/* hover = zvedne se celej element, ne jen ikonka */
+/* HOVER */
+
 .desktop-nav a:hover {
   color: var(--brand-strong);
   transform: translateY(-2px);
   text-shadow: 0 0 6px rgba(255, 100, 180, 0.35);
 }
 
-.desktop-nav a:hover .icon {
-  opacity: 1;
-}
+.desktop-nav a:hover .icon,
 .desktop-nav a:hover .nav-icon {
   opacity: 1;
   color: var(--brand-strong);
 }
 
-
 /* ---------- UNDERLINE ANIMATION ---------- */
 
-/* ZÁKLAD PODTRŽENÍ – roste zleva pomocí width */
+/* základ podtržení – roste zleva doprava */
 .desktop-nav a::after {
   content: "";
   position: absolute;
@@ -265,33 +278,41 @@ html.theme-dark .desktop-nav a {
   height: 2px;
   width: 0;
   border-radius: 4px;
-  transition: width .28s cubic-bezier(.25,.46,.45,.94),
-              background .28s ease, 
-              box-shadow .28s ease;
+  background: var(--brand-strong);
+  box-shadow: none;
+  transition:
+    width .28s cubic-bezier(.25,.46,.45,.94),
+    background .28s ease,
+    box-shadow .28s ease;
 }
 
-/* při hoveru/active se linka roztáhne zleva doprava */
-.desktop-nav a:hover::after,
-.desktop-nav a.active::after {
+/* při hoveru se linka roztáhne zleva doprava */
+.desktop-nav a:hover::after {
   width: calc(100% - 24px);
 }
 
-.desktop-nav a:hover::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 14px;
-  background: rgba(255, 0, 150, 0.09);
-  box-shadow: 0 0 12px rgba(255, 0, 180, 0.45);
-  z-index: -1;
-  opacity: 1;
+/* active – necháme jen „pill“ pozadí, bez podtržení */
+.desktop-nav a.active::after {
+  width: 0;
 }
 
-/* ---------- ACTIVE STATE (nové barvy + pozadí) ---------- */
+/* jemné rozlišení podle tématu */
+html.theme-light .desktop-nav a::after {
+  background: #ffffff;
+  box-shadow:
+    0 0 8px rgba(255, 255, 255, 0.8),
+    0 0 14px rgba(255, 255, 255, 0.6);
+}
 
-/* -------------------------------------------------- */
-/* ACTIVE STAV – text i ikonka ZBĚLÁ (light i dark)   */
-/* -------------------------------------------------- */
+html.theme-dark .desktop-nav a::after {
+  background: var(--brand-strong);
+  box-shadow:
+    0 0 8px rgba(255, 0, 180, 0.6),
+    0 0 16px rgba(255, 0, 200, 0.35);
+}
+
+/* ---------- ACTIVE STAV (text + ikonka) ---------- */
+
 html.theme-light .desktop-nav a.active {
   color: var(--nav-light-active) !important;
   background: rgba(255, 120, 180, 0.25);
@@ -309,37 +330,39 @@ html.theme-dark .desktop-nav a.active {
     0 0 30px rgba(255, 0, 200, 0.35),
     0 0 45px rgba(200, 0, 200, 0.25);
 }
-/* ikonka zbělá taky */
+
 .desktop-nav a.active .icon,
 .desktop-nav a.active .nav-icon {
   color: #fff !important;
   opacity: 1 !important;
 }
 
-/* Ripple efekt na klik */
-.desktop-nav a:active::after {
+/* ---------- Ripple efekt na klik (přes ::before, ať se to neháda s ::after) ---------- */
+
+.desktop-nav a::before {
   content: "";
   position: absolute;
-  width: 120%;
-  height: 120%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 50%;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.desktop-nav a:active::before {
   animation: rippleClick 0.55s ease-out forwards;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 @keyframes rippleClick {
   0% {
-    transform: translate(-50%, -50%) scale(0.1);
+    transform: scale(0.9);
     opacity: 0.4;
   }
   40% {
     opacity: 0.25;
   }
   100% {
-    transform: translate(-50%, -50%) scale(1);
+    transform: scale(1.08);
     opacity: 0;
   }
 }
@@ -353,133 +376,68 @@ html.theme-dark .desktop-nav a .icon,
 html.theme-dark .desktop-nav a .nav-icon {
   color: rgba(255, 255, 255, 0.8);
 }
-.desktop-nav a::after {
-  transition: background 0.25s ease,
-              box-shadow 0.35s ease,
-              transform 0.35s cubic-bezier(.25,.46,.45,.94);
-}
-
-html.theme-light .desktop-nav a::after {
-  background: #ffffff !important;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8),
-              0 0 14px rgba(255, 255, 255, 0.6);
-}
-
-html.theme-light .desktop-nav a.active::after {
-  background: #ffffff !important;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 1),
-              0 0 20px rgba(255, 255, 255, 0.9),
-              0 0 28px rgba(255, 255, 255, 0.8);
-}
-
-html.theme-dark .desktop-nav a:hover::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -3px;
-  width: 70%;
-  height: 2px;
-  transform: translateX(-50%);
-  background: var(--brand-strong);
-  border-radius: 2px;
-  box-shadow:
-    0 0 12px rgba(255, 0, 200, 0.45),
-    0 0 28px rgba(255, 0, 255, 0.25);
-}
-
-/* Normální hover/active ve tmavém režimu */
-html.theme-dark .desktop-nav a::after {
-  background: var(--brand-strong);
-  box-shadow: 0 0 8px rgba(255, 0, 180, 0.6),
-              0 0 16px rgba(255, 0, 200, 0.35);
-}
-
-/* Dark active = extra neon */
-html.theme-dark .desktop-nav a.active::after {
-  background: var(--brand-strong);
-  box-shadow: 0 0 12px rgba(255, 0, 180, 0.9),
-              0 0 26px rgba(255, 0, 220, 0.6),
-              0 0 40px rgba(255, 0, 255, 0.4);
-}
-
-/* Normální hover/active ve tmavém režimu */
-html.theme-dark .desktop-nav a::after {
-  background: var(--brand-strong);
-  box-shadow: 0 0 8px rgba(255, 0, 180, 0.6),
-              0 0 16px rgba(255, 0, 200, 0.35);
-}
-
-/* Dark active = extra neon */
-html.theme-dark .desktop-nav a.active::after {
-  background: var(--brand-strong);
-  box-shadow: 0 0 12px rgba(255, 0, 180, 0.9),
-              0 0 26px rgba(255, 0, 220, 0.6),
-              0 0 40px rgba(255, 0, 255, 0.4);
-}
-
 
 /* ========================================= */
 /* MOBILNÍ MENU                              */
 /* ========================================= */
 
 .mobile-nav {
-  display: none;
+  display: none; /* základ: skryté, ukáže se jen na mobilu + .show */
 }
 
 /* === MOBILE HEADER FIX === */
-
 @media (max-width: 820px) {
 
   /* desktop-nav pryč */
   .desktop-nav {
     display: none;
   }
+
   .lightbox-nav,
   .lightbox-nav button,
   #lightbox .close {
     display: none !important;
   }
-  /* right-side = toggle viditelný! */
+
+  /* right-side pryč na mobilu */
   .right-side {
     display: none;
   }
 
-.menu-toggle {
-  display: flex !important;
-  position: absolute;
-  left: 14px;
-  top: 0;
-  bottom: 0;
-  margin-block: auto;
-  transform: none;
-  z-index: 1000;
+  .menu-toggle {
+    display: flex !important;
+    position: absolute;
+    left: 14px;
+    top: 0;
+    bottom: 0;
+    margin-block: auto;
+    transform: none;
+    z-index: 1000;
   }
-
 }
-  /* MOBILE MENU PANEL */
+
+/* MOBILE MENU PANEL */
 .mobile-nav {
-  display: flex;
   flex-direction: column;
   background: var(--glass-light);
   backdrop-filter: blur(14px);
   border-radius: 18px;
   padding: 12px 16px;
   position: absolute;
-  top: 60px;       /* ✔ přímo pod header */
-  left: 14px;      /* ✔ zarovnáno vlevo pod hamburger */
-    
+  top: 60px;       /* přímo pod header */
+  left: 14px;      /* zarovnáno vlevo pod hamburger */
   gap: 12px;
   box-shadow: var(--shadow-soft);
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-10px); /* ✔ animace */
+  transform: translateY(-10px); /* animace */
   transition: 0.25s ease;
   z-index: 1500;
 }
 
 .mobile-nav.show {
   opacity: 1;
-  transform: translateY(0);      /* ✔ animace */
+  transform: translateY(0);    /* animace */
   pointer-events: auto;
 }
 
@@ -490,22 +448,25 @@ html.theme-dark .desktop-nav a.active::after {
   padding: 8px 10px;
   border-radius: 12px;
   transition: 0.2s;
-  }
+}
 
 .mobile-nav a.active {
   color: var(--brand-strong);
   background: rgba(255, 255, 255, 0.1);
 }
+
 .mobile-nav a.active .icon {
   opacity: 1;
 }
 
-  .mobile-nav a:hover {
-    background: rgba(255,255,255,0.1);
-    color: var(--brand-strong);
-  }
+.mobile-nav a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--brand-strong);
+}
 
-/* TABLET NAV – hamburger aktivní už od 1100px */
+/* =========================================================
+   TABLET NAV – hamburger aktivní už od 1100px
+   ========================================================= */
 @media (max-width: 1100px) {
 
   .desktop-nav {
@@ -517,7 +478,7 @@ html.theme-dark .desktop-nav a.active::after {
   }
 
   .right-side {
-    display: none !important; /* theme toggle na tablet vlevo/vpravo si doladíme */
+    display: none !important;
   }
 
   .mobile-nav {
@@ -525,7 +486,10 @@ html.theme-dark .desktop-nav a.active::after {
   }
 }
 
-/* Hover – ještě více neonového výbuchu */
+/* =========================================================
+   TITLE HOVER – neon efekt
+   ========================================================= */
+
 header h1:hover {
   transform: scale(1.05);
   text-shadow:
@@ -534,42 +498,42 @@ header h1:hover {
     0 0 80px rgba(255, 0, 200, 0.6);
 }
 
-/* Default stav = písmena VIDITELNÁ */
 header h1 span {
   opacity: 1;
   transform: none;
   display: inline-block;
 }
 
-/* Animace se spustí JEN když je stránka načtená */
+/* animace start */
 body.animate-title header h1 span {
   opacity: 0;
   transform: translateY(14px) scale(0.92);
   animation: cuteLetter 0.55s cubic-bezier(.22,1.5,.36,1) forwards;
 }
 
-/* Stagger delay – musí zůstat! */
+/* delay */
 body.animate-title header h1 span:nth-child(1){ animation-delay: 0.05s; }
 body.animate-title header h1 span:nth-child(2){ animation-delay: 0.10s; }
 body.animate-title header h1 span:nth-child(3){ animation-delay: 0.15s; }
 body.animate-title header h1 span:nth-child(4){ animation-delay: 0.20s; }
 body.animate-title header h1 span:nth-child(5){ animation-delay: 0.25s; }
 
-/* Cute anime styl */
 @keyframes cuteLetter {
   0%   { opacity: 0; transform: translateY(14px) scale(0.92); }
   70%  { opacity: 1; transform: translateY(-4px) scale(1.06); }
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Nav */
+/* =========================================================
+   NAV – ZÁKLAD (starý systém sjednocen)
+   ========================================================= */
 
 nav {
   display: flex;
   align-items: center;
   gap: 18px;
-  margin-right: auto; /* <<< NAV DOPRAVA */
-  padding-left: 40px; /* <<< rezerva, aby nenarážel do TITLE */
+  margin-right: auto;
+  padding-left: 40px;
 }
 
 nav a {
@@ -577,23 +541,31 @@ nav a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   padding: 6px 12px;
   border-radius: 999px;
+
   font-weight: 600;
   font-size: 0.95rem;
   text-decoration: none;
   color: var(--text-soft);
+
   transition: color 0.25s ease, transform 0.2s ease;
   overflow: hidden;
 }
 
+/* rámeček při hoveru */
 nav a::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   border: 1px solid rgba(255, 255, 255, 0.22);
-  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.02));
+  background: radial-gradient(
+    circle at top,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.02)
+  );
   opacity: 0;
   transform: scale(0.8);
   transition: opacity 0.25s ease, transform 0.25s ease;
@@ -620,10 +592,9 @@ nav a.active::before {
   background: linear-gradient(135deg, var(--brand), var(--brand-strong));
 }
 
-/* Úplný reset starého hover/active pozadí */
-/* ================================================
-   DESKTOP NAV — FINÁLNÍ ČISTÁ VERZE
-   ================================================ */
+/* =========================================================
+   DESKTOP NAV – ČISTÁ VERZE (sjednocená, bez duplicit)
+   ========================================================= */
 
 .desktop-nav {
   display: flex;
@@ -631,7 +602,7 @@ nav a.active::before {
   gap: 22px;
 }
 
-/* ZÁKLAD */
+/* základ */
 .desktop-nav a {
   position: relative;
   display: inline-flex;
@@ -644,15 +615,15 @@ nav a.active::before {
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--text-soft);
-  text-decoration: none;
 
+  text-decoration: none;
   cursor: pointer;
   overflow: hidden;
 
   transition: color .25s ease, transform .25s ease;
 }
 
-/* Ikonky */
+/* ikonky */
 .desktop-nav a .icon,
 .desktop-nav a .nav-icon {
   opacity: .55;
@@ -660,7 +631,6 @@ nav a.active::before {
   transition: opacity .25s ease, color .25s ease, transform .25s ease;
 }
 
-/* Hover */
 .desktop-nav a:hover {
   color: var(--brand-strong);
   transform: translateY(-2px);
@@ -673,7 +643,11 @@ nav a.active::before {
   transform: translateY(-1px);
 }
 
-/* Podtržení (pouze hover) */
+/* =========================================================
+   PODTRŽENÍ — FINÁLNÍ FUNKČNÍ VERZE
+   ========================================================= */
+
+/* výchozí stav */
 .desktop-nav a::after {
   content: "";
   position: absolute;
@@ -682,43 +656,38 @@ nav a.active::before {
 
   height: 2px;
   width: 0;
-  border-radius: 4px;
 
-  transition: width .28s ease, background .28s ease, box-shadow .28s ease;
+  border-radius: 4px;
+  background: var(--brand-strong);
+  box-shadow: none;
+
+  transition:
+    width .28s ease,
+    background .28s ease,
+    box-shadow .28s ease;
 }
 
-/* Hover underline */
+/* hover → podtržení */
 .desktop-nav a:hover::after {
   width: calc(100% - 24px);
 }
 
-/* Light underline */
-
-html.theme-light .desktop-nav a:hover {
-  color: var(--brand-strong);
-  text-shadow: 0 0 8px rgba(255, 120, 200, 0.35);
+/* active → žádné podtržení (jen pill background) */
+.desktop-nav a.active::after {
+  width: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
 }
 
-/* LIGHT MODE — růžové podtržení při hoveru */
+/* světlej režim */
 html.theme-light .desktop-nav a:hover::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -3px;
-  width: 70%;
-  height: 2px;
-  transform: translateX(-50%);
   background: var(--brand-strong);
-  border-radius: 2px;
-  box-shadow: 0 0 8px rgba(255, 100, 180, 0.35);
+  box-shadow:
+    0 0 8px rgba(255, 120, 200, 0.35),
+    0 0 16px rgba(255, 120, 200, 0.25);
 }
 
-html.theme-dark .desktop-nav a:hover {
-  color: var(--nav-dark-hover);
-  text-shadow: 0 0 6px rgba(255, 100, 255, 0.35);
-}
-
-/* Dark underline */
+/* tmavej režim */
 html.theme-dark .desktop-nav a:hover::after {
   background: var(--brand-strong);
   box-shadow:
@@ -726,27 +695,14 @@ html.theme-dark .desktop-nav a:hover::after {
     0 0 28px rgba(255, 0, 255, 0.25);
 }
 
-/* Ikonky v active */
+/* active – ikonky bílé */
 .desktop-nav a.active .icon,
 .desktop-nav a.active .nav-icon {
   opacity: 1;
   color: #fff !important;
 }
 
-/* ACTIVE = bez podtržení */
-.desktop-nav a.active::after {
-  width: 0 !important;
-  background: none !important;
-  box-shadow: none !important;
-}
-
-.desktop-nav a:hover .nav-icon,
-.desktop-nav a.active .nav-icon {
-  fill: currentColor;
-  stroke: currentColor;
-}
-
-/* === Reset všeho starého === */
+/* reset starých podkladů */
 .desktop-nav a::before,
 .desktop-nav a:active::after,
 .desktop-nav a:focus-visible::before {
@@ -754,23 +710,26 @@ html.theme-dark .desktop-nav a:hover::after {
   display: none !important;
 }
 
-/* ------------------------- */
-/* MENU TOGGLE (MOBILE)      */
-/* ------------------------- */
+/* =========================================================
+   MENU TOGGLE (MOBILE)
+   ========================================================= */
 
 .menu-toggle {
   position: relative;
   width: 32px;
   height: 24px;
-  margin-left: 0px;
+  margin-left: 0;
   margin-right: auto;
-  border: none;
-  background: none;
-  cursor: pointer;
+
   display: none;
   justify-content: center;
   align-items: center;
+
   padding: 0;
+  border: none;
+  background: none;
+
+  cursor: pointer;
   z-index: 150;
 }
 
@@ -778,17 +737,21 @@ html.theme-dark .desktop-nav a:hover::after {
   position: absolute;
   left: 0;
   right: 0;
+
   height: 3px;
   border-radius: 99px;
+
   background: var(--brand-strong);
-  box-shadow: 0 0 9px rgba(229, 0, 106, 0.9);
-  transition: all 0.3s ease;
+  box-shadow: 0 0 9px rgba(229,0,106,0.9);
+
+  transition: all .3s ease;
 }
 
 .menu-toggle span:nth-child(1) { top: 2px; }
 .menu-toggle span:nth-child(2) { top: 10px; }
 .menu-toggle span:nth-child(3) { top: 18px; }
 
+/* aktivní hamburger → X */
 .menu-toggle.active span:nth-child(1) {
   top: 10px;
   transform: rotate(45deg);
@@ -803,7 +766,7 @@ html.theme-dark .desktop-nav a:hover::after {
 }
 
 /* =========================================================
-   PERFECT THEME TOGGLE – AUTO CENTER + VISIBLE DARK MODE
+   PERFECT THEME TOGGLE
    ========================================================= */
 
 .theme-toggle {
@@ -811,30 +774,36 @@ html.theme-dark .desktop-nav a:hover::after {
   right: 16px;
   top: 50%;
   transform: translateY(-50%);
+
   width: 70px;
   height: 36px;
-  border-radius: 999px;
-  cursor: pointer;
+  padding: 4px;
 
   display: flex;
   align-items: center;
-  padding: 4px;
+
+  border-radius: 999px;
+  cursor: pointer;
 
   background: var(--switch-bg);
-  transition: background .3s ease, box-shadow .3s ease;
   box-shadow: 0 0 16px rgba(0,0,0,0.35);
+  transition: background .3s ease, box-shadow .3s ease;
+
   z-index: 9999;
 }
 
-/* vnitřní lišta */
+/* vnitřní část */
 .theme-toggle .switch {
   width: 100%;
   height: 100%;
   padding: 4px;
-  position: relative;
+
   border-radius: inherit;
+  position: relative;
+
   display: flex;
   align-items: center;
+
   background: var(--switch-bg) !important;
 }
 
@@ -843,23 +812,23 @@ html.theme-dark .desktop-nav a:hover::after {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: var(--thumb-bg);
   position: absolute;
 
-  /* vždy přesně uprostřed vertikálně */
+  left: 4px;
   top: 50%;
   transform: translateY(-50%);
-  left: 4px; /* výchozí */
 
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 
+  background: var(--thumb-bg);
   font-size: 1.2rem;
+
   transition: transform .3s ease, background .3s ease;
 }
 
-/* LIGHT emoji + barvy */
+/* světlo */
 .theme-light .thumb::before {
   content: "🌞";
 }
@@ -869,74 +838,78 @@ html.theme-dark .desktop-nav a:hover::after {
   --thumb-bg: #ffffff;
 }
 
-/* DARK emoji + barvy */
+/* tma */
 .theme-dark .thumb::before {
   content: "🌙";
 }
 
 .theme-dark .theme-toggle .switch {
-  --switch-bg: #2a0038;   /* lepší viditelnost */
+  --switch-bg: #2a0038;
   --thumb-bg: #ffdbff;
 }
 
-/* DARK → tečka vpravo (AUTO) */
+/* tmavý režim → tečka vpravo */
 .theme-dark .thumb {
-  left: auto;   /* zrušíme left */
-  right: 4px;   /* automatická pravá mezera */
+  left: auto;
+  right: 4px;
 }
 
-/* separator */
+/* =========================================================
+   MOBILNÍ TÉMA V MENU
+   ========================================================= */
+
 .mobile-separator {
   width: 100%;
   height: 1px;
-  background: rgba(255,255,255,0.12);
-  border: none;
   margin: 10px 0 6px;
+  border: none;
+
+  background: rgba(255,255,255,0.12);
 }
 
-/* řádek s motivem */
+html.theme-light .mobile-separator {
+  background: rgba(255,0,140,0.28);
+  box-shadow: 0 0 6px rgba(255,0,140,0.18);
+}
+
+html.theme-dark .mobile-separator {
+  background: rgba(255,100,255,0.22);
+  box-shadow: 0 0 6px rgba(255,100,255,0.18);
+}
+
 .mobile-theme-row {
   width: 100%;
+  padding: 14px 20px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  padding: 14px 20px;
-  color: #fff;
   font-size: 1.1rem;
-  opacity: 0.95;
+  opacity: .95;
 }
 
-html.theme-light .mobile-separator {
-  background: rgba(255, 0, 140, 0.28);   /* růžová linka */
-  box-shadow: 0 0 6px rgba(255, 0, 140, 0.18);
-}
-
-html.theme-dark .mobile-separator {
-  background: rgba(255, 100, 255, 0.22); /* neon pink/purple */
-  box-shadow: 0 0 6px rgba(255, 100, 255, 0.18);
-}
-
-/* text vlevo */
+/* barvy textu */
 html.theme-light .mobile-theme-label {
-  color: var(--nav-light);    /* stejná barva jako neaktivní text v nav */
+  color: var(--nav-light);
 }
-
 html.theme-dark .mobile-theme-label {
-  color: var(--nav-dark);    /* stejně jako zbytek nav textu */
+  color: var(--nav-dark);
 }
 
-/* přepínač uvnitř menu */
+/* přepínač v mobilním menu */
 .mobile-theme-row .theme-toggle {
   width: 60px;
   height: 32px;
   padding: 3px;
+
   position: relative;
-  transform: none;
-  right: 0;
   top: 0;
+  right: 0;
+
   display: flex;
   align-items: center;
+  transform: none;
 }
 
 .mobile-theme-row .switch {
@@ -944,55 +917,55 @@ html.theme-dark .mobile-theme-label {
   height: 100%;
   padding: 3px;
   border-radius: 999px;
+
   position: relative;
   background: var(--switch-bg);
 }
 
-/* menší tečka */
 .mobile-theme-row .thumb {
   width: 24px !important;
   height: 24px !important;
+
+  left: 3px;
   top: 50%;
   transform: translateY(-50%);
-  left: 3px;
+
   border-radius: 50%;
   position: absolute;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   background: var(--thumb-bg);
-  font-size: 1rem;
   transition: transform .25s ease, background .25s ease;
 }
 
-/* Light posun */
+/* posun světlo */
 html.theme-light .mobile-theme-row .thumb {
   transform: translate(0, -50%);
 }
 
-/* Dark posun – AUTO */
+/* posun tma */
 html.theme-dark .mobile-theme-row .thumb {
   left: auto;
-  right: 3px;          /* stejné jako padding */
-  transform: translateY(-50%);
+  right: 3px;
 }
 
-/* Emoji */
 html.theme-light .mobile-theme-row .thumb::before {
   content: "🌞";
 }
-
 html.theme-dark .mobile-theme-row .thumb::before {
   content: "🌙";
 }
 
-/* Soft glow */
 html.theme-dark .mobile-theme-row .switch {
   box-shadow:
-    0 0 12px rgba(255, 0, 180, 0.25),
-    0 0 24px rgba(255, 0, 255, 0.20);
+    0 0 12px rgba(255,0,180,0.25),
+    0 0 24px rgba(255,0,255,0.20);
 }
 
+/* bounce animace */
 @keyframes toggle-bounce {
   0% { transform: translateY(-50%) scale(1); }
   50% { transform: translateY(-50%) scale(1.2); }
@@ -1003,62 +976,67 @@ html.theme-dark .mobile-theme-row .switch {
   animation: toggle-bounce .3s ease;
 }
 
+/* =========================================================
+   THEME TOGGLE – RESPONSIVE BEHAVIOUR
+   ========================================================= */
+
 @media (max-width: 1100px) {
-.theme-toggle:not(.mobile-toggle) {
-  display: none;
+  .theme-toggle:not(.mobile-toggle) {
+    display: none;
   }
 }
 
-/* Světlý mód → sluníčko */
+/* světlý mód */
 .theme-light .thumb::before {
   content: "🌞";
 }
 
 .theme-light .thumb {
-  transform: translate(0, -50%);
+  transform: translateY(-50%);
 }
 
 .theme-light .theme-toggle {
-  --switch-bg: #ffe2f5; /* jemná růžová, ne bílá */
+  --switch-bg: #ffe2f5;
   --switch-thumb: #ffffff;
-  border-color: rgba(229, 0, 106, 0.25);
+
+  border-color: rgba(229,0,106,0.25);
   box-shadow:
-    0 0 14px rgba(255, 120, 180, 0.25),
-    0 0 28px rgba(255, 160, 220, 0.20);
+    0 0 14px rgba(255,120,180,0.25),
+    0 0 28px rgba(255,160,220,0.20);
 }
 
 .theme-light .theme-toggle .thumb {
-  box-shadow:
-    0 0 10px rgba(255, 160, 220, 0.35);
+  box-shadow: 0 0 10px rgba(255,160,220,0.35);
 }
 
-/* DARK MODE – neon efekt kolem přepínače */
+/* tmavý mód */
 .theme-dark .theme-toggle {
-  --switch-bg: #2a0038; /* tmavá fialová */
+  --switch-bg: #2a0038;
   --switch-thumb: #ffdbff;
-  border-color: rgba(255, 0, 180, 0.35);
+
+  border-color: rgba(255,0,180,0.35);
   box-shadow:
-    0 0 14px rgba(255, 0, 180, 0.18),
-    0 0 28px rgba(140, 0, 200, 0.15);
+    0 0 14px rgba(255,0,180,0.18),
+    0 0 28px rgba(140,0,200,0.15);
 }
 
 .theme-dark .theme-toggle .thumb {
   box-shadow:
-    0 0 12px rgba(255, 160, 255, 0.25),
-    0 0 22px rgba(140, 0, 200, 0.20);
+    0 0 12px rgba(255,160,255,0.25),
+    0 0 22px rgba(140,0,200,0.20);
 }
 
-/* Animation smooth */
+/* smooth transition */
 html {
   transition: background .35s ease, color .35s ease;
 }
 
-
-/* ------------------------- */
-/* RESPONSIVNÍ HEADER        */
-/* ------------------------- */
+/* =========================================================
+   RESPONSIVNÍ HEADER
+   ========================================================= */
 
 @media (max-width: 820px) {
+
   header {
     position: sticky !important;
     gap: 10px;
@@ -1069,27 +1047,33 @@ html {
     font-size: 1.4rem;
     letter-spacing: 0.18em;
   }
+
   header h1:hover {
-  transform: scale(1.03);
-  text-shadow:
-    0 0 12px rgba(255, 170, 220, 0.7),
-    0 0 26px rgba(255, 150, 255, 0.5);
-}
+    transform: scale(1.03);
+    text-shadow:
+      0 0 12px rgba(255,170,220,0.7),
+      0 0 26px rgba(255,150,255,0.5);
+  }
 
   nav {
     position: absolute;
     right: 14px;
     top: 64px;
+
+    display: flex;
     flex-direction: column;
     align-items: stretch;
+
     padding: 12px 48px;
     border-radius: 18px;
+
     background: var(--glass-light);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-glass-light);
+
     box-shadow: var(--shadow-soft);
     gap: 10px;
+
     opacity: 0;
     transform: translateY(-10px) scale(0.98);
     pointer-events: none;
@@ -1099,7 +1083,7 @@ html {
     opacity: 1;
     transform: translateY(0) scale(1);
     pointer-events: auto;
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    transition: opacity .25s ease, transform .25s ease;
   }
 
   nav a {
@@ -1112,19 +1096,20 @@ html {
   margin-right: 24px;
 }
 
-/* ------------------------- */
-/* WIDGET NA HOMEPAGE        */
-/* ------------------------- */
+/* =========================================================
+   HOMEPAGE WIDGET
+   ========================================================= */
 
 .widget {
   max-width: 960px;
   margin: 24px auto 18px;
   padding: 18px 18px 20px;
+
   border-radius: 20px;
   background: color-mix(in srgb, var(--glass-light) 70%, transparent);
   box-shadow: var(--shadow-soft);
+
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
 .widget h2 {
@@ -1135,62 +1120,70 @@ html {
 
 .widget-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(90px,1fr));
   gap: 10px;
 }
 
 .widget-gallery img {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1/1;
   object-fit: cover;
+
   border-radius: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.65);
-  box-shadow: 0 0 14px rgba(229, 0, 106, 0.35);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+  border: 2px solid rgba(255,255,255,0.65);
+  box-shadow: 0 0 14px rgba(229,0,106,0.35);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    filter .25s ease;
 }
 
-/* CUTE NEON HOVER – čisté, svěží, silné */
 .widget-gallery img:hover {
   transform: translateY(-4px) scale(1.06);
   filter: brightness(1.12) saturate(1.18);
-  box-shadow:
-    0 0 20px rgba(229, 0, 106, 0.55),
-    0 0 40px rgba(255, 150, 255, 0.45),
-    0 8px 18px rgba(0, 0, 0, 0.35);
+
   border-color: rgba(255,255,255,0.9);
+  box-shadow:
+    0 0 20px rgba(229,0,106,0.55),
+    0 0 40px rgba(255,150,255,0.45),
+    0 8px 18px rgba(0,0,0,0.35);
 }
 
-/* ------------------------- */
-/* INFO BOX (TEXT)           */
-/* ------------------------- */
+/* =========================================================
+   INFO BOX
+   ========================================================= */
 
 .info-box {
   max-width: 960px;
   margin: 28px auto 10px;
   padding: 18px 18px;
+
   text-align: center;
   font-weight: 700;
   font-size: 1.3rem;
+
   color: var(--brand-strong);
-  background: linear-gradient(135deg, rgba(255, 230, 248, 0.95), rgba(255, 245, 255, 0.9));
+  background: linear-gradient(135deg, rgba(255,230,248,0.95), rgba(255,245,255,0.9));
+
   border-radius: 22px;
   box-shadow:
-    0 0 24px rgba(255, 182, 212, 0.8),
-    0 0 40px rgba(255, 150, 255, 0.5);
+    0 0 24px rgba(255,182,212,0.8),
+    0 0 40px rgba(255,150,255,0.5);
 }
 
 html.theme-dark .info-box {
   color: #ffe7ff;
-  background: radial-gradient(circle at top, rgba(80, 0, 110, 0.9), rgba(10, 0, 18, 0.95));
-  border: 1px solid rgba(255, 170, 255, 0.5);
+  background: radial-gradient(circle at top, rgba(80,0,110,0.9), rgba(10,0,18,0.95));
+  border: 1px solid rgba(255,170,255,0.5);
   box-shadow:
-    0 0 26px rgba(255, 0, 255, 0.5),
-    0 0 50px rgba(120, 0, 170, 0.8);
+    0 0 26px rgba(255,0,255,0.5),
+    0 0 50px rgba(120,0,170,0.8);
 }
 
-/* ------------------------- */
-/* GALERIE – GRID            */
-/* ------------------------- */
+/* =========================================================
+   GALERIE GRID
+   ========================================================= */
 
 .gallery-page {
   max-width: 1280px;
@@ -1199,8 +1192,7 @@ html.theme-dark .info-box {
 }
 
 .gallery-page h2 {
-  margin-top: 14px;
-  margin-bottom: 18px;
+  margin: 14px 0 18px;
   font-size: 1.6rem;
   color: var(--brand-strong);
 }
@@ -1208,47 +1200,49 @@ html.theme-dark .info-box {
 .gallery-grid,
 #galleryGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
   gap: 14px;
   width: 100%;
 }
 
-/* MOBIL → vždy min. 2 fotky vedle sebe */
+/* mobil → 2 sloupce */
 @media (max-width: 820px) {
   .gallery-grid,
   #galleryGrid {
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(2,1fr) !important;
     gap: 12px;
   }
 }
 
-/* container pro každý náhled */
-
+/* náhled wrapper */
 .img-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 4/3;
+
   border-radius: 16px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+
+  background: rgba(255,255,255,0.04);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.22);
 }
 
-/* shimmer skeleton */
-
+/* shimmer loading */
 .shimmer::before {
   content: "";
   position: absolute;
   inset: 0;
+
   border-radius: inherit;
   background: linear-gradient(
     115deg,
-    rgba(255, 255, 255, 0.05) 0%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0.05) 100%
+    rgba(255,255,255,0.05) 0%,
+    rgba(255,255,255,0.3) 50%,
+    rgba(255,255,255,0.05) 100%
   );
   background-size: 200% 100%;
   animation: shimmerMove 1.2s linear infinite;
+
   z-index: 1;
 }
 
@@ -1257,25 +1251,29 @@ html.theme-dark .info-box {
   100% { background-position: -180% 0; }
 }
 
-/* obrázek uvnitř wrapperu */
+/* =========================================================
+   GALERIE – WRAPPER IMG ANIMACE
+   ========================================================= */
 
 .img-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: inherit;
+
   opacity: 0;
   transform: scale(1.02);
   filter: blur(5px);
+
   transition:
-    opacity 0.55s ease,
-    transform 0.55s ease,
-    filter 0.55s ease;
+    opacity .55s ease,
+    transform .55s ease,
+    filter .55s ease;
 }
 
 .img-wrapper img.loaded {
   opacity: 1;
-  transform: scale(1.0);
+  transform: scale(1);
   filter: blur(0);
 }
 
@@ -1284,44 +1282,45 @@ html.theme-dark .info-box {
   filter: brightness(1.10) saturate(1.12);
 
   box-shadow:
-    0 0 18px rgba(229, 0, 106, 0.35),   /* jemný růžový glow */
-    0 0 32px rgba(255, 150, 255, 0.30), /* fialovo-růžový soft glow */
-    0 6px 14px rgba(0, 0, 0, 0.25);     /* jemný pádový stín */
+    0 0 18px rgba(229,0,106,0.35),
+    0 0 32px rgba(255,150,255,0.30),
+    0 6px 14px rgba(0,0,0,0.25);
 
   transition:
-    transform .30s ease,
-    filter .30s ease,
-    box-shadow .30s ease;
+    transform .3s ease,
+    filter .3s ease,
+    box-shadow .3s ease;
 }
 
-
-/* extra třída pro JS – hladký fade-in */
-
+/* extra fade */
 .lazy-fade {
   opacity: 0;
   transform: scale(0.97);
+  transition: opacity .45s ease, transform .45s ease;
 }
 
 .lazy-fade.loaded {
   opacity: 1;
-  transform: scale(1.0);
+  transform: scale(1);
 }
 
-/* ------------------------- */
-/* GALERIE – LIGHTBOX        */
-/* ------------------------- */
+/* =========================================================
+   LIGHTBOX
+   ========================================================= */
 
 .lightbox,
 #lightbox {
   position: fixed;
   inset: 0;
+
   display: none;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background: rgba(0, 0, 0, 0.9);
+
+  background: rgba(0,0,0,0.9);
   backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+
   z-index: 9999;
 }
 
@@ -1331,32 +1330,24 @@ html.theme-dark .info-box {
 
 #lightboxImg,
 .lightbox-content {
-  max-width: min(92vw, 1200px);
+  max-width: min(92vw,1200px);
   max-height: 80vh;
+
   border-radius: 18px;
   object-fit: contain;
+
   box-shadow:
-    0 0 30px rgba(229, 0, 106, 0.9),
-    0 0 60px rgba(120, 0, 180, 0.8);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+    0 0 30px rgba(229,0,106,0.9),
+    0 0 60px rgba(120,0,180,0.8);
+
+  transition: opacity .35s ease, transform .35s ease;
 }
 
-/* animace přepínání snímků */
-
+/* slide animace */
 .is-exiting-left  { opacity: 0; transform: translateX(-40px); }
-.is-exiting-right { opacity: 0; transform: translateX( 40px); }
-
-.is-entering-left,
-.is-entering-right {
-  opacity: 0;
-}
-
-.is-entering-left {
-  animation: slideInLeft 0.35s ease forwards;
-}
-.is-entering-right {
-  animation: slideInRight 0.35s ease forwards;
-}
+.is-exiting-right { opacity: 0; transform: translateX(40px); }
+.is-entering-left  { animation: slideInLeft  .35s ease forwards; }
+.is-entering-right { animation: slideInRight .35s ease forwards; }
 
 @keyframes slideInLeft {
   from { opacity: 0; transform: translateX(-40px); }
@@ -1367,149 +1358,159 @@ html.theme-dark .info-box {
   to   { opacity: 1; transform: translateX(0); }
 }
 
-/* ovládací prvky */
-
+/* zavírací tlačítko */
 .close {
   position: fixed;
   top: 22px;
   right: 22px;
+
   width: 44px;
   height: 44px;
   border-radius: 999px;
+
   border: none;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0,0,0,0.55);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 
-  /* rotace vždy kolem středu */
-  transform-origin: center center;
+  cursor: pointer;
   transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
 }
 
 .close-icon {
   width: 22px;
   height: 22px;
-  display: block;
 }
 
 .close:hover {
   background: var(--brand-strong);
-  transform: scale(1.10);
+  transform: scale(1.1);
   box-shadow:
-    0 0 14px rgba(255, 0, 200, 0.45),
-    0 0 30px rgba(255, 100, 255, 0.30);
+    0 0 14px rgba(255,0,200,0.45),
+    0 0 30px rgba(255,100,255,0.30);
 }
 
+/* šipky */
 .lightbox-nav {
   position: absolute;
   inset: 0;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   padding-inline: 30px;
   pointer-events: none;
 }
 
 .lightbox-nav button {
   pointer-events: auto;
+
   width: 56px;
   height: 56px;
   border-radius: 999px;
+
   border: none;
-  background: rgba(0, 0, 0, 0.55);
-  color: #fff;
-  font-size: 2.2rem;
+  background: rgba(0,0,0,0.55);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 0;
-  padding: 0;
+
+  font-size: 2.2rem;
+  color: #fff;
   cursor: pointer;
-  box-shadow: 0 0 18px rgba(0, 0, 0, 0.7);
-  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
-  transform-origin: center center;
-}
-.arrow-icon {
-  width: 22px;
-  height: 22px;
-  display: block;
+
+  transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
 }
 
 .lightbox-nav button:hover {
   background: var(--brand-strong);
-  transform: scale(1.10);
+  transform: scale(1.1);
   box-shadow:
-    0 0 14px rgba(255, 0, 200, 0.45),
-    0 0 30px rgba(255, 100, 255, 0.30);
+    0 0 14px rgba(255,0,200,0.45),
+    0 0 30px rgba(255,100,255,0.30);
 }
 
-.lightbox-counter,
-#lightboxCounter {
+.arrow-icon {
+  width: 22px;
+  height: 22px;
+}
+
+/* counter */
+#lightboxCounter,
+.lightbox-counter {
   position: absolute;
   bottom: 22px;
   left: 50%;
   transform: translateX(-50%);
+
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.6);
+
+  background: rgba(0,0,0,0.6);
   color: #fff;
-  font-size: 0.9rem;
+  font-size: .9rem;
 }
 
 /* =========================================================
-   HRA
+   HRA (GAME)
    ========================================================= */
-/* ------------------------------ */
-/* GAME WRAP – původní efekty     */
-/* ------------------------------ */
+
 #gameWrap {
   width: 90vw;
   max-width: 420px;
   height: 600px;
+
+  margin: 40px auto;
+
   background: linear-gradient(#ffe6f0,#fff0fa);
-  box-shadow:
-    0 0 25px rgba(229, 0, 106, 0.4),
-    0 0 50px rgba(255, 182, 212, 0.3),
-    inset 0 0 20px rgba(255, 255, 255, 0.25);
   border-radius: 16px;
-  border: 2px solid rgba(255, 182, 212, 0.7);
+
+  border: 2px solid rgba(255,182,212,0.7);
+
+  box-shadow:
+    0 0 25px rgba(229,0,106,0.4),
+    0 0 50px rgba(255,182,212,0.3),
+    inset 0 0 20px rgba(255,255,255,0.25);
+
   position: relative;
   overflow: hidden;
-  margin: 40px auto;
-  transition: box-shadow 0.5s ease, border 0.5s ease;
+
+  transition: box-shadow .5s ease, border .5s ease;
 }
 
 #gameWrap:hover {
   box-shadow:
-    0 0 35px rgba(229, 0, 106, 0.6),
-    0 0 70px rgba(255, 182, 212, 0.45),
-    inset 0 0 25px rgba(255, 255, 255, 0.3);
-  border-color: rgba(229, 0, 106, 0.8);
+    0 0 35px rgba(229,0,106,0.6),
+    0 0 70px rgba(255,182,212,0.45),
+    inset 0 0 25px rgba(255,255,255,0.3);
+
+  border-color: rgba(229,0,106,0.8);
 }
 
-/* DARK MODE */
+/* dark režim */
 html.theme-dark #gameWrap {
   background: linear-gradient(#1a0023,#2a0045);
+
+  border: 2px solid rgba(255,0,255,0.4);
   box-shadow:
-    0 0 30px rgba(255, 0, 255, 0.35),
-    0 0 60px rgba(255, 150, 255, 0.25),
-    inset 0 0 20px rgba(255, 255, 255, 0.08);
-  border: 2px solid rgba(255, 0, 255, 0.4);
+    0 0 30px rgba(255,0,255,0.35),
+    0 0 60px rgba(255,150,255,0.25),
+    inset 0 0 20px rgba(255,255,255,0.08);
 }
 
 html.theme-dark #gameWrap:hover {
   box-shadow:
-    0 0 40px rgba(255, 0, 255, 0.6),
-    0 0 80px rgba(255, 150, 255, 0.35),
-    inset 0 0 25px rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 0, 255, 0.55);
+    0 0 40px rgba(255,0,255,0.6),
+    0 0 80px rgba(255,150,255,0.35),
+    inset 0 0 25px rgba(255,255,255,0.1);
+
+  border-color: rgba(255,0,255,0.55);
 }
 
-/* ------------------------------ */
-/* CANVAS                         */
-/* ------------------------------ */
 canvas {
   display: block;
   width: 100%;
@@ -1517,130 +1518,142 @@ canvas {
   background: linear-gradient(#87CEEB,#bde7ff);
 }
 
-/* ------------------------------ */
-/* SCORE UI – průhledný styl      */
-/* ------------------------------ */
+/* UI */
 .ui {
   position: absolute;
   left: 12px;
   top: 12px;
+
   padding: 6px 10px;
   border-radius: 12px;
+
   font-weight: 600;
   color: #e5006a;
+
   background: rgba(255,255,255,0.35);
   backdrop-filter: blur(10px);
 }
-#scoreBox {
-  top: 10px;
+
+html.theme-dark .ui {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
 }
 
-#difficultyBox {
-  top: 54px; /* posunuto pod score */
-}
-
-#difficultyBox span {
-  transition: color .3s ease;
-}
+#scoreBox { top: 10px; }
+#difficultyBox { top: 54px; }
 
 #difficultyBox.glowPulse,
 #difficulty.glowPulse {
-  box-shadow: 0 0 12px rgba(255,255,255,0.55),
-              0 0 20px rgba(255,255,255,0.55);
+  box-shadow:
+    0 0 12px rgba(255,255,255,0.55),
+    0 0 20px rgba(255,255,255,0.55);
+
   transform: scale(1.06);
-  transition: all 0.25s ease;
+  transition: all .25s ease;
 }
 
-/* DARK MODE */
-html.theme-dark .ui {
-  color: #fff;
-  background: rgba(255,255,255,0.12);
-}
-
-/* ------------------------------ */
-/* PRŮHLEDNÁ TLAČÍTKA              */
-/* ------------------------------ */
-#restart, #mute {
+/* restart / mute button */
+#restart,
+#mute {
   position: absolute;
   right: 12px;
+
   padding: 8px 14px;
   border-radius: 14px;
+
   font-weight: 600;
   cursor: pointer;
+
   border: 1px solid rgba(255,255,255,0.45);
   background: rgba(255,255,255,0.35);
-  box-shadow: 0 4px 14px rgba(255,182,212,0.55),
-              inset 0 0 10px rgba(255,255,255,0.35);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: .25s;
+
   color: #e5006a;
+
+  box-shadow:
+    0 4px 14px rgba(255,182,212,0.55),
+    inset 0 0 10px rgba(255,255,255,0.35);
+
+  backdrop-filter: blur(10px);
+  transition: .25s;
   z-index: 50;
 }
 
-#restart:hover, #mute:hover {
+#restart:hover,
+#mute:hover {
   transform: scale(1.06);
-  box-shadow: 0 8px 22px rgba(255,182,212,0.8),
-              inset 0 0 12px rgba(255,255,255,0.45);
+  box-shadow:
+    0 8px 22px rgba(255,182,212,0.8),
+    inset 0 0 12px rgba(255,255,255,0.45);
 }
 
 #restart { top: 10px; }
 #mute { top: 54px; }
 
-/* DARK MODE TLAČÍTKA */
-html.theme-dark #restart, 
+/* dark */
+html.theme-dark #restart,
 html.theme-dark #mute {
   background: rgba(255,255,255,0.08);
   border-color: rgba(255,255,255,0.18);
   color: #fff;
-  box-shadow: 0 4px 14px rgba(255,0,255,0.25),
-              inset 0 0 10px rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 4px 14px rgba(255,0,255,0.25),
+    inset 0 0 10px rgba(255,255,255,0.08);
 }
 
-html.theme-dark #restart:hover, 
+html.theme-dark #restart:hover,
 html.theme-dark #mute:hover {
   background: rgba(255,255,255,0.12);
-  box-shadow: 0 8px 22px rgba(255,0,255,0.35),
-              inset 0 0 12px rgba(255,255,255,0.12);
+  box-shadow:
+    0 8px 22px rgba(255,0,255,0.35),
+    inset 0 0 12px rgba(255,255,255,0.12);
 }
 
-/* ------------------------------ */
-/* CENTER MESSAGE – průhledný     */
-/* ------------------------------ */
+/* center msg */
 .centerMsg {
   position: absolute;
   left: 50%;
-  top: 50%; /* posunuto do středu */
+  top: 50%;
+
   transform: translate(-50%, -50%);
-  background: rgba(255,255,255,0.35);
   padding: 14px 22px;
+
+  background: rgba(255,255,255,0.35);
   border-radius: 16px;
+
   font-weight: 600;
   color: #e5006a;
-  pointer-events: none;
   text-align: center;
+
   backdrop-filter: blur(12px);
+  pointer-events: none;
 }
+
 html.theme-dark .centerMsg {
   background: rgba(255,255,255,0.12);
   color: #fff;
 }
 
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
 footer {
   flex-shrink: 0;
   width: 100%;
-  margin-top: auto;
 
+  margin-top: auto;
   padding: 10px 5vw 14px;
+
   text-align: center;
-  font-size: 0.9rem;
+  font-size: .9rem;
   font-weight: 600;
 
   background: color-mix(in srgb, var(--glass-light) 75%, transparent);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+
   border-top: 1px solid var(--border-glass-light);
-  box-shadow: 0 -8px 18px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 -8px 18px rgba(0,0,0,0.25);
 
   color: var(--text-soft);
 }
