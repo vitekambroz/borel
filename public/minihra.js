@@ -1,6 +1,6 @@
 // =====================================================
 //  Minihra.js – rage-bait verze
-//  Opravy: správné OFF ikony + fix spodní trubky
+//  Opravy: flip animace ikon + fix spodní trubky
 // =====================================================
 
 const cvs = document.getElementById("game");
@@ -99,12 +99,25 @@ let isMuted = localStorage.getItem("mutedState") === "1";
 let hapticsEnabled = localStorage.getItem("hapticsEnabled") !== "0";
 
 // =====================================================
+//  SVG flip helper
+// =====================================================
+function showFlip(onSvg, offSvg, isOn) {
+    if (isOn) {
+        onSvg.hidden = false;
+        offSvg.hidden = true;
+    } else {
+        onSvg.hidden = true;
+        offSvg.hidden = false;
+    }
+}
+
+// =====================================================
 //  Vibrace helper
 // =====================================================
 function doHaptic(ms) {
     if (!hapticsEnabled) return;
     if (!("vibrate" in navigator)) return;
-    if (!matchMedia("(pointer: coarse)").matches) return; // jen mobily
+    if (!matchMedia("(pointer: coarse)").matches) return; // jen mobilní
     navigator.vibrate(ms);
 }
 
@@ -112,8 +125,7 @@ function doHaptic(ms) {
 //  Mute toggle
 // =====================================================
 function applyMuteState() {
-    soundOnIcon.style.display = isMuted ? "none" : "block";
-    soundOffIcon.style.display = isMuted ? "block" : "none";
+    showFlip(soundOnIcon, soundOffIcon, !isMuted);
 }
 applyMuteState();
 
@@ -127,8 +139,7 @@ muteBtn.addEventListener("click", () => {
 //  Vibrace toggle
 // =====================================================
 function applyVibrationState() {
-    vibOn.style.display = hapticsEnabled ? "block" : "none";
-    vibOff.style.display = hapticsEnabled ? "none" : "block";
+    showFlip(vibOn, vibOff, hapticsEnabled);
 }
 applyVibrationState();
 
@@ -205,7 +216,7 @@ function spawnPipe() {
     let maxTop = H - GROUND_HEIGHT - gap - 20;
     const top = margin + Math.random() * (maxTop - margin);
 
-    // FIX: spodní trubka nikdy nesmí vlézt pod trávu
+    // FIX: spodní trubka nesmí vlézt pod trávu
     let bottom = Math.min(top + gap, H - GROUND_HEIGHT - 20);
 
     pipes.push({
