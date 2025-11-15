@@ -965,11 +965,29 @@ html.theme-dark .ui{
 #scoreBox{top:10px;}
 #difficultyBox{top:54px;}
 
-#difficultyBox.glowPulse,#difficulty.glowPulse{
-  box-shadow:0 0 12px rgba(255,255,255,.55),
-             0 0 20px rgba(255,255,255,.55);
-  transform:scale(1.06);
-  transition:.25s;
+/* LEVEL-UP PULS – nový, krásný neon efekt */
+@keyframes levelUpPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(255,0,200,0);
+  }
+  40% {
+    transform: scale(1.18);
+    box-shadow: 0 0 16px rgba(255,0,200,0.55),
+                0 0 28px rgba(255,0,255,0.45);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255,0,200,0.35);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(255,0,200,0);
+  }
+}
+
+.difficultyPulse {
+  animation: levelUpPulse .45s ease-out;
 }
 
 #restart,#mute{

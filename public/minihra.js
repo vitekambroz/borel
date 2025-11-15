@@ -229,9 +229,10 @@ function update(dt, deltaMs) {
           else difficultyBox.style.color = "#e74c3c";
 
           // jemná animovaná záře
-          difficultyBox.classList.add("glowPulse");
-          setTimeout(() => difficultyBox.classList.remove("glowPulse"), 350);
-        }
+          difficultyBox.classList.remove("difficultyPulse"); // reset animace
+          void difficultyBox.offsetWidth; // reflow hack
+          difficultyBox.classList.add("difficultyPulse");
+          }
 
         scoreBox.textContent = `Skóre: ${score} | Nejlepší: ${bestScore}`;
       }
