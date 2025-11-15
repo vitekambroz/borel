@@ -229,6 +229,7 @@ body.animate-title .site-title span {
 .desktop-nav a:hover {
   color: var(--brand-strong);
   transform: translateY(-2px);
+  text-shadow: 0 0 6px rgba(255, 100, 180, 0.35);
 }
 
 .desktop-nav a:hover .icon {
@@ -278,11 +279,27 @@ body.animate-title .site-title span {
 /* -------------------------------------------------- */
 /* ACTIVE STAV – text i ikonka ZBĚLÁ (light i dark)   */
 /* -------------------------------------------------- */
-.desktop-nav a.active {
-  color: #fff !important;
-  backdrop-filter: blur(6px);
+html.theme-light .desktop-nav a.active {
+  color: #ff2b84 !important; /* lehce tmavší růžová než hover */
+  background: rgba(255, 120, 180, 0.25);
+  box-shadow:
+    0 0 14px rgba(255, 120, 180, 0.45),
+    0 0 30px rgba(255, 150, 200, 0.35);
 }
+html.theme-dark .desktop-nav a.active {
+  color: #fff !important;
+  background: rgba(255, 0, 140, 0.22);
+  backdrop-filter: blur(6px);
 
+  padding-bottom: 6px;
+  border-radius: 10px;
+  background-clip: padding-box;
+
+  box-shadow:
+    0 0 12px rgba(255, 0, 170, 0.45),
+    0 0 30px rgba(255, 0, 200, 0.35),
+    0 0 45px rgba(200, 0, 200, 0.25);
+}
 /* ikonka zbělá taky */
 .desktop-nav a.active .icon,
 .desktop-nav a.active .nav-icon {
@@ -652,30 +669,18 @@ nav a.active::before {
 }
 
 /* Light underline */
+/* LIGHT MODE — růžové podtržení při hoveru */
 html.theme-light .desktop-nav a:hover::after {
-  background: #fff;
-  box-shadow: 0 0 8px rgba(255,255,255,0.7);
+  background: var(--brand-strong);               /* růžová */
+  box-shadow:
+    0 0 8px rgba(255, 100, 180, 0.45),
+    0 0 14px rgba(255, 120, 200, 0.35);
 }
 
 /* Dark underline */
 html.theme-dark .desktop-nav a:hover::after {
   background: var(--brand-strong);
   box-shadow: 0 0 12px rgba(255,0,200,0.6);
-}
-
-/* === ACTIVE === */
-.desktop-nav a.active {
-  color: #fff !important;
-  background: rgba(255, 0, 140, 0.22);
-  backdrop-filter: blur(6px);
-
-  padding-bottom: 6px;
-  border-radius: 10px;
-  background-clip: padding-box;
-
-  box-shadow:
-    0 0 12px rgba(255, 0, 170, 0.35),
-    0 0 25px rgba(255, 0, 140, 0.25);
 }
 
 /* Ikonky v active */
