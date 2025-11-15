@@ -128,27 +128,38 @@ body.animate-title .site-title span{
 /* ============================================================
    NAV ICONS & LAYOUT
 ============================================================ */
-.nav-icon{
-  width:20px;
-  height:20px;
-  margin-right:8px;
-  opacity:.65;
-  transition:opacity .25s,transform .25s;
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  opacity: .65;
+  transition: opacity .25s, transform .25s;
   display: inline-block;
   vertical-align: middle;
   position: relative;
-  top: 1px;
 }
 
-.right-side{
-  margin-left:auto;
-  display:flex;
-  align-items:center;
-  padding-right:48px;
-  gap:14px;
+/* Globálně zrušíme všechny underline efekty */
+.desktop-nav a,
+.desktop-nav a:visited,
+.desktop-nav a:hover,
+.desktop-nav a:active {
+  text-decoration: none !important;
 }
 
-.nav-right{margin-right:24px;}
+
+/* Right side layout */
+.right-side {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  padding-right: 48px;
+  gap: 14px;
+}
+
+.nav-right { margin-right: 24px; }
+
 
 
 /* ============================================================
@@ -162,7 +173,6 @@ body.animate-title .site-title span{
   padding-right: 48px;
 }
 
-/* perfektní vertikální centrování */
 .desktop-nav a {
   position: relative;
   display: inline-flex;
@@ -174,16 +184,15 @@ body.animate-title .site-title span{
   border-radius: 12px;
 
   font-weight: 500;
-  line-height: 20px; /* stejné jako 20px ikona => přesný střed */
-
+  line-height: 20px; /* match 20px icon height */
   transition: color .25s, background .25s, box-shadow .25s;
 }
 
-/* LIGHT / DARK default text */
+/* LIGHT / DARK default */
 html.theme-light .desktop-nav a { color: var(--nav-light); }
 html.theme-dark  .desktop-nav a { color: var(--nav-dark); }
 
-/* hover */
+/* Hover */
 .desktop-nav a:hover:not(.active) {
   color: var(--brand-strong);
   background: rgba(255,255,255,0.1);
@@ -196,14 +205,14 @@ html.theme-dark  .desktop-nav a { color: var(--nav-dark); }
   color: var(--brand-strong);
 }
 
-/* active */
+/* Active */
 .desktop-nav a.active {
   background: rgba(255,255,255,0.28);
   color: var(--brand-strong) !important;
   box-shadow: 0 4px 12px rgba(229,0,106,0.28);
 }
 
-/* theme specific active */
+/* Theme specific active */
 html.theme-light .desktop-nav a.active {
   background: rgba(255,0,140,0.18);
   box-shadow: 0 4px 12px rgba(255,0,140,0.30);
@@ -221,37 +230,31 @@ html.theme-dark .desktop-nav a.active .icon {
   opacity: 1 !important;
 }
 
+
+
 /* ============================================================
    ICON ALIGNMENT PER PAGE (pixel-perfect)
 ============================================================ */
 
-/* Domů – mírně nahoru */
 .desktop-nav a[data-page="/"] .nav-icon {
-    position: relative;
-    top: -3px !important;
+  position: relative;
+  top: -3px !important;
 }
 
-/* Fotogalerie – téměř přesně */
 .desktop-nav a[data-page="fotogalerie"] .nav-icon {
-    position: relative;
-    top: -1px !important;
+  position: relative;
+  top: -1px !important;
 }
 
-/* Minihra – trošku výš */
 .desktop-nav a[data-page="minihra"] .nav-icon {
-    position: relative;
-    top: -2.5px !important;
+  position: relative;
+  top: -2.5px !important;
 }
 
-.desktop-nav a .icon,
-.desktop-nav a .nav-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
 
 /* ============================================================
-   UNDERLINE (PSEUDO ELEMENT – NEPOSOUVÁ TEXT!)
+   UNDERLINE (NEW PERFECT VERSION)
 ============================================================ */
 
 .desktop-nav a .label {
@@ -259,20 +262,23 @@ html.theme-dark .desktop-nav a.active .icon {
   display: inline-block;
 }
 
+/* baseline underline (invisible before hover) */
 .desktop-nav a .label::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
 
-  bottom: -3px;  /* pod textem, NEZVEDÁ TEXT */
+  bottom: -3px;
   height: 2px;
+
   border-radius: 4px;
   background: var(--brand-strong);
 
   opacity: 0;
   transform: scaleX(0);
-  transition: .25s;
+  transform-origin: center;
+  transition: transform .25s ease, opacity .25s ease;
 }
 
 /* hover underline */
@@ -281,19 +287,21 @@ html.theme-dark .desktop-nav a.active .icon {
   transform: scaleX(1);
 }
 
-/* active NEPOTŘEBUJE underline, pilulka je highlight */
+/* active – underline stays visible! */
 .desktop-nav a.active .label::after {
-  opacity: 0 !important;
-  transform: scaleX(0) !important;
+  opacity: 1 !important;
+  transform: scaleX(1) !important;
 }
 
-/* fancy glow on hover – theme based */
+/* fancy glow (hover only) */
 html.theme-light .desktop-nav a:hover .label::after {
-  box-shadow: 0 0 8px rgba(255,120,200,.35), 0 0 16px rgba(255,120,200,.25);
+  box-shadow: 0 0 8px rgba(255,120,200,.35),
+              0 0 16px rgba(255,120,200,.25);
 }
 
 html.theme-dark .desktop-nav a:hover .label::after {
-  box-shadow: 0 0 12px rgba(255,0,200,.45), 0 0 28px rgba(255,0,255,.25);
+  box-shadow: 0 0 12px rgba(255,0,200,.45),
+              0 0 28px rgba(255,0,255,.25);
 }
 
 /* ============================================================
