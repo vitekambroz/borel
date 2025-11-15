@@ -965,20 +965,24 @@ html.theme-dark .ui{
 #scoreBox{top:10px;}
 #difficultyBox{top:54px;}
 
-/* LEVEL-UP PULS – nový, krásný neon efekt */
+/* Neon puls okolo celé pilulky */
 @keyframes levelUpPulse {
   0% {
     transform: scale(1);
     box-shadow: 0 0 0 rgba(255,0,200,0);
   }
   40% {
-    transform: scale(1.18);
-    box-shadow: 0 0 16px rgba(255,0,200,0.55),
-                0 0 28px rgba(255,0,255,0.45);
+    transform: scale(1.12);
+    box-shadow:
+      0 0 10px rgba(255,0,200,0.45),
+      0 0 20px rgba(255,0,255,0.35),
+      0 0 30px rgba(255,0,255,0.25);
   }
   70% {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(255,0,200,0.35);
+    transform: scale(1.06);
+    box-shadow:
+      0 0 6px rgba(255,0,200,0.30),
+      0 0 14px rgba(255,0,255,0.20);
   }
   100% {
     transform: scale(1);
@@ -986,8 +990,10 @@ html.theme-dark .ui{
   }
 }
 
+/* Třída, která animaci aplikuje */
 .difficultyPulse {
   animation: levelUpPulse .45s ease-out;
+  border-radius: 16px; /* aby efekt obepínal pilulku, NE čtverec */
 }
 
 #restart,#mute{
