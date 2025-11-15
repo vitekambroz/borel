@@ -481,7 +481,7 @@ html.theme-light .mobile-nav a.active{
   background: var(--switch-bg) !important;
 }
 
-/* univerzální velikost kolečka */
+/* thumb s SVG ikonami */
 .theme-toggle .thumb {
   width: 28px;
   height: 28px;
@@ -493,19 +493,26 @@ html.theme-light .mobile-nav a.active{
   align-items: center;
   justify-content: center;
   background: var(--thumb-bg);
-  font-size: 1.35rem;
   transition: transform .3s, background .3s;
 }
 
-/* emoji stejné velikosti */
-.theme-toggle .thumb::before {
-  display: block;
-  font-size: 1.35rem;
+/* velikost ikon */
+.theme-toggle .thumb svg {
+  width: 20px;
+  height: 20px;
 }
 
-/* světlý / tmavý mód — emoji */
-html.theme-light .theme-toggle .thumb::before { content: "🌞"; }
-html.theme-dark  .theme-toggle .thumb::before { content: "🌙"; }
+/* SVG přepínání */
+.theme-toggle .thumb .sun { display: none; }
+.theme-toggle .thumb .moon { display: none; }
+
+/* světlý režim = slunce */
+html.theme-light .thumb .sun { display: block; }
+html.theme-light .thumb .moon { display: none; }
+
+/* tmavý režim = měsíc */
+html.theme-dark .thumb .moon { display: block; }
+html.theme-dark .thumb .sun { display: none; }
 
 /* přesné zarovnání */
 html.theme-light .theme-toggle .thumb { left: 6px; }
@@ -608,23 +615,13 @@ html.theme-dark .mobile-separator {
   box-shadow: 0 0 6px rgba(255, 100, 255, .18);
 }
 
-
-/* ===== visibility podle šířky ===== */
+/* viditelnost podle šířky */
 @media (max-width: 1100px) {
   .theme-toggle.desktop-toggle { display: none; }
 }
 @media (min-width: 1101px) {
   .theme-toggle.mobile-toggle { display: none; }
 }
-
-/* viditelnost podle šířky */
-@media (max-width:1100px){
-  .theme-toggle.desktop-toggle{display:none;}
-}
-@media (min-width:1101px){
-  .theme-toggle.mobile-toggle{display:none;}
-}
-
 
 /* =============================
         RESPONSIVE HEADER
