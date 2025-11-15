@@ -184,7 +184,7 @@ body.animate-title .site-title span {
   margin-left: auto;
   display: flex;
   align-items: center;
-  padding-right: 50px;
+  padding-right: 48px;
   gap: 14px;
 }
 
@@ -193,7 +193,7 @@ body.animate-title .site-title span {
   display: flex;
   align-items: center;
   gap: 28px;
-  padding-right: 50px; /* mezera od togglu */
+  padding-right: 48px; /* mezera od togglu */
 }
 
 /* ---- SPOTIFY UNDERLINE ANIMATION ---- */
@@ -908,7 +908,7 @@ html {
     top: 64px;
     flex-direction: column;
     align-items: stretch;
-    padding: 12px 50px;
+    padding: 12px 48px;
     border-radius: 18px;
     background: var(--glass-light);
     backdrop-filter: blur(12px);
