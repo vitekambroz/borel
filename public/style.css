@@ -208,32 +208,26 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
   padding: 10px 18px;
 }
 
-/* ===========================================
-   FINAL PIXEL-PERFECT ALIGN
-=========================================== */
+/* ================================
+   ICON ALIGNMENT PER PAGE
+================================ */
 
-/* Domů – malinko nahoru 
+/* Domů – mírně nahoru */
 .desktop-nav a[data-page="/"] .nav-icon {
-    position: relative !important;
-    top: -1.2px !important;
-    display: inline-flex !important;
-    align-items: center !important;
+    position: relative;
+    top: -3.2px !important;   
 }
 
-/* Fotogalerie – o trošku dolů 
+/* Fotogalerie – téměř přesně */
 .desktop-nav a[data-page="fotogalerie"] .nav-icon {
-    position: relative !important;
-    top: -0.3px !important;
-    display: inline-flex !important;
-    align-items: center !important;
+    position: relative;
+    top: -1.1px !important;    
 }
 
-/* Minihra – trochu výš 
+/* Minihra – trochu výš */
 .desktop-nav a[data-page="minihra"] .nav-icon {
-    position: relative !important;
-    top: -2.1px !important;
-    display: inline-flex !important;
-    align-items: center !important;
+    position: relative;
+    top: -2.5px !important;  
 }
 
 .desktop-nav a .icon {
@@ -273,7 +267,7 @@ html.theme-dark .desktop-nav a.active .icon{
   color:var(--brand-strong) !important;
   opacity:1 !important;
   transform:none !important;
-}*/
+}
 
 /* underline */
 .desktop-nav a::after{
