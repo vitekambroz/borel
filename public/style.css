@@ -221,7 +221,7 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
 /* Fotogalerie – o trošku dolů */
 .desktop-nav a[data-page="fotogalerie"] .nav-icon {
     position: relative !important;
-    top: -0.6px !important;
+    top: -0.3px !important;
     display: inline-flex !important;
     align-items: center !important;
 }
