@@ -6,9 +6,11 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["window-controls-overlay"],
   "orientation": "portrait",
   "background_color": "#ffe6f0",
   "theme_color": "#e5006a",
+
   "icons": [
     {
       "src": "/icon-192.png",
@@ -50,6 +52,7 @@
       "type": "image/png"
     }
   ],
+
   "screenshots": [
     {
       "src": "/screenshot-wide.png",
@@ -62,6 +65,13 @@
       "sizes": "480x895",
       "type": "image/png",
       "form_factor": "narrow"
+    }
+  ],
+
+  "protocol_handlers": [
+    {
+      "protocol": "web+borel",
+      "url": "/?q=%s"
     }
   ]
 }
