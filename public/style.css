@@ -228,19 +228,19 @@ html.theme-dark .desktop-nav a.active .icon {
 /* Domů – mírně nahoru */
 .desktop-nav a[data-page="/"] .nav-icon {
     position: relative;
-    top: -3px !important;
+    top: -2.2px !important;
 }
 
 /* Fotogalerie – téměř přesně */
 .desktop-nav a[data-page="fotogalerie"] .nav-icon {
     position: relative;
-    top: 0.5px !important;
+    top: -0.8px !important;
 }
 
 /* Minihra – trošku výš */
 .desktop-nav a[data-page="minihra"] .nav-icon {
     position: relative;
-    top: -2.5px !important;
+    top: -2.0px !important;
 }
 
 .desktop-nav a .icon,
