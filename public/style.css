@@ -457,7 +457,7 @@ html.theme-light .mobile-nav a.active{
 
 
 /* ============================================================
-   THEME TOGGLE – SPOLEČNÝ ZÁKLAD
+   THEME TOGGLE – ZÁKLAD
 ============================================================ */
 
 .theme-toggle {
@@ -466,7 +466,7 @@ html.theme-light .mobile-nav a.active{
   border-radius: 999px;
   cursor: pointer;
   background: var(--switch-bg);
-  box-shadow: 0 0 16px rgba(0, 0, 0, .35);
+  box-shadow: 0 0 16px rgba(0,0,0,.35);
   transition: background .3s, box-shadow .3s;
 }
 
@@ -481,7 +481,7 @@ html.theme-light .mobile-nav a.active{
   background: var(--switch-bg) !important;
 }
 
-/* thumb s SVG ikonami */
+/* ===== THUMB + IKONY ===== */
 .theme-toggle .thumb {
   width: 28px;
   height: 28px;
@@ -493,44 +493,49 @@ html.theme-light .mobile-nav a.active{
   align-items: center;
   justify-content: center;
   background: var(--thumb-bg);
-  transition: transform .3s, background .3s;
+  box-shadow: var(--thumb-glow);
+  transition: transform .3s, background .3s, box-shadow .3s;
 }
 
-/* velikost ikon */
+/* SVG velikost */
 .theme-toggle .thumb svg {
   width: 20px;
   height: 20px;
 }
 
-/* SVG přepínání */
-.theme-toggle .thumb .sun { display: none; }
-.theme-toggle .thumb .moon { display: none; }
+/* Default – nic nezobrazuj */
+.theme-toggle .thumb .sun,
+.theme-toggle .thumb .moon {
+  display: none;
+}
 
-/* světlý režim = slunce */
-html.theme-light .thumb .sun { display: block; }
-html.theme-light .thumb .moon { display: none; }
+/* Světlý režim = slunce */
+html.theme-light .theme-toggle .thumb .sun { display: block; }
 
-/* tmavý režim = měsíc */
-html.theme-dark .thumb .moon { display: block; }
-html.theme-dark .thumb .sun { display: none; }
+/* Tmavý režim = měsíc */
+html.theme-dark .theme-toggle .thumb .moon { display: block; }
 
-/* přesné zarovnání */
-html.theme-light .theme-toggle .thumb { left: 6px; }
-html.theme-dark  .theme-toggle .thumb { right: 6px; left: auto; }
+/* Pozice thumbu */
+html.theme-light .theme-toggle .thumb { left: 3px; }
+html.theme-dark  .theme-toggle .thumb { right: 3px; left: auto; }
 
-/* světlý mód barvy */
+/* ===== BARVY: LIGHT MODE ===== */
 html.theme-light .theme-toggle .switch {
-  --switch-bg: #ffe2f5;
+  --switch-bg: #ffe4f9;
   --thumb-bg: #ffffff;
+  --thumb-glow: 0 0 10px rgba(255, 0, 140, .35),
+                0 0 18px rgba(255, 0, 200, .30);
 }
 
-/* tmavý mód barvy */
+/* ===== BARVY: DARK MODE ===== */
 html.theme-dark .theme-toggle .switch {
-  --switch-bg: #2a0038;
-  --thumb-bg: #ffdbff;
+  --switch-bg: #1b0023;
+  --thumb-bg: #fff0ff;
+  --thumb-glow: 0 0 16px rgba(255, 0, 180, .75),
+                0 0 32px rgba(255, 0, 255, .55);
 }
 
-/* bounce animace */
+/* Bounce animace */
 @keyframes toggle-bounce {
   0%   { transform: translateY(-50%) scale(1); }
   50%  { transform: translateY(-50%) scale(1.2); }
@@ -560,7 +565,7 @@ html.theme-dark .theme-toggle .switch {
 
 
 /* ============================================================
-   MOBILNÍ VARIANTA (MENU)
+   MOBILNÍ VARIANTA (MOBILE MENU)
 ============================================================ */
 
 .mobile-theme-row {
@@ -598,7 +603,7 @@ html.theme-dark .theme-toggle.mobile-toggle .switch {
     0 0 24px rgba(255, 0, 255, .20);
 }
 
-/* separator */
+/* Separator */
 .mobile-separator {
   width: 100%;
   height: 1px;
@@ -606,22 +611,21 @@ html.theme-dark .theme-toggle.mobile-toggle .switch {
   border: none;
   background: rgba(255, 255, 255, .12);
 }
+
 html.theme-light .mobile-separator {
   background: rgba(255, 0, 140, .28);
   box-shadow: 0 0 6px rgba(255, 0, 140, .18);
 }
+
 html.theme-dark .mobile-separator {
   background: rgba(255, 100, 255, .22);
   box-shadow: 0 0 6px rgba(255, 100, 255, .18);
 }
 
-/* viditelnost podle šířky */
-@media (max-width: 1100px) {
-  .theme-toggle.desktop-toggle { display: none; }
-}
-@media (min-width: 1101px) {
-  .theme-toggle.mobile-toggle { display: none; }
-}
+
+/* ===== visible podle šířky ===== */
+@media (max-width: 1100px)  { .theme-toggle.desktop-toggle { display: none; } }
+@media (min-width: 1101px)  { .theme-toggle.mobile-toggle { display: none; } }
 
 /* =============================
         RESPONSIVE HEADER
