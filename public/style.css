@@ -234,7 +234,7 @@ html.theme-dark .desktop-nav a.active .nav-icon,
 html.theme-dark .desktop-nav a.active .icon{
   color:var(--brand-strong) !important;
   opacity:1 !important;
-  transform:translateY(-1px);
+  transform:none !important;
 }
 
 /* underline */
