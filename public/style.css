@@ -782,6 +782,7 @@ html.theme-dark .desktop-nav a:hover::after {
   display: flex;
   align-items: center;
   transition: background 0.3s ease;
+  position: relative;
 }
 
 /* Tečka (thumb) */
@@ -796,6 +797,8 @@ html.theme-dark .desktop-nav a:hover::after {
   font-size: 1.1rem;
   transition: transform 0.3s ease, background 0.3s ease;
   box-shadow: 0 0 12px rgba(0,0,0,0.45);
+  position: absolute;
+  left: 4px;
 }
 
 /* Tmavý mód → měsíc */
@@ -804,11 +807,11 @@ html.theme-dark .desktop-nav a:hover::after {
 }
 
 .theme-dark .thumb {
-  left: 26px;
-  background: #ffdbff; /* jemná světle růžová */
+  left: 38px; /* ✔ tak akorát doprava 26 puvodne*/
+  background: #ffdbff;
   box-shadow:
-    0 0 10px rgba(255, 0, 255, 0.55),
-    0 0 20px rgba(229, 0, 106, 0.6);
+      0 0 10px rgba(255, 0, 255, 0.55),
+      0 0 20px rgba(229, 0, 106, 0.6);
 }
 
 .theme-dark .theme-toggle {
@@ -832,11 +835,10 @@ html.theme-dark .desktop-nav a:hover::after {
 
 .theme-light .thumb {
   left: 4px;
-  background: #ffffff; /* čistá bílá */
+  background: #ffffff;
   box-shadow:
     0 0 8px rgba(229, 0, 106, 0.35),
     0 0 15px rgba(255, 140, 255, 0.25);
-  transform: translateX(34px);
 }
 
 .theme-light .theme-toggle {
@@ -1164,10 +1166,11 @@ html.theme-dark .info-box {
 /* ovládací prvky */
 
 .close {
-  position: absolute;
+  position: fixed;
   top: 22px;
-  left: 50%;
-  transform: translateX(-50%); /* centrování */
+  right: 22px;
+  left: auto;
+  transform: none;
   width: 44px;
   height: 44px;
   border-radius: 999px;
@@ -1209,10 +1212,11 @@ html.theme-dark .info-box {
   border: none;
   background: rgba(0, 0, 0, 0.55);
   color: #fff;
-  font-size: 2rem;
-  display: inline-flex;
+  font-size: 2.2rem;
+  display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 0;
   cursor: pointer;
   box-shadow: 0 0 18px rgba(0, 0, 0, 0.7);
   transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
