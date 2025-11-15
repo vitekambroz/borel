@@ -213,6 +213,17 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
   margin-top: -1px;  /* jemné dorovnání */
 }
 
+/* Zarovnání ikon v navigaci – individuální doladění */
+.desktop-nav a[data-page="/"] .nav-icon { /* Domů */
+    margin-top: -1px;
+}
+
+.desktop-nav a[data-page="minihra"] .nav-icon { /* Minihra */
+    margin-top: -1.2px;
+}
+
+/* Galerie je OK, necháváme beze změny */
+
 .desktop-nav a .icon {
   display: flex;
   align-items: center;
