@@ -192,8 +192,15 @@ html.theme-dark .desktop-nav a:hover::after{
 }
 
 /* hide desktop toggle on tablet */
-@media(max-width:1100px){
-  .theme-toggle:not(.mobile-toggle){display:none}
+@media (max-width: 1100px) {
+  /* Zruší desktop pozici přepínače v mobilu */
+  .theme-toggle:not(.mobile-toggle) {
+    position: static !important;
+    transform: none !important;
+    margin-left: auto !important;
+    right: auto !important;
+    top: auto !important;
+  }
 }
 
 /* ===== RESPONSIVE HEADER ===== */
