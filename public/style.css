@@ -1048,67 +1048,65 @@ html.theme-dark .ui-btn:hover {
   border-radius: inherit; /* ← respektuje pilulku */
 }
 
-/* společné styly tlačítek */
+/* OBA BUTTONY – stejný vzhled, stejné rozměry, stejný layout */
 #mute,
 #vibrate {
-  position: absolute;
-  right: 12px;
-  padding: 8px 14px;
-  border-radius: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  z-index: 50;
-  border: 1px solid rgba(255,255,255,.45);
-  background: rgba(255,255,255,.35);
-  color: #e5006a;
+  position:absolute;
+  right:12px;
+  width:44px;
+  height:44px;
+  padding:0;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:50;
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(255,255,255,.35);
+  color:#e5006a;
   box-shadow:
-    0 4px 14px rgba(255,182,212,.55),
-    inset 0 0 10px rgba(255,255,255,.35);
-  backdrop-filter: blur(10px);
-  transition: .25s;
+      0 4px 14px rgba(255,182,212,.55),
+      inset 0 0 10px rgba(255,255,255,.35);
+  backdrop-filter:blur(10px);
+  transition:.25s;
 }
 
+/* HOVER efekt */
 #mute:hover,
 #vibrate:hover {
-  transform: scale(1.06);
+  transform:scale(1.06);
   box-shadow:
-    0 8px 22px rgba(255,182,212,.8),
-    inset 0 0 12px rgba(255,255,255,.45);
+      0 8px 22px rgba(255,182,212,.8),
+      inset 0 0 12px rgba(255,255,255,.45);
 }
 
-/* původní restart pozice → mute */
-#mute {
-  top: 10px;
-}
+/* POZICE */
+#mute { top:10px; }
+#vibrate { top:60px; } /* VŽDY přesně pod mute */
 
-/* původní mute pozice → vibrate */
-#vibrate {
-  top: 54px;
-}
-
-/* ❌ vibrace skryté na desktopu */
-@media (hover: hover) and (pointer: fine) {
-  #vibrate {
-    display: none !important;
-  }
-}
-
+/* DARK MODE */
 html.theme-dark #mute,
 html.theme-dark #vibrate {
-  background: rgba(255,255,255,.08);
-  border-color: rgba(255,255,255,.18);
-  color: #fff;
+  background:rgba(255,255,255,.08);
+  border-color:rgba(255,255,255,.18);
+  color:#fff;
   box-shadow:
-    0 4px 14px rgba(255,0,255,.25),
-    inset 0 0 10px rgba(255,255,255,.08);
+      0 4px 14px rgba(255,0,255,.25),
+      inset 0 0 10px rgba(255,255,255,.08);
 }
 
 html.theme-dark #mute:hover,
 html.theme-dark #vibrate:hover {
-  background: rgba(255,255,255,.12);
+  background:rgba(255,255,255,.12);
   box-shadow:
-    0 8px 22px rgba(255,0,255,.35),
-    inset 0 0 12px rgba(255,255,255,.12);
+      0 8px 22px rgba(255,0,255,.35),
+      inset 0 0 12px rgba(255,255,255,.12);
+}
+
+/* SCHOVÁNÍ VIBRATE NA DESKTOPU */
+@media (hover:hover) and (pointer:fine) {
+  #vibrate { display:none !important; }
 }
 
 #mute .icon-wrap {

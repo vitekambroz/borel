@@ -53,6 +53,7 @@ levelUpSound.volume = 0.7;
 const scoreBox = document.getElementById("score");
 const difficultyBox = document.getElementById("difficulty");
 const msgBox = document.getElementById("centerMsg");
+
 const muteBtn = document.getElementById("mute");
 const vibBtn = document.getElementById("vibrate");
 
@@ -68,7 +69,6 @@ let bird;
 
 const GRAVITY = 0.55;
 const JUMP_VELOCITY = -9.8;
-
 const MAX_FALL_SPEED = 14;
 const MAX_RISE_SPEED = -12;
 
@@ -91,17 +91,12 @@ let level = 1;
 let distanceSinceLastPipe = 0;
 
 // =====================================================
-//  Stav zvuku + vibrací (persistentní)
+//  Persistentní zvuk + vibrace
 // =====================================================
-let isMuted =
-  localStorage.getItem("mutedState") === null
-    ? false
-    : localStorage.getItem("mutedState") === "1";
+let isMuted = localStorage.getItem("mutedState") === "1";
 
 let hapticsEnabled =
-  localStorage.getItem("hapticsEnabled") === null
-    ? true
-    : localStorage.getItem("hapticsEnabled") === "1";
+  localStorage.getItem("hapticsEnabled") !== "0"; // default ON
 
 // =====================================================
 //  Vibrace helper
@@ -109,7 +104,7 @@ let hapticsEnabled =
 function doHaptic(ms) {
     if (!hapticsEnabled) return;
     if (!("vibrate" in navigator)) return;
-    if (window.innerWidth > 820) return; // jen mobily
+    if (!matchMedia("(pointer: coarse)").matches) return; // jen mobily
     navigator.vibrate(ms);
 }
 
@@ -141,6 +136,8 @@ vibBtn.addEventListener("click", () => {
     hapticsEnabled = !hapticsEnabled;
     localStorage.setItem("hapticsEnabled", hapticsEnabled ? "1" : "0");
     applyVibrationState();
+
+    if (hapticsEnabled) doHaptic(35);
 });
 
 // =====================================================
@@ -180,7 +177,7 @@ cvs.addEventListener(
 );
 
 // =====================================================
-//  Auto-pause při ztrátě focusu
+//  Auto-pause
 // =====================================================
 window.addEventListener("blur", () => (paused = true));
 window.addEventListener("focus", () => {
@@ -191,16 +188,15 @@ window.addEventListener("focus", () => {
 });
 
 // =====================================================
-//  Rage-bait generátor trubek
+//  Rage-bait trubky
 // =====================================================
 function currentPipeSettings() {
     const capped = Math.min(score, 80);
 
-    const gap = 170 - (170 - 110) * (capped / 80);
-
-    const spacing = 260 - (260 - 160) * (capped / 80);
-
-    return { gap, spacing };
+    return {
+        gap: 170 - (170 - 110) * (capped / 80),
+        spacing: 260 - (260 - 160) * (capped / 80),
+    };
 }
 
 function spawnPipe() {
@@ -231,20 +227,17 @@ function intersect(a, b) {
 }
 
 // =====================================================
-//  Update (fixní fyzika)
+//  Update
 // =====================================================
 function update() {
     if (running && !gameOver) {
         const capped = Math.min(score, 120);
         const pipeSpeed = BASE_PIPE_SPEED + capped * 0.07;
 
-        // pták
         bird.vy += GRAVITY;
         bird.vy = Math.max(MAX_RISE_SPEED, Math.min(MAX_FALL_SPEED, bird.vy));
-
         bird.y += bird.vy;
 
-        // spawn trubek
         const { spacing } = currentPipeSettings();
         distanceSinceLastPipe += pipeSpeed;
         if (distanceSinceLastPipe >= spacing) {
@@ -252,24 +245,25 @@ function update() {
             distanceSinceLastPipe = 0;
         }
 
-        // trubky
         for (let i = pipes.length - 1; i >= 0; i--) {
             const p = pipes[i];
             p.x -= pipeSpeed;
 
-            // skóre
             if (!p.scored && p.x + PIPE_WIDTH < bird.x) {
                 p.scored = true;
                 score++;
 
                 const newLevel = Math.min(score + 1, 200);
+
                 if (newLevel !== level) {
                     level = newLevel;
+
                     if (!isMuted) {
                         levelUpSound.currentTime = 0;
                         levelUpSound.play();
                     }
-                    doHaptic(40);
+
+                    doHaptic([30, 60, 30]);
 
                     difficultyBox.textContent = `Obtížnost: ${level}`;
 
@@ -289,9 +283,9 @@ function update() {
             if (p.x + PIPE_WIDTH < -20) pipes.splice(i, 1);
         }
 
-        // kolize
         if (bird.y + bird.h / 2 > H || bird.y - bird.h / 2 < 0) {
             endGame();
+            doHaptic([80, 80, 80]);
             return;
         }
 
@@ -309,12 +303,11 @@ function update() {
 
             if (intersect(b, topRect) || intersect(b, botRect)) {
                 endGame();
-                doHaptic([70, 70, 70]);
+                doHaptic([100, 70, 100]);
                 break;
             }
         }
     } else if (gameOver) {
-        // pád
         if (bird.y + bird.h / 2 < H - 30) {
             bird.vy += GRAVITY * 0.6;
             bird.y += bird.vy;
@@ -329,6 +322,7 @@ function endGame() {
     if (gameOver) return;
     gameOver = true;
     running = false;
+
     birdImg = birdImgDead;
     bird.rotation = Math.PI;
 
@@ -356,6 +350,7 @@ function endGame() {
 // =====================================================
 function reset() {
     birdImg = birdImgAlive;
+
     bird = {
         x: 100,
         y: H / 2,
@@ -387,7 +382,6 @@ function reset() {
 function draw() {
     ctx.clearRect(0, 0, W, H);
 
-    // pozadí
     const progress = level / 100;
     let topColor, bottomColor;
 
@@ -416,21 +410,17 @@ function draw() {
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
 
-    // zem
     const groundHeight = 80;
     ctx.fillStyle = "#ded895";
     ctx.fillRect(0, H - groundHeight, W, groundHeight);
     ctx.fillStyle = "#3ec73e";
     ctx.fillRect(0, H - groundHeight, W, 20);
 
-    // trubky
     for (const p of pipes) {
-        const color = "#3bb300";
-        const border = "#2a8c00";
-
-        ctx.fillStyle = color;
+        ctx.fillStyle = "#3bb300";
         ctx.fillRect(p.x, 0, PIPE_WIDTH, p.top);
-        ctx.strokeStyle = border;
+
+        ctx.strokeStyle = "#2a8c00";
         ctx.lineWidth = 4;
         ctx.strokeRect(p.x, 0, PIPE_WIDTH, p.top);
 
@@ -442,7 +432,6 @@ function draw() {
         ctx.fillRect(p.x - 3, p.bottom, PIPE_WIDTH + 6, 20);
     }
 
-    // pták
     if (birdImg.complete) {
         ctx.save();
         let angle = Math.max(-0.4, Math.min(0.4, bird.vy / 18));
@@ -451,7 +440,6 @@ function draw() {
         ctx.translate(bird.x, bird.y);
         ctx.rotate(angle);
         ctx.drawImage(birdImg, -bird.w / 2, -bird.h / 2, bird.w, bird.h);
-
         ctx.restore();
     }
 }
