@@ -15,6 +15,12 @@
   --glow:none;
   --nav-height: 70px;
   --mobile-nav-height: 58px;
+  --nav-light: #5a004e;         /* světlej text */
+  --nav-light-hover: #ff2b84;   /* světlej hover */
+  --nav-light-active: #ff2b84;  /* světlej aktivní */
+  --nav-dark: #ffffff;          /* tmavej text */
+  --nav-dark-hover: #ff7bff;    /* tmavej hover */
+  --nav-dark-active: #ff4bf7;   /* tmavej aktivní */
   --text: #2b0020;
   --text-soft: #5a1140;
   --text-dark: #fce9f6;
@@ -200,17 +206,22 @@ body.animate-title .site-title span {
 
 /* ---- SPOTIFY UNDERLINE ANIMATION ---- */
 .desktop-nav a {
-  overflow: hidden;
-  position: relative;
-  padding: 8px 14px;
+  padding: 10px 16px;
   border-radius: 12px;
-  text-decoration: none;
-  font-weight: 600;
-  color: var(--text-soft);
-  display: inline-flex;
+  font-weight: 500;
+  position: relative;
+  display: flex;
   align-items: center;
-  gap: 8px;                     /* text a ikonka = jeden celek */
-  transition: color .25s ease;
+  gap: 8px;
+  transition: color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+html.theme-light .desktop-nav a {
+  color: var(--nav-light);
+}
+
+html.theme-dark .desktop-nav a {
+  color: var(--nav-dark);
 }
 
 /* ikonka nemá dělat transform! */
@@ -282,21 +293,17 @@ body.animate-title .site-title span {
 /* ACTIVE STAV – text i ikonka ZBĚLÁ (light i dark)   */
 /* -------------------------------------------------- */
 html.theme-light .desktop-nav a.active {
-  color: #ff2b84 !important; /* lehce tmavší růžová než hover */
+  color: var(--nav-light-active) !important;
   background: rgba(255, 120, 180, 0.25);
   box-shadow:
     0 0 14px rgba(255, 120, 180, 0.45),
     0 0 30px rgba(255, 150, 200, 0.35);
 }
+
 html.theme-dark .desktop-nav a.active {
-  color: #fff !important;
+  color: var(--nav-dark-active) !important;
   background: rgba(255, 0, 140, 0.22);
   backdrop-filter: blur(6px);
-
-  padding-bottom: 6px;
-  border-radius: 10px;
-  background-clip: padding-box;
-
   box-shadow:
     0 0 12px rgba(255, 0, 170, 0.45),
     0 0 30px rgba(255, 0, 200, 0.35),
@@ -363,6 +370,21 @@ html.theme-light .desktop-nav a.active::after {
   box-shadow: 0 0 10px rgba(255, 255, 255, 1),
               0 0 20px rgba(255, 255, 255, 0.9),
               0 0 28px rgba(255, 255, 255, 0.8);
+}
+
+html.theme-dark .desktop-nav a:hover::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -3px;
+  width: 70%;
+  height: 2px;
+  transform: translateX(-50%);
+  background: var(--brand-strong);
+  border-radius: 2px;
+  box-shadow:
+    0 0 12px rgba(255, 0, 200, 0.45),
+    0 0 28px rgba(255, 0, 255, 0.25);
 }
 
 /* Normální hover/active ve tmavém režimu */
@@ -679,15 +701,21 @@ html.theme-light .desktop-nav a:hover {
 
 /* LIGHT MODE — růžové podtržení při hoveru */
 html.theme-light .desktop-nav a:hover::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -3px;
+  width: 70%;
+  height: 2px;
+  transform: translateX(-50%);
   background: var(--brand-strong);
-  box-shadow:
-    0 0 10px rgba(255, 140, 200, 0.35),
-    0 0 20px rgba(255, 180, 220, 0.25);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(255, 100, 180, 0.35);
 }
 
 html.theme-dark .desktop-nav a:hover {
-  color: #fff;
-  text-shadow: 0 0 6px rgba(255, 0, 200, 0.35);
+  color: var(--nav-dark-hover);
+  text-shadow: 0 0 6px rgba(255, 100, 255, 0.35);
 }
 
 /* Dark underline */
@@ -710,6 +738,12 @@ html.theme-dark .desktop-nav a:hover::after {
   width: 0 !important;
   background: none !important;
   box-shadow: none !important;
+}
+
+.desktop-nav a:hover .nav-icon,
+.desktop-nav a.active .nav-icon {
+  fill: currentColor;
+  stroke: currentColor;
 }
 
 /* === Reset všeho starého === */
@@ -885,11 +919,11 @@ html.theme-dark .mobile-separator {
 
 /* text vlevo */
 html.theme-light .mobile-theme-label {
-  color: #5a004e;    /* stejná barva jako neaktivní text v nav */
+  color: var(--nav-light);    /* stejná barva jako neaktivní text v nav */
 }
 
 html.theme-dark .mobile-theme-label {
-  color: #ffffff;    /* stejně jako zbytek nav textu */
+  color: var(--nav-dark);    /* stejně jako zbytek nav textu */
 }
 
 /* přepínač uvnitř menu */
