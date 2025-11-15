@@ -202,6 +202,9 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  top: 0;
+  transform: none !important;
 }
 
 html.theme-light .desktop-nav a.active{
