@@ -408,11 +408,20 @@ html.theme-dark .desktop-nav a:hover::after{
 }
 
 .mobile-nav a:hover{
-  color:var(--brand-strong);background:rgba(255,255,255,.1)
+  color:var(--brand-strong);background:rgba(255,255,255,.1);
 }
 
+/* původní (funguje v dark) */
 .mobile-nav a.active{
-  color:var(--brand-strong);background:rgba(255,255,255,.1)
+  color:var(--brand-strong);
+  background:rgba(255,255,255,.1);
+}
+
+/* === FIX: LIGHT MODE ACTIVE — aby byl "banner" vidět === */
+html.theme-light .mobile-nav a.active{
+  background:rgba(255, 0, 140, 0.14);
+  box-shadow:0 0 10px rgba(255, 0, 140, .18);
+  color:var(--brand-strong);
 }
 
 
@@ -445,6 +454,8 @@ html.theme-dark .desktop-nav a:hover::after{
 .menu-toggle.active span:nth-child(3){
   top:10px;transform:rotate(-45deg)
 }
+
+
 /* ============================================================
    THEME TOGGLE – SPOLEČNÝ ZÁKLAD
 ============================================================ */
@@ -475,15 +486,12 @@ html.theme-dark .desktop-nav a:hover::after{
   width: 28px;
   height: 28px;
   border-radius: 50%;
-
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   background: var(--thumb-bg);
   font-size: 1.35rem;
   transition: transform .3s, background .3s;
