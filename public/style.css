@@ -508,10 +508,17 @@ html.theme-light .mobile-nav a.active{
 .theme-toggle .thumb .moon { display: none; }
 
 /* světlý režim = slunce */
-html.theme-light .theme-toggle .thumb .sun { display: block; }
+html.theme-light .theme-toggle .thumb .sun {
+  display: block;
+  stroke-width: 1.4 !important;
+}
 
 /* tmavý režim = měsíc */
-html.theme-dark .theme-toggle .thumb .moon { display: block; }
+html.theme-dark .theme-toggle .thumb .moon {
+  display: block;
+  stroke-width: 1.4 !important;
+  transform: translateY(-1px);
+  opacity: 1 !important;}
 
 /* pozice thumbu */
 html.theme-light .theme-toggle .thumb { left: 3px; right: auto; }
