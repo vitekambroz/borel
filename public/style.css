@@ -372,20 +372,21 @@ html.theme-light .mobile-nav a.active{
 /* Domů – trochu výš */
 .mobile-nav a[data-page="/"] .nav-icon {
     position: relative;
-    top: -0.5px;   
+    top: -0.8px !important;   
 }
 
 /* Fotogalerie – trochu dolů */
 .mobile-nav a[data-page="fotogalerie"] .nav-icon {
     position: relative;
-    top: 1.2px;    
+    top: 0.4px !important;    
 }
 
 /* Minihra – víc nahoru */
 .mobile-nav a[data-page="minihra"] .nav-icon {
     position: relative;
-    top: 1.4px;  
+    top: 0.1px !important;  
 }
+
 
 /* ============================================================
    MOBILE MENU TOGGLE
