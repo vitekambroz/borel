@@ -1,6 +1,6 @@
 // =====================================================
 //  Minihra.js – rage-bait verze
-//  Opravy: flip ikon, fallback, fix trubek
+//  Opravy: přepínání SVG ikon přes display, fix trubek
 // =====================================================
 
 const cvs = document.getElementById("game");
@@ -57,6 +57,7 @@ const msgBox = document.getElementById("centerMsg");
 const muteBtn = document.getElementById("mute");
 const vibBtn = document.getElementById("vibrate");
 
+// SVG ikony
 const soundOnIcon = document.getElementById("soundOn");
 const soundOffIcon = document.getElementById("soundOff");
 const vibOn = document.getElementById("vibOn");
@@ -99,12 +100,18 @@ let isMuted = localStorage.getItem("mutedState") === "1";
 let hapticsEnabled = localStorage.getItem("hapticsEnabled") !== "0";
 
 // =====================================================
-//  SVG flip – hidden přepínání
+//  SVG flip – přepínání přes display
 // =====================================================
 function setIcon(onIcon, offIcon, enabled) {
     if (!onIcon || !offIcon) return;
-    onIcon.hidden = !enabled;
-    offIcon.hidden = enabled;
+
+    if (enabled) {
+        onIcon.style.display = "block";
+        offIcon.style.display = "none";
+    } else {
+        onIcon.style.display = "none";
+        offIcon.style.display = "block";
+    }
 }
 
 // =====================================================

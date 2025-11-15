@@ -1025,23 +1025,24 @@ html.theme-dark .ui-btn:hover {
     height: 24px;
     fill: currentColor;
 
-    /* FLIP animace */
     transition: transform .35s ease, opacity .25s ease;
 
-    /* abso aby ikonky neskákaly */
+    /* Fix proti poskakování */
     position: absolute;
 }
 
-/* skrytá ikona */
-.ui-btn svg[hidden] {
+/* skrytá ikona (JS používá display:none) */
+.ui-btn svg.hidden {
     opacity: 0;
     transform: rotateY(90deg);
+    display: none;
 }
 
 /* viditelná ikona */
-.ui-btn svg:not([hidden]) {
+.ui-btn svg.visible {
     opacity: 1;
     transform: rotateY(0deg);
+    display: block;
 }
 
 /* ==========================
