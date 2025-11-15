@@ -365,6 +365,27 @@ html.theme-light .mobile-nav a.active{
   color:var(--brand-strong);
 }
 
+/* ================================
+   MOBILE NAV ICON ALIGNMENT FIX
+================================ */
+
+/* Domů – o chloupek dolů */
+.mobile-nav a[data-page="/"] .nav-icon {
+    position: relative;
+    top: -0.5px;
+}
+
+/* Fotogalerie – ideál */
+.mobile-nav a[data-page="fotogalerie"] .nav-icon {
+    position: relative;
+    top: -0.3px;
+}
+
+/* Minihra – trošku nahoru */
+.mobile-nav a[data-page="minihra"] .nav-icon {
+    position: relative;
+    top: -1.0px;
+}
 
 /* ============================================================
    MOBILE MENU TOGGLE
