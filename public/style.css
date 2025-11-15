@@ -544,13 +544,12 @@ html.theme-dark .theme-toggle .switch {
   --switch-bg: #1b0023;
 
   /* BOREL růžová */
-  --thumb-bg: #ff29e7;
+  --thumb-bg: #ff00ff;
 
   /* neon glow */
   --thumb-glow:
-    0 0 16px rgba(255, 0, 200, .85),
-    0 0 34px rgba(255, 0, 255, .55),
-    0 0 48px rgba(255, 0, 255, .35);
+      0 0 14px rgba(255,0,255,.6),
+      0 0 28px rgba(255,0,255,.4);
 }
 
 /* bílé SVG v dark režimu */
