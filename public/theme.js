@@ -141,22 +141,37 @@ window.addEventListener("scroll", () => {
   const header = document.querySelector("header");
   const title = document.querySelector(".site-title");
 
-  // 1) Fade-out based on absolute scroll amount (200px = total fade)
-  const fadePoint = 200;
-  const opacity = Math.max(0, 1 - current / fadePoint);
-  title.style.opacity = opacity;
+  /* -------------------------------
+     1) Plynulý fade-out + shrink
+     ------------------------------- */
+  const fadeRange = 250; 
+  const fade = Math.max(0, 1 - current / fadeRange);
 
-  // Title shrinking (much smoother)
-  if (current > 50) title.classList.add("shrunk");
-  else title.classList.remove("shrunk");
+  title.style.opacity = fade;
+  header.style.opacity = fade > 0.2 ? 1 : fade + 0.2; // header nezmizí hned
 
-  // 2) Smart hide (hide when scrolling down, show when scrolling up)
-  if (current > lastScroll && current > 80) {
-    // scrolling down
-    header.style.opacity = "0";
-    header.style.transform = "translateY(-15px)";
+  // Zmenšování loga při scrollu
+  if (current > 40) {
+    title.classList.add("shrunk");
   } else {
-    // scrolling up
+    title.classList.remove("shrunk");
+  }
+
+  /* -------------------------------
+     2) Smart hide (až po fade)
+     ------------------------------- */
+  if (current > fadeRange) {
+    if (current > lastScroll) {
+      // Scroll dolů – schovat
+      header.style.opacity = "0";
+      header.style.transform = "translateY(-20px)";
+    }
+  }
+
+  /* -------------------------------
+     3) Smart show (okamžitě)
+     ------------------------------- */
+  if (current < lastScroll) {
     header.style.opacity = "1";
     header.style.transform = "translateY(0)";
   }
