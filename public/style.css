@@ -164,7 +164,7 @@ body.animate-title .site-title span{
 .desktop-nav a{
   line-height: 1;
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 18px;
@@ -204,7 +204,7 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
   align-items: center;
   justify-content: center;
   position: relative;
-  top: 1px;
+  top: 0.3px;
   transform: none !important;
 }
 
