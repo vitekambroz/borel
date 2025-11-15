@@ -503,39 +503,57 @@ html.theme-light .mobile-nav a.active{
   height: 20px;
 }
 
-/* Default – nic nezobrazuj */
+/* defaultně skryté ikony */
 .theme-toggle .thumb .sun,
-.theme-toggle .thumb .moon {
-  display: none;
-}
+.theme-toggle .thumb .moon { display: none; }
 
-/* Světlý režim = slunce */
+/* světlý režim = slunce */
 html.theme-light .theme-toggle .thumb .sun { display: block; }
 
-/* Tmavý režim = měsíc */
+/* tmavý režim = měsíc */
 html.theme-dark .theme-toggle .thumb .moon { display: block; }
 
-/* Pozice thumbu */
-html.theme-light .theme-toggle .thumb { left: 3px; }
+/* pozice thumbu */
+html.theme-light .theme-toggle .thumb { left: 3px; right: auto; }
 html.theme-dark  .theme-toggle .thumb { right: 3px; left: auto; }
 
-/* ===== BARVY: LIGHT MODE ===== */
+/* ===== LIGHT MODE ===== */
 html.theme-light .theme-toggle .switch {
   --switch-bg: #ffe4f9;
   --thumb-bg: #ffffff;
-  --thumb-glow: 0 0 10px rgba(255, 0, 140, .35),
-                0 0 18px rgba(255, 0, 200, .30);
+  --thumb-glow: 
+    0 0 10px rgba(255, 0, 140, .35),
+    0 0 18px rgba(255, 0, 200, .30);
 }
 
-/* ===== BARVY: DARK MODE ===== */
+/* světly režim SVG barva */
+html.theme-light .theme-toggle .thumb svg {
+  fill: #000 !important;
+  stroke: #000 !important;
+}
+
+/* ===== DARK MODE ===== */
 html.theme-dark .theme-toggle .switch {
   --switch-bg: #1b0023;
-  --thumb-bg: #fff0ff;
-  --thumb-glow: 0 0 16px rgba(255, 0, 180, .75),
-                0 0 32px rgba(255, 0, 255, .55);
+
+  /* BOREL růžová */
+  --thumb-bg: #ff29e7;
+
+  /* neon glow */
+  --thumb-glow:
+    0 0 16px rgba(255, 0, 200, .85),
+    0 0 34px rgba(255, 0, 255, .55),
+    0 0 48px rgba(255, 0, 255, .35);
 }
 
-/* Bounce animace */
+/* bílé SVG v dark režimu */
+html.theme-dark .theme-toggle .thumb svg {
+  fill: #fff !important;
+  stroke: #fff !important;
+  opacity: 1 !important;
+}
+
+/* bounce animace */
 @keyframes toggle-bounce {
   0%   { transform: translateY(-50%) scale(1); }
   50%  { transform: translateY(-50%) scale(1.2); }
@@ -565,7 +583,7 @@ html.theme-dark .theme-toggle .switch {
 
 
 /* ============================================================
-   MOBILNÍ VARIANTA (MOBILE MENU)
+   MOBILNÍ VARIANTA
 ============================================================ */
 
 .mobile-theme-row {
@@ -603,7 +621,7 @@ html.theme-dark .theme-toggle.mobile-toggle .switch {
     0 0 24px rgba(255, 0, 255, .20);
 }
 
-/* Separator */
+/* separator */
 .mobile-separator {
   width: 100%;
   height: 1px;
@@ -622,10 +640,13 @@ html.theme-dark .mobile-separator {
   box-shadow: 0 0 6px rgba(255, 100, 255, .18);
 }
 
-
-/* ===== visible podle šířky ===== */
-@media (max-width: 1100px)  { .theme-toggle.desktop-toggle { display: none; } }
-@media (min-width: 1101px)  { .theme-toggle.mobile-toggle { display: none; } }
+/* viditelnost podle šířky */
+@media (max-width:1100px){
+  .theme-toggle.desktop-toggle{display:none;}
+}
+@media (min-width:1101px){
+  .theme-toggle.mobile-toggle{display:none;}
+}
 
 /* =============================
         RESPONSIVE HEADER
