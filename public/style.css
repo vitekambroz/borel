@@ -190,10 +190,10 @@ html.theme-dark .desktop-nav a:hover::after{
   box-shadow:0 0 12px rgba(255,160,255,.25),0 0 22px rgba(140,0,200,.2);
 }
 
-/* hide header toggle on tablet/mobil – používá se mobilní varianta v menu */
-@media(max-width:1100px){
-  header .theme-toggle{
-    display:none;
+/* Schovat POUZE desktop verzi toggle */
+@media (max-width:1100px) {
+  header .theme-toggle:not(.mobile-toggle) {
+    display: none !important;
   }
 }
 

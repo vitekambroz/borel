@@ -95,6 +95,13 @@ toggles.forEach(toggle => {
 // ===============================================
 // MOBILE NAV MENU
 // ===============================================
+
+mobileToggleSlot.appendChild(themeToggle);
+themeToggle.classList.add("mobile-toggle");
+
+header.appendChild(themeToggle);
+themeToggle.classList.remove("mobile-toggle");
+
 if (menuBtn && mobileNav) {
   menuBtn.addEventListener("click", () => {
     mobileNav.classList.toggle("show");
