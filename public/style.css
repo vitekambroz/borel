@@ -534,6 +534,34 @@ html.theme-dark .theme-toggle .thumb svg{
   height:26px;
 }
 
+/* ============================================================
+   THEME TOGGLE — DESKTOP GLOW EFFECT
+   (nic jiného se nemění)
+============================================================ */
+
+/* Glow při hoveru — desktop only */
+@media (hover: hover) and (pointer: fine) {
+  .theme-toggle.desktop-toggle .thumb {
+    transition: transform .3s, background .3s, box-shadow .3s;
+  }
+
+  .theme-toggle.desktop-toggle:hover .thumb {
+    box-shadow:
+      0 0 18px rgba(255, 0, 180, 0.7),
+      0 0 35px rgba(255, 0, 255, 0.5),
+      0 0 60px rgba(255, 0, 255, 0.3);
+    transform: translateY(-50%) scale(1.05);
+  }
+}
+
+/* Glow při kliknutí */
+.theme-toggle.desktop-toggle:active .thumb {
+  transform: translateY(-50%) scale(0.92);
+  box-shadow:
+    0 0 25px rgba(255, 0, 180, 0.8),
+    0 0 45px rgba(255, 0, 255, 0.6);
+}
+
 /* mobile variant */
 .mobile-theme-row{
   width:100%;
