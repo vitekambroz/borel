@@ -372,19 +372,19 @@ html.theme-light .mobile-nav a.active{
 /* Domů – trochu výš */
 .mobile-nav a[data-page="/"] .nav-icon {
     position: relative;
-    top: 2.2px;   
+    top: 1.8px;   
 }
 
 /* Fotogalerie – trochu dolů */
 .mobile-nav a[data-page="fotogalerie"] .nav-icon {
     position: relative;
-    top: 1.4px;    
+    top: 1.2px;    
 }
 
 /* Minihra – víc nahoru */
 .mobile-nav a[data-page="minihra"] .nav-icon {
     position: relative;
-    top: 2.0px;  
+    top: 3.9px;  
 }
 
 /* ============================================================
