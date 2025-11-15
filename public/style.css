@@ -1169,25 +1169,29 @@ html.theme-dark .info-box {
   position: fixed;
   top: 22px;
   right: 22px;
-  left: auto;
-  transform: none;
   width: 44px;
   height: 44px;
   border-radius: 999px;
   border: none;
   background: rgba(0, 0, 0, 0.55);
   color: #fff;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.8rem;
   cursor: pointer;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.7);
   transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  line-height: 0;          
+  transform-origin: center center;
+  
+  /* ✔ centrování symbolu X */
+  transform: translateY(-2px);
 }
 
 .close:hover {
-  transform: rotate(180deg) scale(1.08);
+  /* ✔ rotace + zvětšení + stejný offset = X zůstane přesně uprostřed */
+  transform: rotate(180deg) scale(1.08) translateY(-2px);
   background: var(--brand-strong);
   box-shadow:
     0 0 24px rgba(229, 0, 106, 0.9),
