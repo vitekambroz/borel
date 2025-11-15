@@ -482,6 +482,12 @@ html.theme-dark .desktop-nav a:hover::after{
   transition:transform .3s,background .3s;
 }
 
+/* LIGHT režim – zvětšená bílá kulička */
+html.theme-light .theme-toggle .thumb {
+  width: 30px;
+  height: 30px;
+}
+
 .theme-toggle .thumb::before {
   display: block;
   transform: scale(1.15); /* zvětší emoji obecně */
