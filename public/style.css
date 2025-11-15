@@ -69,7 +69,6 @@ body.animate-title .site-title span{
 .desktop-nav a:hover .nav-icon{
   opacity:1;transform:translateY(-2px);color:var(--brand-strong);
 }
-.desktop-nav a.active .nav-icon{opacity:1;transform:translateY(-1px)}
 
 /* ===== RIGHT SIDE ===== */
 .right-side{margin-left:auto;display:flex;align-items:center;padding-right:48px;gap:14px}
@@ -379,7 +378,7 @@ html.theme-dark .desktop-nav a.active {
 
 html.theme-dark .desktop-nav a.active .nav-icon,
 html.theme-dark .desktop-nav a.active .icon {
-  color: var(--nav-dark-active) !important;
+  color: var(--brand-strong) !important;
   opacity: 1 !important;
   transform: translateY(-1px);
 }
@@ -420,8 +419,7 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark)}
 .desktop-nav a:hover::after{width:calc(100% - 24px)}
 
 .desktop-nav a.active::after {
-  width: 0 !important;
-  background: none !important;
+  background: var(--brand-strong) !important;
   box-shadow:
     0 0 12px rgba(255, 0, 200, 0.45),
     0 0 28px rgba(255, 0, 255, 0.25) !important;
@@ -437,10 +435,6 @@ html.theme-dark .desktop-nav a:hover::after{
 }
 
 .desktop-nav a.active .icon,
-.desktop-nav a.active .nav-icon{
-  color:#fff!important;opacity:1!important;
-}
-
 
 
 /* =============================
