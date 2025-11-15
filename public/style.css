@@ -200,7 +200,7 @@ html.theme-dark  .desktop-nav a{color:var(--nav-dark);}
 
 .desktop-nav a .icon,
 .desktop-nav a .nav-icon {
-  display: flex;
+  display: block;
   align-items: center;
   justify-content: center;
   position: relative;
