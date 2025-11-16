@@ -890,14 +890,6 @@ html.theme-dark .info-box{
 html, body {
   height: 100%;
   margin: 0;
-  overflow-y: auto;
-}
-
-/* na desktopu nechceme systémový scrollbar – scrolluje jen galerie */
-@media (min-width: 1101px) {
-  html, body {
-    overflow-y: hidden;
-  }
 }
 
 /* Kontejner celé stránky */
