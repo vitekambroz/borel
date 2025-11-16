@@ -339,8 +339,14 @@ html.theme-dark .desktop-nav a:hover .label::after {
 @media(max-width:1100px){
   .desktop-nav{display:none !important;}
   .menu-toggle{display:flex !important;}
-  .right-side{display:none !important;}
   .mobile-nav{display:flex !important;}
+}
+
+/* na mobilu neschovávat CELÝ right-side */
+@media(max-width:1100px) {
+  .desktop-nav { display:none !important; }
+  .theme-toggle.desktop-toggle { display:none !important; }
+  /* right-side nechávám VIDITELNÉ kvůli rozložení headeru */
 }
 
 .mobile-nav{
