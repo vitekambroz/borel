@@ -9,9 +9,11 @@
   --bg-dark-grad:radial-gradient(circle at top,#3a005a,#120018 50%,#050008 100%);
   --glow:none;
   --header-max: 58px;
-  --header-min: 38px;
+  --header-min: 48px;
   --nav-height:70px;
   --mobile-nav-height:58px;
+  --header-max: 58px;
+  --header-min: 38px;
   --nav-light:#5a004e;
   --nav-light-hover:#ff2b84;
   --nav-light-active:#ff2b84;
@@ -61,15 +63,9 @@ body{
 main{flex:1;width:100%;padding:20px 5vw 40px;}
 img{max-width:100%;display:block;}
 
-
 /* ============================================================
    HEADER & TITLE – smooth shrink ready
 ============================================================ */
-
-:root {
-  --header-max: 58px;
-  --header-min: 38px;
-}
 
 header {
   position: sticky;
@@ -878,21 +874,42 @@ html.theme-dark .info-box{
   transform:scale(1);
 }
 
-/* ==========================================================
-   GALERIE — vnitřní scroll + neon scrollbar + iOS overscroll glow
-========================================================== */
+/* ========================================
+   FIX: Window nesmí scrollovat
+======================================== */
+html, body {
+    height: 100%;
+    overflow: hidden; /* ZÁKAZ window scrollbar */
+}
+
+/* Kontejner celé stránky */
+.page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ========================================
+   GALERIE — jediný scroll + glow + neon
+======================================== */
 
 .gallery-wrapper {
     position: relative;
+    flex: 1 1 auto;             /* VYPLNÍ celý prostor pod headerem */
     overflow-y: auto;
     overflow-x: hidden;
 
-    /* výška – aby se nevešel systémový scrollbar */
-    max-height: calc(100vh - 180px);
+    height: calc(100vh - var(--header-current, 58px));
 
-    /* Firefox — skryj default */
+    /* měkký iOS scroll feel */
+    scroll-behavior: smooth;
+
+    /* Firefox */
     scrollbar-width: none;
 }
+
+/* Chrome/Edge — skryj default track sb */
 .gallery-wrapper::-webkit-scrollbar {
     width: 8px;
     background: transparent;
@@ -901,7 +918,7 @@ html.theme-dark .info-box{
     background: transparent;
 }
 
-/* Thumb — neon, defaultně skrytý */
+/* neon scrollbar */
 .gallery-wrapper::-webkit-scrollbar-thumb {
     background: linear-gradient(
         180deg,
@@ -913,7 +930,6 @@ html.theme-dark .info-box{
     transition: opacity .35s, background .35s;
 }
 
-/* zobrazí se při hoveru nebo .scrolling */
 .gallery-wrapper:hover::-webkit-scrollbar-thumb,
 .gallery-wrapper.scrolling::-webkit-scrollbar-thumb {
     background: linear-gradient(
@@ -927,10 +943,9 @@ html.theme-dark .info-box{
     opacity: 1;
 }
 
-/* ==========================================================
-   iOS OVERSCROLL GLOW — TOP + BOTTOM
-========================================================== */
-
+/* ========================================
+   iOS overscroll glow
+======================================== */
 .gallery-wrapper::before,
 .gallery-wrapper::after {
     content:"";
@@ -938,14 +953,14 @@ html.theme-dark .info-box{
     left:0;
     right:0;
     height:55px;
-    pointer-events:none;
     z-index:50;
+    pointer-events:none;
 
     opacity:0;
     transition: opacity .12s ease-out;
 }
 
-/* TOP glow */
+/* Glow top */
 .gallery-wrapper::before {
     top:0;
     background:radial-gradient(
@@ -957,7 +972,7 @@ html.theme-dark .info-box{
     filter:blur(14px);
 }
 
-/* BOTTOM glow */
+/* Glow bottom */
 .gallery-wrapper::after {
     bottom:0;
     background:radial-gradient(
@@ -969,12 +984,11 @@ html.theme-dark .info-box{
     filter:blur(14px);
 }
 
-/* Aktivní glow */
 .gallery-wrapper.overscroll-top::before {
-    opacity: 1;
+    opacity:1;
 }
 .gallery-wrapper.overscroll-bottom::after {
-    opacity: 1;
+    opacity:1;
 }
 
 /* ============================================================

@@ -39,8 +39,7 @@ function initTheme() {
     return;
   }
 
-  const systemDark = prefersDarkQuery().matches;
-  applyTheme(systemDark ? "dark" : "light");
+  applyTheme(prefersDarkQuery().matches ? "dark" : "light");
 }
 
 document.addEventListener("DOMContentLoaded", initTheme);
@@ -56,7 +55,6 @@ prefersDarkQuery().addEventListener("change", e => {
 // ===============================================
 toggles.forEach(toggle => {
   toggle.addEventListener("click", () => {
-
     const html = document.documentElement;
     const nowDark = !html.classList.contains("theme-dark");
 
@@ -99,9 +97,14 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   if (!header || !title) return;
 
   const maxHeader = 58;
-  const minHeader = 38;
+  const minHeader = 48;  // ★ OPRAVENO – Apple-like minimální výška
   const maxFont   = 2.2;
   const minFont   = 1.4;
+
+  // Dynamická CSS proměnná pro výšku (řeší skoky)
+  function setHeaderVar(h) {
+    document.documentElement.style.setProperty("--header-current", h + "px");
+  }
 
   function getScrollContainer() {
     const gallery = document.querySelector(".gallery-wrapper");
@@ -119,7 +122,10 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     // SHRINK
     let t = Math.min(y / 120, 1);
 
-    header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
+    let newH = maxHeader - (maxHeader - minHeader) * t;
+    header.style.height = `${newH}px`;
+    setHeaderVar(newH);
+
     title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
     title.style.transform = `translateY(${t * -6}px)`;
     title.style.opacity = `${1 - t * 0.08}`;
@@ -133,7 +139,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       header.style.transform = "translateY(0)";
     }
 
-    // iOS-style bounce
+    // iOS bounce top
     if (!bouncing && y === 0 && lastY > 4) {
       bouncing = true;
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
@@ -172,19 +178,17 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 // ACTIVE NAV
 // ===============================================
 (function setActiveLink() {
-  let page = window.location.pathname;
-
-  page = page.replace(/\/+$/, "").replace("/", "");
+  let page = window.location.pathname.replace(/\/+$/, "").replace("/", "");
   if (page === "") page = "/";
 
-  document
-    .querySelectorAll("a[data-page]")
-    .forEach(a => { if (a.dataset.page === page) a.classList.add("active"); });
+  document.querySelectorAll("a[data-page]").forEach(a => {
+    if (a.dataset.page === page) a.classList.add("active");
+  });
 })();
 
 
 // ===============================================
-// NEON SCROLLBAR — bez fade top/bottom
+// NEON SCROLLBAR — bez top/bottom fade
 // ===============================================
 document.addEventListener("DOMContentLoaded", () => {
     const gallery = document.querySelector(".gallery-wrapper");
