@@ -931,10 +931,6 @@ html, body {
   }
 }
 
-.gallery-wrapper::-webkit-scrollbar-track {
-    background: transparent;
-}
-
 /* ========================================
    iOS overscroll glow
 ======================================== */
