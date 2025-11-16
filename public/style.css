@@ -812,12 +812,6 @@ html.theme-dark .info-box{
   }
 }
 
-@media (min-width:1100px) {
-  .gallery-page {
-    margin-top: 0 !important;
-  }
-}
-
 .img-wrapper{
   position:relative;
   width:100%;

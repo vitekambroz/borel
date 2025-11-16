@@ -111,6 +111,52 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ======================================================
+// HEADER SHRINK (desktop + mobil, FIXNUTÁ VERZE)
+// + SCHOVÁVÁNÍ H2 NAD GALERIÍ
+// ======================================================
+(function () {
+
+  const header  = document.querySelector("header");
+  const title   = document.querySelector(".site-title");
+  const nav     = document.querySelector(".desktop-nav");
+  const toggle  = document.querySelector(".theme-toggle.desktop-toggle");
+  const burger  = document.querySelector(".menu-toggle");
+  const gallery = document.querySelector(".gallery-wrapper");
+  const galleryTitle = document.querySelector(".gallery-page h2");
+
+  if (!header || !title) return;
+
+  const maxHeader = 58;
+  const minHeader = 48;
+  const maxFont   = 2.2;
+  const minFont   = 1.4;
+
+  let lastY = 0;
+  let bouncing = false;
+});
+
+  // DETEKCE SCROLL ZDROJE
+  function getScrollY() {
+    const desktop = window.innerWidth > 1100;
+
+    // DESKTOP FOTOGALERIE – scroll uvnitř galerie
+    if (desktop && gallery) {
+      return gallery.scrollTop;
+    }
+
+    // MOBIL + ostatní stránky – skutečný scroller
+    const scroller = document.scrollingElement || document.documentElement || document.body;
+    return scroller.scrollTop || 0;
+  }
+
+  function handleScroll() {
+    const y = getScrollY();
+    const t = Math.min(y / 120, 1);
+    const desktop = window.innerWidth > 1100;
+    const scale = 1 - t * 0.20;
+  }
+
+// ======================================================
 // HEADER SHRINK
 // ======================================================
 (function () {
