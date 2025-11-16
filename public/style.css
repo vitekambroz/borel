@@ -82,7 +82,7 @@ header {
   border-bottom: 1px solid var(--border-glass-light);
   box-shadow: 0 8px 24px rgba(0,0,0,.12);
 
-  transition: height 0.18s linear;
+  transition: height .18s linear, transform .18s ease;
   transform: translateY(var(--header-shift, 0));
   will-change: transform, height;
 }
@@ -991,7 +991,7 @@ header.header-small {
 /* nápis BOREL menší */
 header.header-small .site-title {
   font-size: 1.4rem;
-  opacity: 0.92;
+  opacity: 0.9;
 }
 
 /* MOBIL: zmenšit hamburger */
@@ -1005,7 +1005,7 @@ header.header-small .site-title {
 /* DESKTOP: zmenšit NAV + toggle */
 @media (min-width: 1101px) {
   header.header-small .desktop-nav {
-    transform: scale(0.8);
+    transform: scale(0.85);
     transform-origin: right center;
   }
 

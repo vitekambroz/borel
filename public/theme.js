@@ -111,53 +111,26 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ======================================================
-// HEADER SHRINK – DESKTOP + MOBIL (CLASS VERZE)
+// HEADER SHRINK – DESKTOP + MOBIL (JEDNODUCHÁ CLASS VERZE)
 // ======================================================
 (function () {
   const header = document.querySelector("header");
-  const title  = document.querySelector(".site-title");
-  const nav    = document.querySelector(".desktop-nav");
-  const toggle = document.querySelector(".theme-toggle.desktop-toggle");
-  const burger = document.querySelector(".menu-toggle");
-  const gallery = document.querySelector(".gallery-wrapper");
-
-  if (!header || !title) return;
-
-  let isSmall = false;
+  if (!header) return;
 
   function getScrollY() {
-    const desktop = window.innerWidth > 1100;
-
-    // Na desktopu ve fotogalerii scrolluje galerie
-    if (desktop && gallery) {
-      return gallery.scrollTop;
-    }
-
-    // Jinak normální scroll stránky (mobil + ostatní stránky)
-    const doc = document.scrollingElement || document.documentElement;
-    return window.scrollY || doc.scrollTop || 0;
-  }
-
-  function applyShrink(small) {
-    if (small === isSmall) return;
-    isSmall = small;
-
-    // přepneme class na headeru
-    header.classList.toggle("header-small", small);
+    const scroller = document.scrollingElement || document.documentElement || document.body;
+    return scroller.scrollTop || 0;
   }
 
   function handleScroll() {
     const y = getScrollY();
-    applyShrink(y > 10); // od 10px scrollu zmenšit
+    // jakmile jsi víc než 10px dole, přidáme class
+    header.classList.toggle("header-small", y > 10);
   }
 
   window.addEventListener("scroll", handleScroll, { passive: true });
-  if (gallery) {
-    gallery.addEventListener("scroll", handleScroll, { passive: true });
-  }
   window.addEventListener("resize", handleScroll);
 
-  // první nastavení
   handleScroll();
 })();
 
