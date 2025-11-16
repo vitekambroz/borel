@@ -149,26 +149,22 @@ window.addEventListener("scroll", () => {
 })();
 
 
-// ===============================================
-// NAV HEIGHT → CSS VARIABLE
-// ===============================================
-const nav = document.querySelector("nav");
-if (nav) {
-  const height = nav.offsetHeight;
-  document.documentElement.style.setProperty("--nav-height-mobile", `${height}px`);
-}
-
 /* ================================================
    NEON SCROLLBAR — JEN PRO GALERII
 ================================================ */
 
-let scrollTimeout;
+document.addEventListener("DOMContentLoaded", () => {
+    const gallery = document.querySelector(".gallery-wrapper");
+    if (!gallery) return; // stránka bez galerie → ignorujeme
 
-gallery.addEventListener('scroll', () => {
-    gallery.classList.add('scrolling');
+    let scrollTimeout;
 
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => {
-        gallery.classList.remove('scrolling');
-    }, 500);
+    gallery.addEventListener("scroll", () => {
+        gallery.classList.add("scrolling");
+
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            gallery.classList.remove("scrolling");
+        }, 700); // jemnější fade-out
+    });
 });

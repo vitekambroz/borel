@@ -859,15 +859,17 @@ html.theme-dark .info-box{
    (objeví se jen při scrollu)
 ================================================ */
 
-/* GALERIE — wrapper, který má scroll */
+/* GALERIE — wrapper se skrytým scrollbarem */
 .gallery-wrapper {
     overflow-y: auto;
     overflow-x: hidden;
-    scrollbar-width: none; /* Firefox – default hidden */
     position: relative;
+
+    /* Firefox */
+    scrollbar-width: none;
 }
 
-/* Chrome / Edge / Opera — schovat default */
+/* Chrome / Edge / Opera — skrytý výchozí scrollbar */
 .gallery-wrapper::-webkit-scrollbar {
     width: 8px;
     background: transparent;
@@ -878,28 +880,29 @@ html.theme-dark .info-box{
     background: transparent;
 }
 
-/* Thumb — neon, ale defaultně neviditelný */
+/* Thumb — neon, ale normálně neviditelný */
 .gallery-wrapper::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg,
-        rgba(255,0,180,0.0),
-        rgba(255,0,255,0.0)
+    background: linear-gradient(
+        180deg,
+        rgba(255,0,180,0),
+        rgba(255,0,255,0)
     );
     border-radius: 8px;
     transition: background .35s ease, opacity .35s ease;
     opacity: 0;
 }
 
-/* ZOBRAZENÍ PŘI SCROLLU */
+/* ZOBRAZENÍ PŘI SCROLLU NEBO HOVERU */
 .gallery-wrapper:hover::-webkit-scrollbar-thumb,
-.gallery-wrapper:active::-webkit-scrollbar-thumb,
 .gallery-wrapper.scrolling::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg,
+    background: linear-gradient(
+        180deg,
         rgba(255,0,180,0.75),
         rgba(255,0,255,0.7)
     );
     box-shadow:
-        0 0 8px rgba(255,0,200,.8),
-        0 0 18px rgba(255,0,255,.7);
+        0 0 12px rgba(255,0,200,.8),
+        0 0 22px rgba(255,0,255,.7);
     opacity: 1;
 }
 
