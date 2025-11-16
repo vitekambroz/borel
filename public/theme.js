@@ -3,7 +3,7 @@
 // ===============================================
 const menuBtn = document.querySelector(".menu-toggle");
 const mobileNav = document.querySelector(".mobile-nav");
-
+const gallery = document.querySelector('.gallery-wrapper');
 const toggles = document.querySelectorAll(".theme-toggle");
 
 
@@ -157,3 +157,18 @@ if (nav) {
   const height = nav.offsetHeight;
   document.documentElement.style.setProperty("--nav-height-mobile", `${height}px`);
 }
+
+/* ================================================
+   NEON SCROLLBAR — JEN PRO GALERII
+================================================ */
+
+let scrollTimeout;
+
+gallery.addEventListener('scroll', () => {
+    gallery.classList.add('scrolling');
+
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+        gallery.classList.remove('scrolling');
+    }, 500);
+});

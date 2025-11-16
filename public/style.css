@@ -54,40 +54,6 @@ body{
   background:var(--bg-light);
   overflow-x:hidden;
   transition:background .6s,color .4s;
-  scrollbar-width: thin;               /* Firefox */
-  scrollbar-color: rgba(255,0,200,.4) transparent;
-}
-
-/* Chrome, Edge */
-body::-webkit-scrollbar {
-    width: 8px;
-    background: transparent;
-}
-
-body::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-body::-webkit-scrollbar-thumb {
-    background: rgba(255,0,200,.55);
-    border-radius: 999px;
-
-    box-shadow:
-        0 0 10px rgba(255,0,200,.7),
-        0 0 20px rgba(255,0,255,.7);
-    backdrop-filter: blur(3px);
-}
-
-body::-webkit-scrollbar-thumb:hover {
-    background: rgba(255,0,200,.8);
-    box-shadow:
-        0 0 14px rgba(255,0,200,.9),
-        0 0 28px rgba(255,0,255,.8);
-}
-
-/* scroll corner (pro jistotu u desktopu) */
-body::-webkit-scrollbar-corner {
-    background: transparent;
 }
 
 main{flex:1;width:100%;padding:20px 5vw 40px;}
@@ -886,6 +852,55 @@ html.theme-dark .info-box{
 .lazy-fade.loaded{
   opacity:1;
   transform:scale(1);
+}
+
+/* ================================================
+   NEON SCROLLBAR — JEN PRO GALERII
+   (objeví se jen při scrollu)
+================================================ */
+
+/* GALERIE — wrapper, který má scroll */
+.gallery-wrapper {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none; /* Firefox – default hidden */
+    position: relative;
+}
+
+/* Chrome / Edge / Opera — schovat default */
+.gallery-wrapper::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+}
+
+/* Track — neviditelný */
+.gallery-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Thumb — neon, ale defaultně neviditelný */
+.gallery-wrapper::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg,
+        rgba(255,0,180,0.0),
+        rgba(255,0,255,0.0)
+    );
+    border-radius: 8px;
+    transition: background .35s ease, opacity .35s ease;
+    opacity: 0;
+}
+
+/* ZOBRAZENÍ PŘI SCROLLU */
+.gallery-wrapper:hover::-webkit-scrollbar-thumb,
+.gallery-wrapper:active::-webkit-scrollbar-thumb,
+.gallery-wrapper.scrolling::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg,
+        rgba(255,0,180,0.75),
+        rgba(255,0,255,0.7)
+    );
+    box-shadow:
+        0 0 8px rgba(255,0,200,.8),
+        0 0 18px rgba(255,0,255,.7);
+    opacity: 1;
 }
 
 
