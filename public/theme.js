@@ -117,6 +117,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   const nav    = document.querySelector(".desktop-nav");
   const toggle = document.querySelector(".theme-toggle.desktop-toggle");
   const burger = document.querySelector(".menu-toggle");
+  const gallery = document.querySelector(".gallery-wrapper");
 
   if (!header || !title) return;
 
@@ -128,36 +129,30 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   let lastY = 0;
   let bouncing = false;
 
-  // Zjistí aktuální scroll pozici – na desktopu v galerii podle .gallery-wrapper,
-  // jinak podle window (mobil + ostatní stránky).
+  // vezme největší scroll z okna a galerie
   function getScrollY() {
-    const gallery = document.querySelector(".gallery-wrapper");
-    const desktop = window.matchMedia("(min-width: 1101px)").matches;
-
-    if (gallery && desktop) {
-      return gallery.scrollTop || 0;
-    }
-
-    return window.scrollY || document.documentElement.scrollTop || 0;
+    const winY = window.scrollY || document.documentElement.scrollTop || 0;
+    const galY = gallery ? gallery.scrollTop : 0;
+    return Math.max(winY, galY);
   }
 
   function handleScroll() {
     const y = getScrollY();
-    const t = Math.min(y / 120, 1);   // 0–1 podle toho, jak moc jsi odscrolovaný
+    const t = Math.min(y / 120, 1);   // 0–1
+    const desktop = window.matchMedia("(min-width: 1101px)").matches;
+    const scale   = 1 - t * 0.20;     // max 20% zmenšení
 
-    // Výška headeru
+    // výška headeru
     const newH = maxHeader - (maxHeader - minHeader) * t;
     header.style.height = `${newH}px`;
 
-    // Font-size „BOREL“
+    // velikost a fade loga BOREL
     const newFont = maxFont - (maxFont - minFont) * t;
     title.style.fontSize = `${newFont}rem`;
-    title.style.opacity = `${1 - t * 0.08}`;
+    title.style.opacity   = `${1 - t * 0.08}`;
 
-    const scale = 1 - t * 0.20; // 0–20 % zmenšení
-
-    // Desktop → zmenšuj nav + theme toggle
-    if (window.matchMedia("(min-width: 1101px)").matches) {
+    // desktop → zmenšuj nav + theme-toggle
+    if (desktop) {
       if (nav) {
         nav.style.transform = `scale(${scale})`;
         nav.style.transformOrigin = "right center";
@@ -165,12 +160,10 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       if (toggle) {
         toggle.style.transform = `translateY(-50%) scale(${scale})`;
       }
-      // hamburger necháme v klidu
-      if (burger) {
-        burger.style.transform = ""; // jistota
-      }
+      // burger na desktopu neměníme
+      if (burger) burger.style.transform = "";
     } else {
-      // Mobil → zmenšuj hamburger, ne desktop nav / toggle
+      // mobil → zmenšuj hamburger, ne desktop nav/toggle
       if (burger) {
         burger.style.transform = `scale(${scale})`;
         burger.style.transformOrigin = "left center";
@@ -179,11 +172,11 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       if (toggle) toggle.style.transform = "";
     }
 
-    // nikdy neschovávej header
+    // nikdy header neschovávej
     header.style.opacity   = "1";
     header.style.transform = "translateY(0)";
 
-    // iOS bounce efekt na vršku
+    // jemný iOS bounce, když pustíš scroll na vršku
     if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
@@ -202,20 +195,15 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     lastY = y;
   }
 
-  // Scroll na window – mobil + ostatní stránky
+  // posloucháme scroll okna (mobil + všechny stránky)
   window.addEventListener("scroll", handleScroll, { passive: true });
 
-  // Navíc posloucháme i galerii na desktopu,
-  // aby shrink fungoval, když scrolluje jenom galerie
-  const gallery = document.querySelector(".gallery-wrapper");
+  // a navíc i galerii (desktop vnitřní scroll)
   if (gallery) {
     gallery.addEventListener("scroll", handleScroll, { passive: true });
   }
 
-  // Reakce na otočení / resize
   window.addEventListener("resize", handleScroll);
-
-  // Inicializace
   handleScroll();
 })();
 

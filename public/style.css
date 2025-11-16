@@ -880,49 +880,54 @@ html.theme-dark .info-box{
 }
 
 /* ========================================
-   FIX: Window nesmí scrollovat
+   GLOBAL LAYOUT & SCROLL
 ======================================== */
-/* Globální – povol scroll */
 html, body {
-    height: 100%;
-    overflow: hidden;
+  height: 100%;
+  margin: 0;
+}
+
+/* na desktopu nechceme systémový scrollbar – scrolluje jen galerie */
+@media (min-width: 1101px) {
+  html, body {
+    overflow-y: hidden;
+  }
 }
 
 /* Kontejner celé stránky */
 .page {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: visible; /* NESMÍ být hidden */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ========================================
-   GALERIE — jediný scroll + glow + neon
+   GALERIE — jediný scroll (desktop) + glow
 ======================================== */
 
 .gallery-wrapper {
-    position: relative;
-    flex: 1 1 auto;
-    overflow-y: auto;
-    overflow-x: hidden;
+  position: relative;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 
-    /* univerzální výška – funguje desktop + iOS + Android */
-    height: calc(var(--vh, 1vh) * 100 - 180px);
+  /* výška pro desktop (header + mezera) */
+  height: calc(100vh - 180px);
+  max-height: calc(100vh - 180px);
 
-    /* extra ochrana (nebude nikdy větší než okno) */
-    max-height: calc(var(--vh, 1vh) * 100 - 180px);
-
-    /* jemný scroll */
-    scroll-behavior: smooth;
-
-    /* schování scrollbaru */
-    scrollbar-width: none;
+  /* schování scrollbaru */
+  scrollbar-width: none;
+}
+.gallery-wrapper::-webkit-scrollbar {
+  display: none;
 }
 
+/* Na mobilu NE vnitřní scroll – scrolluje window */
 @media (max-width: 1100px) {
   .gallery-wrapper {
-      max-height: none !important;
-      overflow-y: visible !important;
+    height: auto;
+    max-height: none;
+    overflow-y: visible;
   }
 }
 
