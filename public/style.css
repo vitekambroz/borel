@@ -176,13 +176,14 @@ body.animate-title .site-title span {
 }
 
 
-/* Right side layout */
 .right-side {
   margin-left: auto;
   display: flex;
   align-items: center;
-  padding-right: 48px;
+  height: 100%;      /* drží výšku headeru */
+  flex: 1 0 auto;    /* zabrání smrsknutí */
   gap: 14px;
+  padding-right: 16px; /* menší padding – 48px rozbíjel centrování */
 }
 
 .nav-right { margin-right: 24px; }
