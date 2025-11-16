@@ -111,24 +111,101 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ======================================================
-// HEADER SHRINK – DESKTOP + MOBIL (JEDNODUCHÁ CLASS VERZE)
+// HEADER SHRINK (desktop + mobil, FIXNUTÁ VERZE)
 // ======================================================
 (function () {
-  const header = document.querySelector("header");
-  if (!header) return;
 
+  const header = document.querySelector("header");
+  const title  = document.querySelector(".site-title");
+  const nav    = document.querySelector(".desktop-nav");
+  const toggle = document.querySelector(".theme-toggle.desktop-toggle");
+  const burger = document.querySelector(".menu-toggle");
+  const gallery = document.querySelector(".gallery-wrapper");
+
+  if (!header || !title) return;
+
+  const maxHeader = 58;
+  const minHeader = 48;
+  const maxFont   = 2.2;
+  const minFont   = 1.4;
+
+  let lastY = 0;
+  let bouncing = false;
+
+  // DETEKCE SCROLL ZDROJE
   function getScrollY() {
+    const desktop = window.innerWidth > 1100;
+
+    // DESKTOP FOTOGALERIE – přesně jako dřív
+    if (desktop && gallery) {
+      return gallery.scrollTop;
+    }
+
+    // MOBIL + ostatní stránky – NE window.scrollY, ale skutečný scroller
     const scroller = document.scrollingElement || document.documentElement || document.body;
     return scroller.scrollTop || 0;
   }
 
   function handleScroll() {
     const y = getScrollY();
-    // jakmile jsi víc než 10px dole, přidáme class
-    header.classList.toggle("header-small", y > 10);
+    const t = Math.min(y / 120, 1);
+    const desktop = window.innerWidth > 1100;
+
+    const scale = 1 - t * 0.20;
+
+    // HEIGHT
+    header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
+
+    // TITLE SHRINK
+    title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
+    title.style.opacity = `${1 - t * 0.08}`;
+
+    // DESKTOP → zmenšuj nav a theme-toggle (STEJNÉ jako dřív)
+    if (desktop) {
+      if (nav) {
+        nav.style.transform = `scale(${scale})`;
+        nav.style.transformOrigin = "right center";
+      }
+      if (toggle) {
+        toggle.style.transform = `translateY(-50%) scale(${scale})`;
+      }
+      if (burger) burger.style.transform = "";
+    }
+
+    // MOBILE → zmenšuj HAMBURGER + nech title menší
+    else {
+      if (burger) {
+        burger.style.transform = `scale(${scale})`;
+        burger.style.transformOrigin = "left center";
+      }
+      if (nav)    nav.style.transform = "";
+      if (toggle) toggle.style.transform = "";
+    }
+
+    // bounce efekt
+    if (!bouncing && y === 0 && lastY > 5) {
+      bouncing = true;
+      header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
+      header.style.transform = "translateY(12px)";
+
+      setTimeout(() => {
+        header.style.transform = "translateY(0)";
+        setTimeout(() => {
+          header.style.transition =
+            "height .18s linear, opacity .18s, transform .18s ease";
+          bouncing = false;
+        }, 250);
+      }, 10);
+    }
+
+    lastY = y;
   }
 
+  // LISTENERY
   window.addEventListener("scroll", handleScroll, { passive: true });
+  if (gallery) {
+    gallery.addEventListener("scroll", handleScroll, { passive: true });
+  }
   window.addEventListener("resize", handleScroll);
 
   handleScroll();
