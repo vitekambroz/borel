@@ -96,7 +96,7 @@ header {
   align-items: center;
   pointer-events: none;
 
-  transition: transform .18s ease;
+  transition: transform .2s ease;
 }
 
 /* TITULEK */
