@@ -120,7 +120,17 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   const nav    = document.querySelector(".desktop-nav");
   const toggle = document.querySelector(".theme-toggle.desktop-toggle");
   const burger = document.querySelector(".menu-toggle");
-  const gallery = document.querySelector(".gallery-wrapper");
+
+  function getScrollY() {
+  const gallery = document.querySelector(".gallery-wrapper"); // ← VŽDY AKTUÁLNÍ
+  const desktop = window.innerWidth > 1100;
+
+  if (desktop && gallery) {
+    return gallery.scrollTop;
+  }
+
+  return window.scrollY;
+}
 
   if (!header || !title) return;
 
