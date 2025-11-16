@@ -111,7 +111,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ======================================================
-// HEADER SHRINK (desktop + mobil, FIXNUTÁ VERZE)
+// HEADER SHRINK (desktop + mobil)
 // ======================================================
 (function () {
 
@@ -120,17 +120,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   const nav    = document.querySelector(".desktop-nav");
   const toggle = document.querySelector(".theme-toggle.desktop-toggle");
   const burger = document.querySelector(".menu-toggle");
-
-  function getScrollY() {
-  const gallery = document.querySelector(".gallery-wrapper"); // ← VŽDY AKTUÁLNÍ
-  const desktop = window.innerWidth > 1100;
-
-  if (desktop && gallery) {
-    return gallery.scrollTop;
-  }
-
-  return window.scrollY;
-}
+  const gallery = document.querySelector(".gallery-wrapper");
 
   if (!header || !title) return;
 
@@ -142,34 +132,35 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   let lastY = 0;
   let bouncing = false;
 
-  // DETEKCE SCROLL ZDROJE
+  // odkud bereme scroll
   function getScrollY() {
     const desktop = window.innerWidth > 1100;
 
+    // desktop fotogalerie → scrolluje se uvnitř .gallery-wrapper
     if (desktop && gallery) {
-      return gallery.scrollTop;  // desktop = galerie scroll
+      return gallery.scrollTop;
     }
 
-    return window.scrollY;       // mobil = window scroll
+    // mobil + ostatní stránky → klasický scroll okna
+    return window.scrollY;
   }
-
 
   function handleScroll() {
     const y = getScrollY();
-    const t = Math.min(y / 120, 1);
+    const t = Math.min(y / 120, 1);       // 0–1
     const desktop = window.innerWidth > 1100;
 
     const scale = 1 - t * 0.20;
 
-    // HEIGHT
+    // výška headeru
     header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
 
-    // TITLE SHRINK
+    // BOREL nápis
     title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
-    title.style.opacity = `${1 - t * 0.08}`;
+    title.style.opacity  = `${1 - t * 0.08}`;
 
-    // DESKTOP → zmenšuj nav a theme-toggle
     if (desktop) {
+      // DESKTOP: zmenšujeme NAV + theme-toggle
       if (nav) {
         nav.style.transform = `scale(${scale})`;
         nav.style.transformOrigin = "right center";
@@ -178,10 +169,8 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
         toggle.style.transform = `translateY(-50%) scale(${scale})`;
       }
       if (burger) burger.style.transform = "";
-    }
-
-    // MOBILE → zmenšuj HAMBURGER
-    else {
+    } else {
+      // MOBIL: zmenšujeme jen hamburger
       if (burger) {
         burger.style.transform = `scale(${scale})`;
         burger.style.transformOrigin = "left center";
@@ -190,7 +179,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       if (toggle) toggle.style.transform = "";
     }
 
-    // bounce efekt
+    // malé „odskok“ animace, když dojedeš nahoru
     if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
@@ -209,14 +198,11 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     lastY = y;
   }
 
-
-  // LISTENERY
+  // posluchače scrollu
   window.addEventListener("scroll", handleScroll, { passive: true });
-
   if (gallery) {
     gallery.addEventListener("scroll", handleScroll, { passive: true });
   }
-
   window.addEventListener("resize", handleScroll);
 
   handleScroll();
