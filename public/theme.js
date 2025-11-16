@@ -9,6 +9,13 @@ function prefersDarkQuery() {
   return window.matchMedia("(prefers-color-scheme: dark)");
 }
 
+// iOS height fix
+function setVh() {
+  document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
+}
+window.addEventListener("resize", setVh);
+setVh();
+
 
 // ===============================================
 // APLIKACE TÉMATU
@@ -89,7 +96,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ===============================================
-// HEADER: Smooth shrink + auto-hide + iOS bounce
+// HEADER: Smooth shrink + iOS bounce (NO auto-hide)
 // ===============================================
 (function () {
   const header = document.querySelector("header");
@@ -97,14 +104,9 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   if (!header || !title) return;
 
   const maxHeader = 58;
-  const minHeader = 48;  // ★ OPRAVENO – Apple-like minimální výška
+  const minHeader = 48;
   const maxFont   = 2.2;
   const minFont   = 1.4;
-
-  // Dynamická CSS proměnná pro výšku (řeší skoky)
-  function setHeaderVar(h) {
-    document.documentElement.style.setProperty("--header-current", h + "px");
-  }
 
   function getScrollContainer() {
     const gallery = document.querySelector(".gallery-wrapper");
@@ -119,27 +121,19 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   function handleScroll() {
     let y = container === window ? window.scrollY : container.scrollTop;
 
-    // SHRINK
+    // Smooth shrink
     let t = Math.min(y / 120, 1);
 
-    let newH = maxHeader - (maxHeader - minHeader) * t;
-    header.style.height = `${newH}px`;
-    setHeaderVar(newH);
-
+    header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
     title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
     title.style.transform = `translateY(${t * -6}px)`;
     title.style.opacity = `${1 - t * 0.08}`;
 
-    // AUTO HIDE
-    if (y > 80 && y > lastY) {
-      header.style.opacity = "0";
-      header.style.transform = "translateY(-32px)";
-    } else if (y < lastY) {
-      header.style.opacity = "1";
-      header.style.transform = "translateY(0)";
-    }
+    // !!! NO AUTO HIDE ANYMORE !!!
+    header.style.opacity = "1";
+    header.style.transform = "translateY(0)";
 
-    // iOS bounce top
+    // iOS bounce
     if (!bouncing && y === 0 && lastY > 4) {
       bouncing = true;
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
@@ -148,7 +142,8 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       setTimeout(() => {
         header.style.transform = "translateY(0)";
         setTimeout(() => {
-          header.style.transition = "height .18s linear, opacity .18s, transform .18s ease";
+          header.style.transition =
+            "height .18s linear, opacity .18s, transform .18s ease";
           bouncing = false;
         }, 250);
       }, 10);
@@ -164,7 +159,6 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     if (newC !== container) {
       container.removeEventListener("scroll", handleScroll);
       container = newC;
-      lastY = 0;
       handleScroll();
       container.addEventListener("scroll", handleScroll);
     }

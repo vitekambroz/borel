@@ -896,16 +896,20 @@ html, body {
 
 .gallery-wrapper {
     position: relative;
-    flex: 1 1 auto;             /* VYPLNÍ celý prostor pod headerem */
+    flex: 1 1 auto;
     overflow-y: auto;
     overflow-x: hidden;
 
-    height: calc(100vh - var(--header-current, 58px));
+    /* univerzální výška – funguje desktop + iOS + Android */
+    height: calc(var(--vh, 1vh) * 100 - 180px);
 
-    /* měkký iOS scroll feel */
+    /* extra ochrana (nebude nikdy větší než okno) */
+    max-height: calc(var(--vh, 1vh) * 100 - 180px);
+
+    /* jemný scroll */
     scroll-behavior: smooth;
 
-    /* Firefox */
+    /* schování scrollbaru */
     scrollbar-width: none;
 }
 
