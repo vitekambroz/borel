@@ -884,19 +884,19 @@ html.theme-dark .info-box{
   transform:scale(1);
 }
 
-/* ============================================================
-   GLOBAL – WINDOW SCROLL (MOBIL) / NO SCROLL (DESKTOP)
-============================================================ */
+/* ========================================
+   GLOBAL LAYOUT & SCROLL
+======================================== */
 html, body {
   height: 100%;
   margin: 0;
-  overflow-y: auto; /* mobil */
+  overflow-x: hidden;
 }
 
-/* desktop → skrýt scrollbar (scrolluje jen galerie) */
+/* Desktop: okno nesmí scrollovat → scrolluje jen galerie */
 @media (min-width: 1101px) {
   html, body {
-    overflow-y: hidden;
+    overflow-y: hidden !important;
   }
 }
 
@@ -908,38 +908,37 @@ html, body {
 }
 
 /* ========================================
-   GALERIE — jediný scroll (desktop) + glow
+   GALERIE – desktop scroll, mobil window scroll
 ======================================== */
 
 .gallery-wrapper {
   position: relative;
   flex: 1 1 auto;
-  overflow-y: auto;
   overflow-x: hidden;
 
-  /* výška pro desktop (header + mezera) */
+  /* DESKTOP HEIGHT (header 58 + mezery) */
   height: calc(100vh - 180px);
   max-height: calc(100vh - 180px);
+  overflow-y: auto;
 
-  /* schování scrollbaru */
+  /* hide scrollbar */
   scrollbar-width: none;
 }
 .gallery-wrapper::-webkit-scrollbar {
   display: none;
 }
 
-/* Na mobilu NE vnitřní scroll – scrolluje window */
-@media (max-width:1100px) {
+/* MOBIL – galerie nesmí scrollovat, scrolluje celé okno */
+@media (max-width: 1100px) {
   .gallery-wrapper {
-    height: auto;
-    max-height: none;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: visible !important;
   }
 }
 
 /* ========================================
-   iOS overscroll glow
+   iOS overscroll glow (desktop only)
 ======================================== */
 .gallery-wrapper::before,
 .gallery-wrapper::after {
@@ -950,7 +949,6 @@ html, body {
     height:55px;
     z-index:50;
     pointer-events:none;
-
     opacity:0;
     transition: opacity .12s ease-out;
 }
