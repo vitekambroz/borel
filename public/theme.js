@@ -126,8 +126,6 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
     header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
     title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
-    const titleWrap = document.querySelector(".title-wrap");
-    titleWrap.style.transform = `translate(-50%, calc(-50% + ${t * -6}px))`;
     title.style.opacity = `${1 - t * 0.08}`;
 
     // !!! NO AUTO HIDE ANYMORE !!!
