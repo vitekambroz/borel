@@ -855,44 +855,38 @@ html.theme-dark .info-box{
 }
 
 /* ============================================================
-   GALERIE – FIXNÍ VÝŠKA + VLASTNÍ SCROLL + FADE
+   GALERIE — vnitřní scroll + neon scrollbar + fade
 ============================================================ */
 
-/* Kontejner stránky s galerií */
+/* Kontejner stránky */
 .gallery-page {
     width: 100%;
     max-width: 1500px;
     margin: 0 auto;
     padding: 0 30px;
     box-sizing: border-box;
-
-    /* Celá sekce zabere výšku okna, ale ponechá místo pro header */
-    height: calc(100vh - var(--nav-height-mobile) - 20px);
-
-    display: flex;
-    flex-direction: column;
 }
 
-/* DŮLEŽITÉ → galerie musí mít vlastní scroll a nést fade */
+/* Wrapper – JEDINÉ místo, které se scrolluje */
 .gallery-wrapper {
     position: relative;
-
-    flex: 1;                /* vyplní zbývající výšku */
     overflow-y: auto;
     overflow-x: hidden;
 
-    /* Skryj systémové scrollbary */
-    scrollbar-width: none;  /* Firefox */
+    /* Výška = velikost okna - prostor pro header + mezery */
+    max-height: calc(100vh - 220px);
+
+    /* Skryj default scrollbar */
+    scrollbar-width: none; /* Firefox */
 }
 
 .gallery-wrapper::-webkit-scrollbar {
-    display: none;          /* Chrome / Edge */
+    display: none !important; /* Chrome/Edge */
 }
 
 /* ------------------------------------------------------------
-   FADE nahoře a dole (funguje při scrollu)
+   FADE nahoře/dole
 ------------------------------------------------------------ */
-
 .gallery-wrapper::before,
 .gallery-wrapper::after {
     content: "";
@@ -900,44 +894,71 @@ html.theme-dark .info-box{
     left: 0;
     right: 0;
     height: 45px;
-    pointer-events: none;
     z-index: 10;
+    pointer-events: none;
 
     opacity: 0;
     transition: opacity .25s ease-out;
 }
 
-/* Fade nahoře */
+/* Fade top */
 .gallery-wrapper::before {
     top: 0;
     background: linear-gradient(to bottom,
-        rgba(10, 0, 20, 0.95),
-        rgba(10, 0, 20, 0)
+        rgba(10,0,20,0.9),
+        rgba(10,0,20,0)
     );
 }
 
-/* Fade dole */
+/* Fade bottom */
 .gallery-wrapper::after {
     bottom: 0;
     background: linear-gradient(to top,
-        rgba(10, 0, 20, 0.95),
-        rgba(10, 0, 20, 0)
+        rgba(10,0,20,0.9),
+        rgba(10,0,20,0)
     );
 }
 
-/* Viditelnost fade podle stavu scrollu */
-.gallery-wrapper.at-top::before {
-    opacity: 0;
-}
+/* Viditelný fade – řízený pomocí JS */
 .gallery-wrapper:not(.at-top)::before {
     opacity: 1;
 }
-
-.gallery-wrapper.at-bottom::after {
-    opacity: 0;
-}
 .gallery-wrapper:not(.at-bottom)::after {
     opacity: 1;
+}
+
+/* ------------------------------------------------------------
+   NEON SCROLLBAR (náš vlastní, ne systémový)
+   — zobrazí se jen při scrollování nebo hoveru
+------------------------------------------------------------ */
+
+.gallery-wrapper::-webkit-scrollbar {
+    width: 10px;
+}
+
+.gallery-wrapper::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    opacity: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(255,0,180,0),
+        rgba(255,0,255,0)
+    );
+    transition: opacity .3s, background .3s;
+}
+
+/* Aktivace scrollbaru */
+.gallery-wrapper.scrolling::-webkit-scrollbar-thumb,
+.gallery-wrapper:hover::-webkit-scrollbar-thumb {
+    opacity: 1;
+    background: linear-gradient(
+        180deg,
+        rgba(255,0,180,0.75),
+        rgba(255,0,255,0.72)
+    );
+    box-shadow:
+        0 0 8px rgba(255,0,200,.8),
+        0 0 18px rgba(255,0,255,.7);
 }
 
 

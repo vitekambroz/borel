@@ -156,6 +156,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const gallery = document.querySelector(".gallery-wrapper");
     if (!gallery) return;
 
+    let scrollTimeout;
+
     const updateFade = () => {
         const scrollTop = gallery.scrollTop;
         const maxScroll = gallery.scrollHeight - gallery.clientHeight;
@@ -167,6 +169,13 @@ document.addEventListener("DOMContentLoaded", () => {
     updateFade();
 
     gallery.addEventListener("scroll", () => {
+        gallery.classList.add("scrolling");
+
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            gallery.classList.remove("scrolling");
+        }, 500);
+
         updateFade();
     });
 });
