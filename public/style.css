@@ -884,12 +884,20 @@ html.theme-dark .info-box{
   transform:scale(1);
 }
 
-/* ========================================
-   GLOBAL LAYOUT & SCROLL
-======================================== */
+/* ============================================================
+   GLOBAL – WINDOW SCROLL (MOBIL) / NO SCROLL (DESKTOP)
+============================================================ */
 html, body {
   height: 100%;
   margin: 0;
+  overflow-y: auto; /* mobil */
+}
+
+/* desktop → skrýt scrollbar (scrolluje jen galerie) */
+@media (min-width: 1101px) {
+  html, body {
+    overflow-y: hidden;
+  }
 }
 
 /* Kontejner celé stránky */

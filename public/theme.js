@@ -94,7 +94,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ======================================================
-// HEADER SHRINK (desktop + mobil, FINÁLNÍ VERZE)
+// HEADER SHRINK (desktop + mobil – FUNKČNÍ VERZE)
 // ======================================================
 (function () {
 
@@ -115,40 +115,28 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   let lastY = 0;
   let bouncing = false;
 
-  // *** ZJISTÍME SPRÁVNÝ SCROLL Y (mobil i desktop) ***
   function getScrollY() {
     const desktop = window.innerWidth > 1100;
 
-    // desktop + galerie → scrolluje .gallery-wrapper
-    if (desktop && gallery) {
-      return gallery.scrollTop;
-    }
-
-    // mobil / ostatní → scrolluje window / dokument
-    return (
-      window.pageYOffset ||
-      document.documentElement.scrollTop ||
-      document.body.scrollTop ||
-      0
-    );
+    if (desktop && gallery) return gallery.scrollTop;
+    return window.scrollY;
   }
 
   function handleScroll() {
     const y = getScrollY();
     const desktop = window.innerWidth > 1100;
-    const t = Math.min(y / 120, 1);      // 0–1
-    const scale = 1 - t * 0.20;          // max 20 % zmenšení
 
-    // výška headeru
-    const newH = maxHeader - (maxHeader - minHeader) * t;
-    header.style.height = `${newH}px`;
+    const t = Math.min(y / 120, 1);
+    const scale = 1 - t * 0.20;
 
-    // zmenšení nápisu BOREL (funguje i na mobilu)
-    const newFont = maxFont - (maxFont - minFont) * t;
-    title.style.fontSize = `${newFont}rem`;
-    title.style.opacity  = `${1 - t * 0.08}`;
+    // Výška
+    header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
 
-    // DESKTOP → zmenšuj NAV + DESKTOP TOGGLE
+    // Text
+    title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
+    title.style.opacity = `${1 - t * 0.08}`;
+
+    // Desktop shrink
     if (desktop) {
       if (nav) {
         nav.style.transform = `scale(${scale})`;
@@ -159,19 +147,21 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       }
       if (burger) burger.style.transform = "";
     }
-    // MOBIL → zmenšuj HAMBURGER
+
+    // Mobil shrink – JEN hamburger
     else {
       if (burger) {
         burger.style.transform = `scale(${scale})`;
         burger.style.transformOrigin = "left center";
       }
-      if (nav)    nav.style.transform = "";
+      if (nav) nav.style.transform = "";
       if (toggle) toggle.style.transform = "";
     }
 
-    // bounce efekt nahoře
+    // Bounce
     if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
+
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
       header.style.transform = "translateY(12px)";
 
@@ -188,18 +178,16 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     lastY = y;
   }
 
-  // posloucháme scroll okna (mobil + ostatní stránky)
   window.addEventListener("scroll", handleScroll, { passive: true });
 
-  // a navíc galerii (desktop – vnitřní scroll)
   if (gallery) {
     gallery.addEventListener("scroll", handleScroll, { passive: true });
   }
 
   window.addEventListener("resize", handleScroll);
+
   handleScroll();
 })();
-
 
 // ===============================================
 // ACTIVE LINK
