@@ -61,6 +61,7 @@ body{
 /* Chrome, Edge */
 body::-webkit-scrollbar {
     width: 8px;
+    background: transparent;
 }
 
 body::-webkit-scrollbar-track {
@@ -68,13 +69,25 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-    background: rgba(255,0,200,.45);
-    border-radius: 100px;
-    box-shadow: 0 0 12px rgba(255,0,200,.6);
+    background: rgba(255,0,200,.55);
+    border-radius: 999px;
+
+    box-shadow:
+        0 0 10px rgba(255,0,200,.7),
+        0 0 20px rgba(255,0,255,.7);
+    backdrop-filter: blur(3px);
 }
 
 body::-webkit-scrollbar-thumb:hover {
-    background: rgba(255,0,200,.7);
+    background: rgba(255,0,200,.8);
+    box-shadow:
+        0 0 14px rgba(255,0,200,.9),
+        0 0 28px rgba(255,0,255,.8);
+}
+
+/* scroll corner (pro jistotu u desktopu) */
+body::-webkit-scrollbar-corner {
+    background: transparent;
 }
 
 main{flex:1;width:100%;padding:20px 5vw 40px;}
