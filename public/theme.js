@@ -154,11 +154,8 @@ window.addEventListener("scroll", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     const gallery = document.querySelector(".gallery-wrapper");
-    if (!gallery) return; // není galerie → nic neřešíme
+    if (!gallery) return;
 
-    let scrollTimeout;
-
-    // Fade stav (nahoře / dole)
     const updateFade = () => {
         const scrollTop = gallery.scrollTop;
         const maxScroll = gallery.scrollHeight - gallery.clientHeight;
@@ -167,19 +164,9 @@ document.addEventListener("DOMContentLoaded", () => {
         gallery.classList.toggle("at-bottom", maxScroll - scrollTop <= 2);
     };
 
-    // inicializace
     updateFade();
 
     gallery.addEventListener("scroll", () => {
-        // neon scrollbar aktivace
-        gallery.classList.add("scrolling");
-
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            gallery.classList.remove("scrolling");
-        }, 600);
-
-        // fade top/bottom aktualizace
         updateFade();
     });
 });
