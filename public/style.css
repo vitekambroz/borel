@@ -892,22 +892,22 @@ html.theme-dark .info-box{
 }
 
 /* ========================================
-   GLOBAL LAYOUT & SCROLL
+   GLOBAL LAYOUT (nutné pro mobil)
 ======================================== */
 html, body {
   height: 100%;
   margin: 0;
-  overflow-x: hidden;
+  overflow-x: hidden;   /* nikdy horizontální scroll */
 }
 
-/* Desktop: okno nesmí scrollovat → scrolluje jen galerie */
+/* Desktop → okno NESCROLLUJE, jen galerie */
 @media (min-width: 1101px) {
   html, body {
     overflow-y: hidden !important;
   }
 }
 
-/* Kontejner celé stránky */
+/* Celá stránka */
 .page {
   min-height: 100vh;
   display: flex;
@@ -921,21 +921,21 @@ html, body {
 .gallery-wrapper {
   position: relative;
   flex: 1 1 auto;
-  overflow-x: hidden;
 
-  /* DESKTOP HEIGHT (header 58 + mezery) */
+  overflow-x: hidden;
+  overflow-y: auto; /* desktop default */
+
+  /* DESKTOP výška (minus header + mezery) */
   height: calc(100vh - 180px);
   max-height: calc(100vh - 180px);
-  overflow-y: auto;
 
-  /* hide scrollbar */
   scrollbar-width: none;
 }
 .gallery-wrapper::-webkit-scrollbar {
   display: none;
 }
 
-/* MOBIL – galerie nesmí scrollovat, scrolluje celé okno */
+/* MOBIL = galerie nesmí scrollovat → scrolluje celé okno */
 @media (max-width: 1100px) {
   .gallery-wrapper {
     height: auto !important;
@@ -947,6 +947,7 @@ html, body {
 /* ========================================
    iOS overscroll glow (desktop only)
 ======================================== */
+
 .gallery-wrapper::before,
 .gallery-wrapper::after {
     content:"";
@@ -954,10 +955,10 @@ html, body {
     left:0;
     right:0;
     height:55px;
-    z-index:50;
     pointer-events:none;
     opacity:0;
     transition: opacity .12s ease-out;
+    z-index:50;
 }
 
 /* Glow top */
