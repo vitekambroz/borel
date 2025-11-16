@@ -12,6 +12,8 @@
   --header-min: 48px;
   --nav-height:70px;
   --mobile-nav-height:58px;
+  --header-max: 58px;
+  --header-min: 38px;
   --nav-light:#5a004e;
   --nav-light-hover:#ff2b84;
   --nav-light-active:#ff2b84;
@@ -45,7 +47,7 @@ html.theme-dark{
 
 *,*::before,*::after{box-sizing:border-box;}
 
-body {
+body{
   margin:0;
   min-height:100vh;
   display:flex;
@@ -54,6 +56,7 @@ body {
   -webkit-font-smoothing:antialiased;
   color:var(--text);
   background:var(--bg-light);
+  overflow-x:hidden;
   transition:background .6s,color .4s;
 }
 
@@ -120,14 +123,6 @@ header {
     transform .18s ease;
 }
 
-@media (max-width:1100px) {
-  .title-wrap,
-  .site-title {
-    transform: none !important;
-    transition: none !important;
-  }
-}
-
 /* INTERAKCE S PÍSMENY */
 .site-title span {
   display: inline-block;
@@ -176,14 +171,13 @@ body.animate-title .site-title span {
 }
 
 
+/* Right side layout */
 .right-side {
   margin-left: auto;
   display: flex;
   align-items: center;
-  height: 100%;      /* drží výšku headeru */
-  flex: 1 0 auto;    /* zabrání smrsknutí */
+  padding-right: 48px;
   gap: 14px;
-  padding-right: 16px; /* menší padding – 48px rozbíjel centrování */
 }
 
 .nav-right { margin-right: 24px; }
@@ -340,14 +334,8 @@ html.theme-dark .desktop-nav a:hover .label::after {
 @media(max-width:1100px){
   .desktop-nav{display:none !important;}
   .menu-toggle{display:flex !important;}
+  .right-side{display:none !important;}
   .mobile-nav{display:flex !important;}
-}
-
-/* na mobilu neschovávat CELÝ right-side */
-@media(max-width:1100px) {
-  .desktop-nav { display:none !important; }
-  .theme-toggle.desktop-toggle { display:none !important; }
-  /* right-side nechávám VIDITELNÉ kvůli rozložení headeru */
 }
 
 .mobile-nav{
@@ -892,22 +880,22 @@ html.theme-dark .info-box{
 }
 
 /* ========================================
-   GLOBAL LAYOUT (nutné pro mobil)
+   GLOBAL LAYOUT & SCROLL
 ======================================== */
 html, body {
   height: 100%;
   margin: 0;
-  overflow-x: hidden;   /* nikdy horizontální scroll */
+  overflow-y: auto;
 }
 
-/* Desktop → okno NESCROLLUJE, jen galerie */
+/* na desktopu nechceme systémový scrollbar – scrolluje jen galerie */
 @media (min-width: 1101px) {
   html, body {
-    overflow-y: hidden !important;
+    overflow-y: hidden;
   }
 }
 
-/* Celá stránka */
+/* Kontejner celé stránky */
 .page {
   min-height: 100vh;
   display: flex;
@@ -915,39 +903,38 @@ html, body {
 }
 
 /* ========================================
-   GALERIE – desktop scroll, mobil window scroll
+   GALERIE — jediný scroll (desktop) + glow
 ======================================== */
 
 .gallery-wrapper {
   position: relative;
   flex: 1 1 auto;
-
+  overflow-y: auto;
   overflow-x: hidden;
-  overflow-y: auto; /* desktop default */
 
-  /* DESKTOP výška (minus header + mezery) */
+  /* výška pro desktop (header + mezera) */
   height: calc(100vh - 180px);
   max-height: calc(100vh - 180px);
 
+  /* schování scrollbaru */
   scrollbar-width: none;
 }
 .gallery-wrapper::-webkit-scrollbar {
   display: none;
 }
 
-/* MOBIL = galerie nesmí scrollovat → scrolluje celé okno */
+/* Na mobilu NE vnitřní scroll – scrolluje window */
 @media (max-width: 1100px) {
   .gallery-wrapper {
-    height: auto !important;
-    max-height: none !important;
-    overflow-y: visible !important;
+    height: auto;
+    max-height: none;
+    overflow-y: visible;
   }
 }
 
 /* ========================================
-   iOS overscroll glow (desktop only)
+   iOS overscroll glow
 ======================================== */
-
 .gallery-wrapper::before,
 .gallery-wrapper::after {
     content:"";
@@ -955,10 +942,11 @@ html, body {
     left:0;
     right:0;
     height:55px;
+    z-index:50;
     pointer-events:none;
+
     opacity:0;
     transition: opacity .12s ease-out;
-    z-index:50;
 }
 
 /* Glow top */

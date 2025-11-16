@@ -15,6 +15,23 @@ function setVh() {
 window.addEventListener("resize", setVh);
 setVh();
 
+
+// ===============================================
+// LOCK/UNLOCK BODY SCROLL (opravena galerie)
+// ===============================================
+(function () {
+  const path = window.location.pathname;
+
+  if (path === "/fotogalerie" && window.innerWidth > 1100) {
+    // DESKTOP = scroll jen v galerii
+    document.body.style.overflow = "hidden";
+  } else {
+    // MOBILE = scroll vždy window
+    document.body.style.overflow = "auto";
+  }
+})();
+
+
 // ===============================================
 // THEMA
 // ===============================================
@@ -93,62 +110,55 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 });
 
 
-// ===============================================
-// HEADER SHRINK – finální verze (desktop + mobil)
-// ===============================================
+// ======================================================
+// HEADER SHRINK (desktop + mobil, FIXNUTÁ VERZE)
+// ======================================================
 (function () {
-  const header  = document.querySelector("header");
-  const title   = document.querySelector(".site-title");
-  const nav     = document.querySelector(".desktop-nav");
-  const toggle  = document.querySelector(".theme-toggle.desktop-toggle");
-  const burger  = document.querySelector(".menu-toggle");
+
+  const header = document.querySelector("header");
+  const title  = document.querySelector(".site-title");
+  const nav    = document.querySelector(".desktop-nav");
+  const toggle = document.querySelector(".theme-toggle.desktop-toggle");
+  const burger = document.querySelector(".menu-toggle");
   const gallery = document.querySelector(".gallery-wrapper");
 
   if (!header || !title) return;
 
   const maxHeader = 58;
   const minHeader = 48;
-
-  const maxFont = 2.2;
-  const minFont = 1.4;
+  const maxFont   = 2.2;
+  const minFont   = 1.4;
 
   let lastY = 0;
   let bouncing = false;
 
-
-  // -------------------------------------------------
-  // SCROLL Y – správná volba dle zařízení
-  // -------------------------------------------------
+  // DETEKCE SCROLL ZDROJE
   function getScrollY() {
-    const desktop = window.innerWidth >= 1101;
+    const desktop = window.innerWidth > 1100;
 
     if (desktop && gallery) {
-      return gallery.scrollTop;        // desktop: scrolluje galerie
+      return gallery.scrollTop;  // desktop = galerie scroll
     }
 
-    return window.scrollY;             // mobil: scrolluje okno
+    return window.scrollY;       // mobil = window scroll
   }
 
 
-  // -------------------------------------------------
-  // MAIN ANIMATION
-  // -------------------------------------------------
   function handleScroll() {
     const y = getScrollY();
     const t = Math.min(y / 120, 1);
-    const desktop = window.innerWidth >= 1101;
+    const desktop = window.innerWidth > 1100;
 
     const scale = 1 - t * 0.20;
 
-    // výška headeru
+    // HEIGHT
     header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
 
-    // velikost loga
+    // TITLE SHRINK
     title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
-    title.style.opacity  = `${1 - t * 0.08}`;
+    title.style.opacity = `${1 - t * 0.08}`;
 
-
-    // DESKTOP SHRNIK
+    // DESKTOP → zmenšuj nav a theme-toggle
     if (desktop) {
       if (nav) {
         nav.style.transform = `scale(${scale})`;
@@ -157,10 +167,10 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       if (toggle) {
         toggle.style.transform = `translateY(-50%) scale(${scale})`;
       }
-      if (burger) burger.style.transform = ""; 
+      if (burger) burger.style.transform = "";
     }
 
-    // MOBIL SHRNIK
+    // MOBILE → zmenšuj HAMBURGER
     else {
       if (burger) {
         burger.style.transform = `scale(${scale})`;
@@ -190,9 +200,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   }
 
 
-  // -------------------------------------------------
   // LISTENERY
-  // -------------------------------------------------
   window.addEventListener("scroll", handleScroll, { passive: true });
 
   if (gallery) {
@@ -203,6 +211,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
   handleScroll();
 })();
+
 
 // ===============================================
 // ACTIVE LINK
