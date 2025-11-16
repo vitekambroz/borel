@@ -154,9 +154,11 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     // HEIGHT
     header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
 
-    // TITLE SHRINK
+    // TITLE SHRINK (mobil + desktop)
     title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
+    title.style.transform = `scale(${1 - t * 0.12}) translateY(${t * -3}px)`;
     title.style.opacity = `${1 - t * 0.08}`;
+
 
     // DESKTOP → zmenšuj nav a theme-toggle
     if (desktop) {
