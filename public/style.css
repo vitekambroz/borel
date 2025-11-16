@@ -96,7 +96,7 @@ header {
   align-items: center;
   pointer-events: none;
 
-  transition: transform .2s ease;
+  transition: transform .18s ease;
 }
 
 /* TITULEK */
@@ -191,6 +191,8 @@ body.animate-title .site-title span {
   align-items: center;
   gap: 28px;
   padding-right: 48px;
+
+  transition: transform .18s ease;
 }
 
 .desktop-nav a {
@@ -914,16 +916,16 @@ html, body {
 }
 
 /* Chrome/Edge — skryj default track sb */
-.gallery-wrapper::-webkit-scrollbar {
+/*.gallery-wrapper::-webkit-scrollbar {
     width: 8px;
     background: transparent;
-}
+}*/
 .gallery-wrapper::-webkit-scrollbar-track {
     background: transparent;
 }
 
 /* neon scrollbar */
-.gallery-wrapper::-webkit-scrollbar-thumb {
+/*.gallery-wrapper::-webkit-scrollbar-thumb {
     background: linear-gradient(
         180deg,
         rgba(255,0,180,0),
@@ -932,9 +934,9 @@ html, body {
     border-radius: 8px;
     opacity: 0;
     transition: opacity .35s, background .35s;
-}
+}*/
 
-.gallery-wrapper:hover::-webkit-scrollbar-thumb,
+/*.gallery-wrapper:hover::-webkit-scrollbar-thumb,
 .gallery-wrapper.scrolling::-webkit-scrollbar-thumb {
     background: linear-gradient(
         180deg,
@@ -945,7 +947,7 @@ html, body {
         0 0 8px rgba(255,0,200,.8),
         0 0 18px rgba(255,0,255,.7);
     opacity: 1;
-}
+}*/
 
 /* ========================================
    iOS overscroll glow

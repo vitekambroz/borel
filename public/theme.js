@@ -99,15 +99,22 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 // HEADER: Smooth shrink + iOS bounce (NO auto-hide)
 // ===============================================
 (function () {
+
   const header = document.querySelector("header");
   const title  = document.querySelector(".site-title");
+  const nav    = document.querySelector(".desktop-nav");
+
   if (!header || !title) return;
 
+  // Shrink values
   const maxHeader = 58;
   const minHeader = 48;
   const maxFont   = 2.2;
   const minFont   = 1.4;
+  const maxNavScale = 1;
+  const minNavScale = 0.8; // = -20 %
 
+  // Vybere správný scroll container (window / galerie)
   function getScrollContainer() {
     const gallery = document.querySelector(".gallery-wrapper");
     const desktop = window.matchMedia("(min-width: 1101px)").matches;
@@ -118,39 +125,70 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   let lastY = 0;
   let bouncing = false;
 
+  // --------------------------------------------------------
+  // Hlavní funkce shrink/bounce
+  // --------------------------------------------------------
   function handleScroll() {
-    let y = container === window ? window.scrollY : container.scrollTop;
+    const y = container === window ? window.scrollY : container.scrollTop;
+    const t = Math.min(y / 120, 1);       // 0 → 1 při 120px scrollu
 
-    // Smooth shrink
-    let t = Math.min(y / 120, 1);
+    // --------------------------
+    // 1) Shrink header height
+    // --------------------------
+    header.style.height =
+      `${maxHeader - (maxHeader - minHeader) * t}px`;
 
-    header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
-    title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
+    // --------------------------
+    // 2) Shrink title
+    // --------------------------
+    title.style.fontSize =
+      `${maxFont - (maxFont - minFont) * t}rem`;
+
     title.style.opacity = `${1 - t * 0.08}`;
 
-    // !!! NO AUTO HIDE ANYMORE !!!
+    // --------------------------
+    // 3) Shrink navigation pills
+    // --------------------------
+    if (nav) {
+      const scale = maxNavScale - (maxNavScale - minNavScale) * t;
+      nav.style.transform = `scale(${scale})`;
+      nav.style.transformOrigin = "right center";
+    }
+
+    // --------------------------
+    // 4) NO auto-hide — header always visible
+    // --------------------------
     header.style.opacity = "1";
     header.style.transform = "translateY(0)";
 
-    // iOS bounce
+    // --------------------------
+    // 5) iOS bounce efekt
+    // --------------------------
     if (!bouncing && y === 0 && lastY > 4) {
+
       bouncing = true;
+
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
       header.style.transform = "translateY(12px)";
 
       setTimeout(() => {
         header.style.transform = "translateY(0)";
+
         setTimeout(() => {
           header.style.transition =
             "height .18s linear, opacity .18s, transform .18s ease";
           bouncing = false;
         }, 250);
+
       }, 10);
     }
 
     lastY = y;
   }
 
+  // --------------------------------------------------------
+  // Event listeners
+  // --------------------------------------------------------
   container.addEventListener("scroll", handleScroll);
 
   window.addEventListener("resize", () => {
@@ -159,7 +197,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       container.removeEventListener("scroll", handleScroll);
       container = newC;
       handleScroll();
-      container.addEventListener("scroll", handleScroll);
+      newC.addEventListener("scroll", handleScroll);
     }
   });
 
