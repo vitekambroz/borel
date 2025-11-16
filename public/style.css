@@ -12,8 +12,6 @@
   --header-min: 48px;
   --nav-height:70px;
   --mobile-nav-height:58px;
-  --header-max: 58px;
-  --header-min: 38px;
   --nav-light:#5a004e;
   --nav-light-hover:#ff2b84;
   --nav-light-active:#ff2b84;
@@ -47,7 +45,7 @@ html.theme-dark{
 
 *,*::before,*::after{box-sizing:border-box;}
 
-body{
+body {
   margin:0;
   min-height:100vh;
   display:flex;
@@ -56,7 +54,6 @@ body{
   -webkit-font-smoothing:antialiased;
   color:var(--text);
   background:var(--bg-light);
-  overflow-x:hidden;
   transition:background .6s,color .4s;
 }
 
@@ -932,11 +929,12 @@ html, body {
 }
 
 /* Na mobilu NE vnitřní scroll – scrolluje window */
-@media (max-width: 1100px) {
+@media (max-width:1100px) {
   .gallery-wrapper {
     height: auto;
     max-height: none;
-    overflow-y: visible;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
