@@ -111,16 +111,14 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ======================================================
-// HEADER SHRINK (desktop + mobil, FIXNUTÁ VERZE)
+// HEADER SHRINK – DESKTOP + MOBIL (FINÁL)
 // ======================================================
 (function () {
-
   const header = document.querySelector("header");
   const title  = document.querySelector(".site-title");
   const nav    = document.querySelector(".desktop-nav");
   const toggle = document.querySelector(".theme-toggle.desktop-toggle");
   const burger = document.querySelector(".menu-toggle");
-  const gallery = document.querySelector(".gallery-wrapper");
 
   if (!header || !title) return;
 
@@ -132,33 +130,32 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   let lastY = 0;
   let bouncing = false;
 
-  // DETEKCE SCROLL ZDROJE
+  // Dynamický scroll – funguje na všech zařízeních
   function getScrollY() {
     const desktop = window.innerWidth > 1100;
 
-    if (desktop && gallery) {
-      return gallery.scrollTop;  // desktop = galerie scroll
+    if (desktop) {
+      const gallery = document.querySelector(".gallery-wrapper");
+      if (gallery && gallery.scrollHeight > gallery.clientHeight) {
+        return gallery.scrollTop;
+      }
     }
 
-    return window.scrollY;       // mobil = window scroll
+    const doc = document.scrollingElement || document.documentElement;
+    return doc.scrollTop || window.pageYOffset || 0;
   }
-
 
   function handleScroll() {
     const y = getScrollY();
     const t = Math.min(y / 120, 1);
     const desktop = window.innerWidth > 1100;
-
     const scale = 1 - t * 0.20;
 
-    // HEIGHT
     header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
 
-    // TITLE SHRINK
     title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
-    title.style.opacity = `${1 - t * 0.08}`;
+    title.style.opacity  = `${1 - t * 0.08}`;
 
-    // DESKTOP → zmenšuj nav a theme-toggle
     if (desktop) {
       if (nav) {
         nav.style.transform = `scale(${scale})`;
@@ -168,10 +165,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
         toggle.style.transform = `translateY(-50%) scale(${scale})`;
       }
       if (burger) burger.style.transform = "";
-    }
-
-    // MOBILE → zmenšuj HAMBURGER
-    else {
+    } else {
       if (burger) {
         burger.style.transform = `scale(${scale})`;
         burger.style.transformOrigin = "left center";
@@ -180,7 +174,6 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       if (toggle) toggle.style.transform = "";
     }
 
-    // bounce efekt
     if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
@@ -199,19 +192,16 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     lastY = y;
   }
 
-
-  // LISTENERY
   window.addEventListener("scroll", handleScroll, { passive: true });
-
-  if (gallery) {
-    gallery.addEventListener("scroll", handleScroll, { passive: true });
-  }
+  document.addEventListener("scroll", handleScroll, { passive: true });
 
   window.addEventListener("resize", handleScroll);
 
+  const gallery = document.querySelector(".gallery-wrapper");
+  if (gallery) gallery.addEventListener("scroll", handleScroll, { passive: true });
+
   handleScroll();
 })();
-
 
 // ===============================================
 // ACTIVE LINK
