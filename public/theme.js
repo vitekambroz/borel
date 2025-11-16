@@ -5,34 +5,40 @@ const menuBtn = document.querySelector(".menu-toggle");
 const mobileNav = document.querySelector(".mobile-nav");
 const toggles = document.querySelectorAll(".theme-toggle");
 
-function prefersDarkQuery() {
-  return window.matchMedia("(prefers-color-scheme: dark)");
-}
 
+// ===============================================
 // iOS height fix
+// ===============================================
 function setVh() {
   document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
 }
 window.addEventListener("resize", setVh);
 setVh();
 
+
+// ===============================================
+// LOCK/UNLOCK BODY SCROLL (opravena galerie)
+// ===============================================
 (function () {
-    const path = window.location.pathname;
+  const path = window.location.pathname;
 
-    // Desktop galerie → okno NESMÍ scrollovat
-    if (path === "/fotogalerie") {
-        document.body.style.overflow = "hidden";
-        return;
-    }
-
-    // Ostatní stránky → povolit window scroll
+  if (path === "/fotogalerie" && window.innerWidth > 1100) {
+    // DESKTOP = scroll jen v galerii
+    document.body.style.overflow = "hidden";
+  } else {
+    // MOBILE = scroll vždy window
     document.body.style.overflow = "auto";
+  }
 })();
 
 
 // ===============================================
-// APLIKACE TÉMATU
+// THEMA
 // ===============================================
+function prefersDarkQuery() {
+  return window.matchMedia("(prefers-color-scheme: dark)");
+}
+
 function applyTheme(mode, save = false) {
   const html = document.documentElement;
   const isDark = mode === "dark";
@@ -46,10 +52,6 @@ function applyTheme(mode, save = false) {
   }
 }
 
-
-// ===============================================
-// INIT
-// ===============================================
 function initTheme() {
   const savedMode = localStorage.getItem("theme-mode");
   const savedTheme = localStorage.getItem("theme");
@@ -71,7 +73,7 @@ prefersDarkQuery().addEventListener("change", e => {
 
 
 // ===============================================
-// PŘEPÍNAČ TÉMATU
+// TEMA – kliknutí
 // ===============================================
 toggles.forEach(toggle => {
   toggle.addEventListener("click", () => {
@@ -108,10 +110,11 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 });
 
 
-// ===============================================
-// HEADER: Smooth shrink + iOS bounce – desktop i mobil
-// ===============================================
+// ======================================================
+// HEADER SHRINK (desktop + mobil, FIXNUTÁ VERZE)
+// ======================================================
 (function () {
+
   const header = document.querySelector("header");
   const title  = document.querySelector(".site-title");
   const nav    = document.querySelector(".desktop-nav");
@@ -129,29 +132,33 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   let lastY = 0;
   let bouncing = false;
 
-  // vezme největší scroll z okna a galerie
+  // DETEKCE SCROLL ZDROJE
   function getScrollY() {
-    const winY = window.scrollY || document.documentElement.scrollTop || 0;
-    const galY = gallery ? gallery.scrollTop : 0;
-    return Math.max(winY, galY);
+    const desktop = window.innerWidth > 1100;
+
+    if (desktop && gallery) {
+      return gallery.scrollTop;  // desktop = galerie scroll
+    }
+
+    return window.scrollY;       // mobil = window scroll
   }
+
 
   function handleScroll() {
     const y = getScrollY();
-    const t = Math.min(y / 120, 1);   // 0–1
-    const desktop = window.matchMedia("(min-width: 1101px)").matches;
-    const scale   = 1 - t * 0.20;     // max 20% zmenšení
+    const t = Math.min(y / 120, 1);
+    const desktop = window.innerWidth > 1100;
 
-    // výška headeru
-    const newH = maxHeader - (maxHeader - minHeader) * t;
-    header.style.height = `${newH}px`;
+    const scale = 1 - t * 0.20;
 
-    // velikost a fade loga BOREL
-    const newFont = maxFont - (maxFont - minFont) * t;
-    title.style.fontSize = `${newFont}rem`;
-    title.style.opacity   = `${1 - t * 0.08}`;
+    // HEIGHT
+    header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
 
-    // desktop → zmenšuj nav + theme-toggle
+    // TITLE SHRINK
+    title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
+    title.style.opacity = `${1 - t * 0.08}`;
+
+    // DESKTOP → zmenšuj nav a theme-toggle
     if (desktop) {
       if (nav) {
         nav.style.transform = `scale(${scale})`;
@@ -160,27 +167,24 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       if (toggle) {
         toggle.style.transform = `translateY(-50%) scale(${scale})`;
       }
-      // burger na desktopu neměníme
       if (burger) burger.style.transform = "";
-    } else {
-      // mobil → zmenšuj hamburger, ne desktop nav/toggle
+    }
+
+    // MOBILE → zmenšuj HAMBURGER
+    else {
       if (burger) {
         burger.style.transform = `scale(${scale})`;
         burger.style.transformOrigin = "left center";
       }
-      if (nav)    nav.style.transform    = "";
+      if (nav)    nav.style.transform = "";
       if (toggle) toggle.style.transform = "";
     }
 
-    // nikdy header neschovávej
-    header.style.opacity   = "1";
-    header.style.transform = "translateY(0)";
-
-    // jemný iOS bounce, když pustíš scroll na vršku
+    // bounce efekt
     if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
-      header.style.transform  = "translateY(12px)";
+      header.style.transform = "translateY(12px)";
 
       setTimeout(() => {
         header.style.transform = "translateY(0)";
@@ -195,21 +199,22 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     lastY = y;
   }
 
-  // posloucháme scroll okna (mobil + všechny stránky)
+
+  // LISTENERY
   window.addEventListener("scroll", handleScroll, { passive: true });
 
-  // a navíc i galerii (desktop vnitřní scroll)
   if (gallery) {
     gallery.addEventListener("scroll", handleScroll, { passive: true });
   }
 
   window.addEventListener("resize", handleScroll);
+
   handleScroll();
 })();
 
 
 // ===============================================
-// ACTIVE NAV
+// ACTIVE LINK
 // ===============================================
 (function setActiveLink() {
   let page = window.location.pathname.replace(/\/+$/, "").replace("/", "");

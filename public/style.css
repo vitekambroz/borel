@@ -885,6 +885,7 @@ html.theme-dark .info-box{
 html, body {
   height: 100%;
   margin: 0;
+  overflow-y: auto;
 }
 
 /* na desktopu nechceme systémový scrollbar – scrolluje jen galerie */
