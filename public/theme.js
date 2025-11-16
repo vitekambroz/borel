@@ -103,6 +103,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   const title  = document.querySelector(".site-title");
   const nav    = document.querySelector(".desktop-nav");
   const toggle = document.querySelector(".theme-toggle.desktop-toggle");
+  const menuBtn = document.querySelector(".menu-toggle"); // mobilní hamburger
 
   if (!header || !title) return;
 
@@ -115,13 +116,8 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   function getScrollContainer() {
     const gallery = document.querySelector(".gallery-wrapper");
     const desktop = window.matchMedia("(min-width: 1101px)").matches;
-
-    // Mobil → scrolluje window
-    if (!desktop) return window;
-
-    // Desktop + galerie → scrolluje galerie
-    if (gallery) return gallery;
-
+    if (!desktop) return window;    // MOBILE → window scroll
+    if (gallery) return gallery;    // DESKTOP + galerie → gallery scroll
     return window;
   }
 
@@ -129,46 +125,66 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   let lastY = 0;
   let bouncing = false;
 
+  // transform pro header
+  function setHeaderShift(px) {
+    header.style.setProperty("--header-shift", `${px}px`);
+  }
+
   function handleScroll() {
+    const isDesktop = window.matchMedia("(min-width:1101px)").matches;
     const y = container === window ? window.scrollY : container.scrollTop;
 
     let t = Math.min(y / 120, 1);
 
-    // Header shrink
-    const newH = maxHeader - (maxHeader - minHeader) * t;
-    header.style.height = `${newH}px`;
+    // ---------------------------
+    // Header výška
+    // ---------------------------
+    header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
 
-    // Title shrink
+    // ---------------------------
+    // Borel shrink
+    // ---------------------------
     const newFont = maxFont - (maxFont - minFont) * t;
     title.style.fontSize = `${newFont}rem`;
-    title.style.opacity = `${1 - t*0.08}`;
+    title.style.opacity = `${1 - t * 0.08}`;
 
-    // Desktop navigace scale
-    if (nav) {
-      nav.style.transform = `scale(${1 - t * 0.20})`;
-      nav.style.transformOrigin = "right center";
+    // ---------------------------
+    // ONLY DESKTOP → scale nav + theme-toggle
+    // ---------------------------
+    if (isDesktop) {
+      if (nav) {
+        nav.style.transform = `scale(${1 - t * 0.20})`;
+        nav.style.transformOrigin = "right center";
+      }
+
+      if (toggle) {
+        toggle.style.transform = `translateY(-50%) scale(${1 - t * 0.20})`;
+      }
+    } 
+    
+    // ---------------------------
+    // MOBILE → nav & toggle se NEMĚNÍ
+    // ---------------------------
+    else {
+      if (nav) nav.style.transform = "";
+      if (toggle) toggle.style.transform = "translateY(-50%)";
     }
 
-    // Theme toggle scale
-    if (toggle) {
-      toggle.style.transform = `translateY(-50%) scale(${1 - t * 0.20})`;
-    }
-
-    // NEVER auto hide
+    // Nikdy neskrývat header
     header.style.opacity = "1";
-    header.style.transform = "translateY(0)";
+    setHeaderShift(0);
 
     // Bounce efekt
-    if (!bouncing && y === 0 && lastY > 5) {
+    if (!bouncing && y === 0 && lastY > 6) {
       bouncing = true;
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
-      header.style.transform = "translateY(12px)";
+      setHeaderShift(12);
 
       setTimeout(() => {
-        header.style.transform = "translateY(0)";
+        setHeaderShift(0);
         setTimeout(() => {
           header.style.transition =
-            "height .18s linear, opacity .18s, transform .18s ease";
+            "height .18s linear, opacity .18s linear, transform .18s ease";
           bouncing = false;
         }, 250);
       }, 10);
@@ -204,23 +220,3 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     if (a.dataset.page === page) a.classList.add("active");
   });
 })();
-
-
-// ===============================================
-// NEON SCROLLBAR — bez top/bottom fade
-// ===============================================
-document.addEventListener("DOMContentLoaded", () => {
-    const gallery = document.querySelector(".gallery-wrapper");
-    if (!gallery) return;
-
-    let scrollTimeout;
-
-    gallery.addEventListener("scroll", () => {
-        gallery.classList.add("scrolling");
-
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            gallery.classList.remove("scrolling");
-        }, 500);
-    });
-});
