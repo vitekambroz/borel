@@ -154,17 +154,54 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     const desktop = window.innerWidth > 1100;
     const scale = 1 - t * 0.20;
 
-    // ==========================================
+// ======================================================
+// HEADER SHRINK
+// ======================================================
+(function () {
+
+  const header  = document.querySelector("header");
+  const title   = document.querySelector(".site-title");
+  const nav     = document.querySelector(".desktop-nav");
+  const toggle  = document.querySelector(".theme-toggle.desktop-toggle");
+  const burger  = document.querySelector(".menu-toggle");
+  const gallery = document.querySelector(".gallery-wrapper");
+  const galleryTitle = document.querySelector(".gallery-page h2"); // ✔️ CHYBĚLO
+
+  if (!header || !title) return;
+
+  const maxHeader = 58;
+  const minHeader = 48;
+  const maxFont   = 2.2;
+  const minFont   = 1.4;
+
+  let lastY = 0;
+  let bouncing = false;
+
+  function getScrollY() {
+    const desktop = window.innerWidth > 1100;
+
+    if (desktop && gallery) {
+      return gallery.scrollTop;
+    }
+
+    const scroller = document.scrollingElement || document.documentElement || document.body;
+    return scroller.scrollTop || 0;
+  }
+
+  function handleScroll() {
+    const y = getScrollY();
+    const t = Math.min(y / 120, 1);
+    const desktop = window.innerWidth > 1100;
+
+    const scale = 1 - t * 0.20;
+
     // HEADER SHRINK
-    // ==========================================
-
     header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
-
     title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
     title.style.opacity  = `${1 - t * 0.08}`;
 
+    // DESKTOP SHRINK
     if (desktop) {
-      // DESKTOP → zmenšení NAV + toggle
       if (nav) {
         nav.style.transform = `scale(${scale})`;
         nav.style.transformOrigin = "right center";
@@ -175,7 +212,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       if (burger) burger.style.transform = "";
     }
 
-    // MOBIL → jen necháme title a burger lehounce zmenšit
+    // MOBILE SHRINK
     else {
       if (burger) {
         burger.style.transform = `scale(${scale})`;
@@ -185,31 +222,36 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       if (toggle) toggle.style.transform = "";
     }
 
+    // ==========================================
+    // OPRAVA: ODSTRANĚNÍ MEZERY POD HEADEREM
+    // ==========================================
+    const page = document.querySelector(".gallery-page");
+    if (page) {
+      if (y > 5) {
+        page.style.marginTop = "0px";      // scroll → žádná mezera
+      } else {
+        page.style.marginTop = "58px";     // nahoře → původní mezera
+      }
+    }
 
     // ==========================================
-    // SCHOVÁVÁNÍ H2 KDYŽ SCROLLUJU (desktop + mobil)
+    // SCHOVÁVÁNÍ H2
     // ==========================================
     if (galleryTitle) {
       if (y > 10) {
-        // fade + slide nahoru
         galleryTitle.style.opacity   = (1 - t * 1.4).toString();
         galleryTitle.style.transform = `translateY(${-20 * t}px)`;
       } else {
-        // zpět viditelný
         galleryTitle.style.opacity   = "1";
         galleryTitle.style.transform = "translateY(0)";
       }
     }
 
-
-    // ==========================================
-    // bounce efekt nahoře
-    // ==========================================
+    // BOUNCE
     if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
       header.style.transform = "translateY(12px)";
-
       setTimeout(() => {
         header.style.transform = "translateY(0)";
         setTimeout(() => {
@@ -223,11 +265,9 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     lastY = y;
   }
 
-  // LISTENERY
+  // LISTENERS
   window.addEventListener("scroll", handleScroll, { passive: true });
-  if (gallery) {
-    gallery.addEventListener("scroll", handleScroll, { passive: true });
-  }
+  if (gallery) gallery.addEventListener("scroll", handleScroll, { passive: true });
   window.addEventListener("resize", handleScroll);
 
   handleScroll();
