@@ -102,35 +102,79 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 // ===============================================
 // FADE TITLE + SMART HEADER HIDE
+//  – funguje s window i .gallery-wrapper
 // ===============================================
-let lastScroll = 0;
-
-window.addEventListener("scroll", () => {
-  const current = window.scrollY;
+(function () {
   const header = document.querySelector("header");
-  const title = document.querySelector(".site-title");
+  const title  = document.querySelector(".site-title");
+  if (!header || !title) return;
 
-  const fadeRange = 250;
-  const fade = Math.max(0, 1 - current / fadeRange);
-
-  title.style.opacity = fade;
-  header.style.opacity = fade > 0.2 ? 1 : fade + 0.2;
-
-  if (current > 40) title.classList.add("shrunk");
-  else title.classList.remove("shrunk");
-
-  if (current > fadeRange && current > lastScroll) {
-    header.style.opacity = "0";
-    header.style.transform = "translateY(-20px)";
+  // vybereme správný scroll kontejner:
+  //  - na desktopu galerie → .gallery-wrapper
+  //  - jinde → window
+  function getScrollContainer() {
+    const gallery = document.querySelector(".gallery-wrapper");
+    const isDesktop = window.matchMedia("(min-width: 1101px)").matches;
+    if (gallery && isDesktop) return gallery;
+    return window;
   }
 
-  if (current < lastScroll) {
-    header.style.opacity = "1";
-    header.style.transform = "translateY(0)";
+  let container = getScrollContainer();
+  let lastScroll = 0;
+
+  function handleScroll() {
+    const current =
+      container === window ? window.scrollY : container.scrollTop;
+
+    const fadeRange = 250;
+    const fade = Math.max(0, 1 - current / fadeRange);
+
+    // průhlednost titulku
+    title.style.opacity = fade;
+
+    // jemné vyblednutí headeru
+    header.style.opacity = fade > 0.2 ? 1 : fade + 0.2;
+
+    // zmenšení loga “BOREL”
+    if (current > 40) {
+      title.classList.add("shrunk");
+    } else {
+      title.classList.remove("shrunk");
+    }
+
+    // chytré schování headeru při scrollu dolů
+    if (current > fadeRange && current > lastScroll) {
+      header.style.opacity = "0";
+      header.style.transform = "translateY(-20px)";
+    }
+
+    // a zase zobrazení, když scrolluješ nahoru
+    if (current < lastScroll) {
+      header.style.opacity = "1";
+      header.style.transform = "translateY(0)";
+    }
+
+    lastScroll = current;
   }
 
-  lastScroll = current;
-});
+  // posloucháme scroll správného kontejneru
+  container.addEventListener("scroll", handleScroll);
+
+  // při změně velikosti okna přepneme, pokud se změní layout
+  window.addEventListener("resize", () => {
+    const newContainer = getScrollContainer();
+    if (newContainer !== container) {
+      container.removeEventListener("scroll", handleScroll);
+      container = newContainer;
+      lastScroll = 0;
+      handleScroll();
+      container.addEventListener("scroll", handleScroll);
+    }
+  });
+
+  // počáteční stav
+  handleScroll();
+})();
 
 
 // ===============================================
