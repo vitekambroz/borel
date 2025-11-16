@@ -96,22 +96,33 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ===============================================
-// HEADER: Smooth shrink + iOS bounce (NO auto-hide)
+// HEADER: Smooth shrink + iOS bounce everywhere
 // ===============================================
 (function () {
   const header = document.querySelector("header");
   const title  = document.querySelector(".site-title");
+  const nav    = document.querySelector(".desktop-nav");
+  const toggle = document.querySelector(".theme-toggle.desktop-toggle");
+
   if (!header || !title) return;
 
   const maxHeader = 58;
   const minHeader = 48;
+
   const maxFont   = 2.2;
   const minFont   = 1.4;
 
   function getScrollContainer() {
     const gallery = document.querySelector(".gallery-wrapper");
     const desktop = window.matchMedia("(min-width: 1101px)").matches;
-    return (gallery && desktop) ? gallery : window;
+
+    // Mobil → scrolluje window
+    if (!desktop) return window;
+
+    // Desktop + galerie → scrolluje galerie
+    if (gallery) return gallery;
+
+    return window;
   }
 
   let container = getScrollContainer();
@@ -119,36 +130,36 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   let bouncing = false;
 
   function handleScroll() {
-    let y = container === window ? window.scrollY : container.scrollTop;
+    const y = container === window ? window.scrollY : container.scrollTop;
+
     let t = Math.min(y / 120, 1);
 
-    // --- NAV SCALE ---
-    const nav = document.querySelector(".desktop-nav");
+    // Header shrink
+    const newH = maxHeader - (maxHeader - minHeader) * t;
+    header.style.height = `${newH}px`;
+
+    // Title shrink
+    const newFont = maxFont - (maxFont - minFont) * t;
+    title.style.fontSize = `${newFont}rem`;
+    title.style.opacity = `${1 - t*0.08}`;
+
+    // Desktop navigace scale
     if (nav) {
-      const scale = 1 - t * 0.20;
-      nav.style.transform = `scale(${scale})`;
+      nav.style.transform = `scale(${1 - t * 0.20})`;
       nav.style.transformOrigin = "right center";
     }
 
-    // --- THEME TOGGLE SCALE (TVŮJ SELECTOR) ---
-    const toggle = document.querySelector(".theme-toggle.desktop-toggle");
+    // Theme toggle scale
     if (toggle) {
-      const scale = 1 - t * 0.20;
-      toggle.style.transform = `translateY(-50%) scale(${scale})`;
-      toggle.style.transformOrigin = "center center";
+      toggle.style.transform = `translateY(-50%) scale(${1 - t * 0.20})`;
     }
 
-    // --- HEADER SHRINK ---
-    header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
-    title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
-    title.style.opacity = `${1 - t * 0.08}`;
-
-    // always visible
+    // NEVER auto hide
     header.style.opacity = "1";
     header.style.transform = "translateY(0)";
 
-    // --- iOS bounce ---
-    if (!bouncing && y === 0 && lastY > 4) {
+    // Bounce efekt
+    if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
       header.style.transform = "translateY(12px)";
