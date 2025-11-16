@@ -5,8 +5,6 @@ const menuBtn = document.querySelector(".menu-toggle");
 const mobileNav = document.querySelector(".mobile-nav");
 const toggles = document.querySelectorAll(".theme-toggle");
 
-
-// MEDIA QUERY musí být uložený jako funkce → kvůli iOS bugům
 function prefersDarkQuery() {
   return window.matchMedia("(prefers-color-scheme: dark)");
 }
@@ -30,30 +28,23 @@ function applyTheme(mode, save = false) {
 
 
 // ===============================================
-// INIT – FUNGUJE NA IPHONE I ANDROID
+// INIT
 // ===============================================
 function initTheme() {
   const savedMode = localStorage.getItem("theme-mode");
   const savedTheme = localStorage.getItem("theme");
 
-  // manuální mód má přednost
   if (savedMode === "manual" && savedTheme) {
     applyTheme(savedTheme);
     return;
   }
 
-  // správná detekce systémového tématu
   const systemDark = prefersDarkQuery().matches;
   applyTheme(systemDark ? "dark" : "light");
 }
 
-// spustíme až po načtení → iOS Safari opravuje hodnotu
 document.addEventListener("DOMContentLoaded", initTheme);
 
-
-// ===============================================
-// SYSTÉMOVÁ ZMĚNA
-// ===============================================
 prefersDarkQuery().addEventListener("change", e => {
   if (localStorage.getItem("theme-mode") === "manual") return;
   applyTheme(e.matches ? "dark" : "light");
@@ -61,7 +52,7 @@ prefersDarkQuery().addEventListener("change", e => {
 
 
 // ===============================================
-// PŘEPÍNAČ TÉMATA (desktop + mobile)
+// PŘEPÍNAČ TÉMATU
 // ===============================================
 toggles.forEach(toggle => {
   toggle.addEventListener("click", () => {
@@ -71,7 +62,6 @@ toggles.forEach(toggle => {
 
     applyTheme(nowDark ? "dark" : "light", true);
 
-    // animace tečky
     const thumb = toggle.querySelector(".thumb");
     if (thumb) {
       thumb.classList.remove("bounce");
@@ -83,7 +73,7 @@ toggles.forEach(toggle => {
 
 
 // ===============================================
-// MOBILE NAV MENU
+// MOBILE NAV
 // ===============================================
 if (menuBtn && mobileNav) {
   menuBtn.addEventListener("click", () => {
@@ -101,19 +91,18 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ===============================================
-// HEADER: Smooth shrink + fade + auto-hide + iOS bounce feel
+// HEADER: Smooth shrink + auto-hide + iOS bounce
 // ===============================================
 (function () {
   const header = document.querySelector("header");
   const title  = document.querySelector(".site-title");
   if (!header || !title) return;
 
-  const maxHeader = 58;   // výchozí výška (CSS var --header-max)
-  const minHeader = 38;   // minimální při scrollu
-  const maxFont   = 2.2;  // rem
-  const minFont   = 1.4;  // rem
+  const maxHeader = 58;
+  const minHeader = 38;
+  const maxFont   = 2.2;
+  const minFont   = 1.4;
 
-  // Který container se má scrollovat (window nebo galerie)
   function getScrollContainer() {
     const gallery = document.querySelector(".gallery-wrapper");
     const desktop = window.matchMedia("(min-width: 1101px)").matches;
@@ -127,23 +116,15 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   function handleScroll() {
     let y = container === window ? window.scrollY : container.scrollTop;
 
-    // --- 1) SMOOTH SHRINK ---
+    // SHRINK
     let t = Math.min(y / 120, 1);
 
-    let newHeight = maxHeader - (maxHeader - minHeader) * t;
-    header.style.height = `${newHeight}px`;
-
-    let newFont = maxFont - (maxFont - minFont) * t;
-    title.style.fontSize = `${newFont}rem`;
-
-    // jemný posun nahoru → Apple feel
+    header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
+    title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
     title.style.transform = `translateY(${t * -6}px)`;
-
-    // malé vyblednutí titulku
     title.style.opacity = `${1 - t * 0.08}`;
 
-
-    // --- 2) SMART AUTO-HIDE HEADER ---
+    // AUTO HIDE
     if (y > 80 && y > lastY) {
       header.style.opacity = "0";
       header.style.transform = "translateY(-32px)";
@@ -152,9 +133,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       header.style.transform = "translateY(0)";
     }
 
-
-    // --- 3) iOS BOUNCE FEEL ---
-    // (jen vizuální pružení, Apple blok skutečný overscroll)
+    // iOS-style bounce
     if (!bouncing && y === 0 && lastY > 4) {
       bouncing = true;
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
@@ -172,11 +151,8 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     lastY = y;
   }
 
-
-  // posloucháme správný scroll kontejner
   container.addEventListener("scroll", handleScroll);
 
-  // při resize přepínáme window/galerie
   window.addEventListener("resize", () => {
     const newC = getScrollContainer();
     if (newC !== container) {
@@ -201,31 +177,20 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   page = page.replace(/\/+$/, "").replace("/", "");
   if (page === "") page = "/";
 
-  document.querySelectorAll("a[data-page]").forEach(a => {
-    if (a.dataset.page === page) a.classList.add("active");
-  });
+  document
+    .querySelectorAll("a[data-page]")
+    .forEach(a => { if (a.dataset.page === page) a.classList.add("active"); });
 })();
 
 
-/* ================================================
-   NEON SCROLLBAR + FADE — JEN PRO GALERII
-================================================ */
-
+// ===============================================
+// NEON SCROLLBAR — bez fade top/bottom
+// ===============================================
 document.addEventListener("DOMContentLoaded", () => {
     const gallery = document.querySelector(".gallery-wrapper");
     if (!gallery) return;
 
     let scrollTimeout;
-
-    const updateFade = () => {
-        const scrollTop = gallery.scrollTop;
-        const maxScroll = gallery.scrollHeight - gallery.clientHeight;
-
-        gallery.classList.toggle("at-top", scrollTop <= 2);
-        gallery.classList.toggle("at-bottom", maxScroll - scrollTop <= 2);
-    };
-
-    updateFade();
 
     gallery.addEventListener("scroll", () => {
         gallery.classList.add("scrolling");
@@ -234,7 +199,5 @@ document.addEventListener("DOMContentLoaded", () => {
         scrollTimeout = setTimeout(() => {
             gallery.classList.remove("scrolling");
         }, 500);
-
-        updateFade();
     });
 });

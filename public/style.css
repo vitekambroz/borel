@@ -878,113 +878,104 @@ html.theme-dark .info-box{
   transform:scale(1);
 }
 
-/* ============================================================
-   GALERIE — vnitřní scroll + neon scrollbar + fade
-============================================================ */
+/* ==========================================================
+   GALERIE — vnitřní scroll + neon scrollbar + iOS overscroll glow
+========================================================== */
 
-/* Kontejner stránky */
-.gallery-page {
-    width: 100%;
-    max-width: 1500px;
-    margin: 0 auto;
-    padding: 0 20px 10px;
-    box-sizing: border-box;
-}
-
-/* Wrapper – JEDINÉ místo, které se scrolluje */
 .gallery-wrapper {
     position: relative;
     overflow-y: auto;
     overflow-x: hidden;
 
-    /* Výška = velikost okna - prostor pro header + mezery */
+    /* výška – aby se nevešel systémový scrollbar */
     max-height: calc(100vh - 180px);
 
-    /* Skryj default scrollbar */
-    scrollbar-width: none; /* Firefox */
+    /* Firefox — skryj default */
+    scrollbar-width: none;
 }
-
 .gallery-wrapper::-webkit-scrollbar {
-    display: none !important; /* Chrome/Edge */
+    width: 8px;
+    background: transparent;
+}
+.gallery-wrapper::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-/* ------------------------------------------------------------
-   FADE nahoře/dole
------------------------------------------------------------- */
-.gallery-wrapper::before,
-.gallery-wrapper::after {
-    content: "";
-    position: sticky;
-    left: 0;
-    right: 0;
-    height: 45px;
-    z-index: 10;
-    pointer-events: none;
-
-    opacity: 0;
-    transition: opacity .25s ease-out;
-}
-
-/* Fade top */
-.gallery-wrapper::before {
-    top: 0;
-    background: linear-gradient(to bottom,
-        rgba(10,0,20,0.9),
-        rgba(10,0,20,0)
-    );
-}
-
-/* Fade bottom */
-.gallery-wrapper::after {
-    bottom: 0;
-    background: linear-gradient(to top,
-        rgba(10,0,20,0.9),
-        rgba(10,0,20,0)
-    );
-}
-
-/* Viditelný fade – řízený pomocí JS */
-.gallery-wrapper:not(.at-top)::before {
-    opacity: 1;
-}
-.gallery-wrapper:not(.at-bottom)::after {
-    opacity: 1;
-}
-
-/* ------------------------------------------------------------
-   NEON SCROLLBAR (náš vlastní, ne systémový)
-   — zobrazí se jen při scrollování nebo hoveru
------------------------------------------------------------- */
-
-.gallery-wrapper::-webkit-scrollbar {
-    width: 10px;
-}
-
+/* Thumb — neon, defaultně skrytý */
 .gallery-wrapper::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    opacity: 0;
     background: linear-gradient(
         180deg,
         rgba(255,0,180,0),
         rgba(255,0,255,0)
     );
-    transition: opacity .3s, background .3s;
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity .35s, background .35s;
 }
 
-/* Aktivace scrollbaru */
-.gallery-wrapper.scrolling::-webkit-scrollbar-thumb,
-.gallery-wrapper:hover::-webkit-scrollbar-thumb {
-    opacity: 1;
+/* zobrazí se při hoveru nebo .scrolling */
+.gallery-wrapper:hover::-webkit-scrollbar-thumb,
+.gallery-wrapper.scrolling::-webkit-scrollbar-thumb {
     background: linear-gradient(
         180deg,
         rgba(255,0,180,0.75),
-        rgba(255,0,255,0.72)
+        rgba(255,0,255,0.7)
     );
     box-shadow:
         0 0 8px rgba(255,0,200,.8),
         0 0 18px rgba(255,0,255,.7);
+    opacity: 1;
 }
 
+/* ==========================================================
+   iOS OVERSCROLL GLOW — TOP + BOTTOM
+========================================================== */
+
+.gallery-wrapper::before,
+.gallery-wrapper::after {
+    content:"";
+    position: sticky;
+    left:0;
+    right:0;
+    height:55px;
+    pointer-events:none;
+    z-index:50;
+
+    opacity:0;
+    transition: opacity .12s ease-out;
+}
+
+/* TOP glow */
+.gallery-wrapper::before {
+    top:0;
+    background:radial-gradient(
+        ellipse at top,
+        rgba(255,0,200,0.55),
+        rgba(255,0,200,0.25),
+        rgba(255,0,200,0)
+    );
+    filter:blur(14px);
+}
+
+/* BOTTOM glow */
+.gallery-wrapper::after {
+    bottom:0;
+    background:radial-gradient(
+        ellipse at bottom,
+        rgba(255,0,200,0.55),
+        rgba(255,0,200,0.25),
+        rgba(255,0,200,0)
+    );
+    filter:blur(14px);
+}
+
+/* Aktivní glow */
+.gallery-wrapper.overscroll-top::before {
+    opacity: 1;
+}
+.gallery-wrapper.overscroll-bottom::after {
+    opacity: 1;
+}
 
 /* ============================================================
    LIGHTBOX
