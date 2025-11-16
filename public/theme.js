@@ -111,14 +111,16 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ======================================================
-// HEADER SHRINK – DESKTOP + MOBIL (FINÁL)
+// HEADER SHRINK (desktop + mobil, FIXNUTÁ VERZE)
 // ======================================================
 (function () {
+
   const header = document.querySelector("header");
   const title  = document.querySelector(".site-title");
   const nav    = document.querySelector(".desktop-nav");
   const toggle = document.querySelector(".theme-toggle.desktop-toggle");
   const burger = document.querySelector(".menu-toggle");
+  const gallery = document.querySelector(".gallery-wrapper");
 
   if (!header || !title) return;
 
@@ -130,38 +132,34 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   let lastY = 0;
   let bouncing = false;
 
-  // --- Zjištění scrollu (funguje všude) ---
+  // DETEKCE SCROLL ZDROJE
   function getScrollY() {
     const desktop = window.innerWidth > 1100;
 
-    // DESKTOP FOTOGALERIE – scrolluje se uvnitř .gallery-wrapper
-    if (desktop) {
-      const gallery = document.querySelector(".gallery-wrapper");
-      if (gallery && gallery.scrollHeight > gallery.clientHeight) {
-        return gallery.scrollTop;
-      }
+    if (desktop && gallery) {
+      return gallery.scrollTop;  // desktop = galerie scroll
     }
 
-    // MOBIL + ostatní stránky – scroll okna / dokumentu
-    const doc = document.scrollingElement || document.documentElement;
-    return doc.scrollTop || window.pageYOffset || window.scrollY || 0;
+    return window.scrollY;       // mobil = window scroll
   }
+
 
   function handleScroll() {
     const y = getScrollY();
-    const t = Math.min(y / 120, 1); // 0–1
+    const t = Math.min(y / 120, 1);
     const desktop = window.innerWidth > 1100;
-    const scale   = 1 - t * 0.20;
 
-    // výška headeru
+    const scale = 1 - t * 0.20;
+
+    // HEIGHT
     header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
 
-    // nápis BOREL
+    // TITLE SHRINK
     title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
-    title.style.opacity  = `${1 - t * 0.08}`;
+    title.style.opacity = `${1 - t * 0.08}`;
 
+    // DESKTOP → zmenšuj nav a theme-toggle
     if (desktop) {
-      // DESKTOP → zmenšuj NAV + theme-toggle
       if (nav) {
         nav.style.transform = `scale(${scale})`;
         nav.style.transformOrigin = "right center";
@@ -170,8 +168,10 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
         toggle.style.transform = `translateY(-50%) scale(${scale})`;
       }
       if (burger) burger.style.transform = "";
-    } else {
-      // MOBIL → zmenšuj HAMBURGER
+    }
+
+    // MOBILE → zmenšuj HAMBURGER
+    else {
       if (burger) {
         burger.style.transform = `scale(${scale})`;
         burger.style.transformOrigin = "left center";
@@ -180,11 +180,10 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       if (toggle) toggle.style.transform = "";
     }
 
-    // malý „bounce“ efekt, když sjedeš úplně nahoru
+    // bounce efekt
     if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
-      header.style.transition =
-        "transform .25s cubic-bezier(.25,1.7,.45,1), height .18s linear";
+      header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
       header.style.transform = "translateY(12px)";
 
       setTimeout(() => {
@@ -193,25 +192,23 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
           header.style.transition =
             "height .18s linear, opacity .18s, transform .18s ease";
           bouncing = false;
-        }, 200);
+        }, 250);
       }, 10);
     }
 
     lastY = y;
   }
 
-  // POSLUCHAČE SCROLLU
-  window.addEventListener("scroll", handleScroll, { passive: true });
-  document.addEventListener("scroll", handleScroll, { passive: true });
 
-  const gallery = document.querySelector(".gallery-wrapper");
+  // LISTENERY
+  window.addEventListener("scroll", handleScroll, { passive: true });
+
   if (gallery) {
     gallery.addEventListener("scroll", handleScroll, { passive: true });
   }
 
   window.addEventListener("resize", handleScroll);
 
-  // inicializace
   handleScroll();
 })();
 
