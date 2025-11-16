@@ -644,6 +644,7 @@ html.theme-dark .theme-toggle .thumb svg{
   width:62px;
   height:34px;
   padding:4px;
+  transition: transform .18s ease;
 }
 
 .theme-toggle.desktop-toggle .thumb{
@@ -879,17 +880,20 @@ html.theme-dark .info-box{
 /* ========================================
    FIX: Window nesmí scrollovat
 ======================================== */
+/* Globální – povol scroll */
 html, body {
-    height: 100%;
-    overflow: hidden; /* ZÁKAZ window scrollbar */
+    height: auto;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto; /* povolíme window scroll */
 }
 
 /* Kontejner celé stránky */
 .page {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible; /* NESMÍ být hidden */
 }
 
 /* ========================================
@@ -923,31 +927,6 @@ html, body {
 .gallery-wrapper::-webkit-scrollbar-track {
     background: transparent;
 }
-
-/* neon scrollbar */
-/*.gallery-wrapper::-webkit-scrollbar-thumb {
-    background: linear-gradient(
-        180deg,
-        rgba(255,0,180,0),
-        rgba(255,0,255,0)
-    );
-    border-radius: 8px;
-    opacity: 0;
-    transition: opacity .35s, background .35s;
-}*/
-
-/*.gallery-wrapper:hover::-webkit-scrollbar-thumb,
-.gallery-wrapper.scrolling::-webkit-scrollbar-thumb {
-    background: linear-gradient(
-        180deg,
-        rgba(255,0,180,0.75),
-        rgba(255,0,255,0.7)
-    );
-    box-shadow:
-        0 0 8px rgba(255,0,200,.8),
-        0 0 18px rgba(255,0,255,.7);
-    opacity: 1;
-}*/
 
 /* ========================================
    iOS overscroll glow
