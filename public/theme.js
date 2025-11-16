@@ -153,34 +153,33 @@ window.addEventListener("scroll", () => {
 ================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
-  const gallery = document.querySelector(".gallery-wrapper");
-  if (!gallery) return; // stránky bez galerie ignorujeme
+    const gallery = document.querySelector(".gallery-wrapper");
+    if (!gallery) return; // není galerie → nic neřešíme
 
-  let scrollTimeout;
+    let scrollTimeout;
 
-  const updateFade = () => {
-    const scrollTop = gallery.scrollTop;
-    const maxScroll = gallery.scrollHeight - gallery.clientHeight;
+    // Fade stav (nahoře / dole)
+    const updateFade = () => {
+        const scrollTop = gallery.scrollTop;
+        const maxScroll = gallery.scrollHeight - gallery.clientHeight;
 
-    const atTop = scrollTop <= 2;
-    const atBottom = maxScroll - scrollTop <= 2;
+        gallery.classList.toggle("at-top", scrollTop <= 2);
+        gallery.classList.toggle("at-bottom", maxScroll - scrollTop <= 2);
+    };
 
-    gallery.classList.toggle("at-top", atTop);
-    gallery.classList.toggle("at-bottom", atBottom);
-  };
-
-  // inicializace
-  updateFade();
-
-  gallery.addEventListener("scroll", () => {
-    // neon scrollbar
-    gallery.classList.add("scrolling");
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => {
-      gallery.classList.remove("scrolling");
-    }, 600);
-
-    // fade top/bottom
+    // inicializace
     updateFade();
-  });
+
+    gallery.addEventListener("scroll", () => {
+        // neon scrollbar aktivace
+        gallery.classList.add("scrolling");
+
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            gallery.classList.remove("scrolling");
+        }, 600);
+
+        // fade top/bottom aktualizace
+        updateFade();
+    });
 });
