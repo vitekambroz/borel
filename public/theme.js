@@ -101,78 +101,93 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ===============================================
-// FADE TITLE + SMART HEADER HIDE
-//  – funguje s window i .gallery-wrapper
+// HEADER: Smooth shrink + fade + auto-hide + iOS bounce feel
 // ===============================================
 (function () {
   const header = document.querySelector("header");
   const title  = document.querySelector(".site-title");
   if (!header || !title) return;
 
-  // vybereme správný scroll kontejner:
-  //  - na desktopu galerie → .gallery-wrapper
-  //  - jinde → window
+  const maxHeader = 58;   // výchozí výška (CSS var --header-max)
+  const minHeader = 38;   // minimální při scrollu
+  const maxFont   = 2.2;  // rem
+  const minFont   = 1.4;  // rem
+
+  // Který container se má scrollovat (window nebo galerie)
   function getScrollContainer() {
     const gallery = document.querySelector(".gallery-wrapper");
-    const isDesktop = window.matchMedia("(min-width: 1101px)").matches;
-    if (gallery && isDesktop) return gallery;
-    return window;
+    const desktop = window.matchMedia("(min-width: 1101px)").matches;
+    return (gallery && desktop) ? gallery : window;
   }
 
   let container = getScrollContainer();
-  let lastScroll = 0;
+  let lastY = 0;
+  let bouncing = false;
 
   function handleScroll() {
-    const current =
-      container === window ? window.scrollY : container.scrollTop;
+    let y = container === window ? window.scrollY : container.scrollTop;
 
-    const fadeRange = 250;
-    const fade = Math.max(0, 1 - current / fadeRange);
+    // --- 1) SMOOTH SHRINK ---
+    let t = Math.min(y / 120, 1);
 
-    // průhlednost titulku
-    title.style.opacity = fade;
+    let newHeight = maxHeader - (maxHeader - minHeader) * t;
+    header.style.height = `${newHeight}px`;
 
-    // jemné vyblednutí headeru
-    header.style.opacity = fade > 0.2 ? 1 : fade + 0.2;
+    let newFont = maxFont - (maxFont - minFont) * t;
+    title.style.fontSize = `${newFont}rem`;
 
-    // zmenšení loga “BOREL”
-    if (current > 40) {
-      title.classList.add("shrunk");
-    } else {
-      title.classList.remove("shrunk");
-    }
+    // jemný posun nahoru → Apple feel
+    title.style.transform = `translateY(${t * -6}px)`;
 
-    // chytré schování headeru při scrollu dolů
-    if (current > fadeRange && current > lastScroll) {
+    // malé vyblednutí titulku
+    title.style.opacity = `${1 - t * 0.08}`;
+
+
+    // --- 2) SMART AUTO-HIDE HEADER ---
+    if (y > 80 && y > lastY) {
       header.style.opacity = "0";
-      header.style.transform = "translateY(-20px)";
-    }
-
-    // a zase zobrazení, když scrolluješ nahoru
-    if (current < lastScroll) {
+      header.style.transform = "translateY(-32px)";
+    } else if (y < lastY) {
       header.style.opacity = "1";
       header.style.transform = "translateY(0)";
     }
 
-    lastScroll = current;
+
+    // --- 3) iOS BOUNCE FEEL ---
+    // (jen vizuální pružení, Apple blok skutečný overscroll)
+    if (!bouncing && y === 0 && lastY > 4) {
+      bouncing = true;
+      header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
+      header.style.transform = "translateY(12px)";
+
+      setTimeout(() => {
+        header.style.transform = "translateY(0)";
+        setTimeout(() => {
+          header.style.transition = "height .18s linear, opacity .18s, transform .18s ease";
+          bouncing = false;
+        }, 250);
+      }, 10);
+    }
+
+    lastY = y;
   }
 
-  // posloucháme scroll správného kontejneru
+
+  // posloucháme správný scroll kontejner
   container.addEventListener("scroll", handleScroll);
 
-  // při změně velikosti okna přepneme, pokud se změní layout
+  // při resize přepínáme window/galerie
   window.addEventListener("resize", () => {
-    const newContainer = getScrollContainer();
-    if (newContainer !== container) {
+    const newC = getScrollContainer();
+    if (newC !== container) {
       container.removeEventListener("scroll", handleScroll);
-      container = newContainer;
-      lastScroll = 0;
+      container = newC;
+      lastY = 0;
       handleScroll();
       container.addEventListener("scroll", handleScroll);
     }
   });
 
-  // počáteční stav
   handleScroll();
 })();
 

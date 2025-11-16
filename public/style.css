@@ -8,6 +8,8 @@
   --bg-dark-solid:#120018;
   --bg-dark-grad:radial-gradient(circle at top,#3a005a,#120018 50%,#050008 100%);
   --glow:none;
+  --header-max: 58px;
+  --header-min: 38px;
   --nav-height:70px;
   --mobile-nav-height:58px;
   --nav-light:#5a004e;
@@ -61,67 +63,89 @@ img{max-width:100%;display:block;}
 
 
 /* ============================================================
-   HEADER & TITLE
+   HEADER & TITLE – smooth shrink ready
 ============================================================ */
-header{
-  position:sticky;
-  top:0;
-  z-index:9999;
-  display:flex;
-  align-items:center;
-  padding:10px 16px;
-  min-height:58px;
-  background:color-mix(in srgb,var(--glass-light) 75%,transparent);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border-glass-light);
-  box-shadow:0 8px 24px rgba(0,0,0,.12);
-  transition:opacity .35s,transform .35s;
+
+:root {
+  --header-max: 58px;
+  --header-min: 38px;
 }
 
-.title-wrap{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  pointer-events:none;
+header {
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+
+  padding: 10px 16px;
+  height: var(--header-max); /* dynamická výška */
+
+  background: color-mix(in srgb, var(--glass-light) 75%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-glass-light);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+
+  transition: height 0.18s linear;
 }
 
-.site-title{
-  margin:0;
-  font-size:2.2rem;
-  letter-spacing:.2em;
-  font-weight:800;
-  font-family:"Fredoka","Poppins";
-  color:var(--brand-strong);
-  pointer-events:auto;
-  text-shadow:0 0 10px rgba(229,0,106,.5),0 0 22px rgba(255,150,255,.4);
-  transition:opacity .25s,transform .25s;
+/* TITLE WRAP — zarovnání uprostřed při scrollu */
+.title-wrap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+
+  transition: transform .18s ease;
 }
 
-.site-title.shrunk{font-size:1.4rem;}
+/* TITULEK */
+.site-title {
+  margin: 0;
 
-.site-title span{
-  display:inline-block;
-  transition:transform .25s;
+  font-size: 2.2rem;     /* výchozí – mění JS */
+  letter-spacing: .2em;
+  font-weight: 800;
+  font-family: "Fredoka", "Poppins";
+
+  color: var(--brand-strong);
+  pointer-events: auto;
+
+  text-shadow:
+    0 0 10px rgba(229,0,106,.5),
+    0 0 22px rgba(255,150,255,.4);
+
+  transition: 
+    font-size .18s ease,
+    opacity .18s ease,
+    transform .18s ease;
 }
 
-.site-title span:hover{
-  transform:translateY(-2px) scale(1.1);
+/* INTERAKCE S PÍSMENY */
+.site-title span {
+  display: inline-block;
+  transition: transform .25s;
 }
 
-body.animate-title .site-title span{
-  opacity:0;
-  transform:translateY(14px) scale(.92);
-  animation:cuteLetter .55s cubic-bezier(.22,1.5,.36,1) forwards;
+.site-title span:hover {
+  transform: translateY(-2px) scale(1.1);
 }
 
-@keyframes cuteLetter{
-  0%{opacity:0;transform:translateY(14px) scale(.92);}
-  70%{opacity:1;transform:translateY(-4px) scale(1.06);}
-  100%{opacity:1;transform:translateY(0) scale(1);}
+/* Cute intro animace */
+body.animate-title .site-title span {
+  opacity: 0;
+  transform: translateY(14px) scale(.92);
+  animation: cuteLetter .55s cubic-bezier(.22,1.5,.36,1) forwards;
+}
+
+@keyframes cuteLetter {
+  0%   { opacity: 0; transform: translateY(14px) scale(.92); }
+  70%  { opacity: 1; transform: translateY(-4px) scale(1.06); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 
