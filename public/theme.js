@@ -3,7 +3,6 @@
 // ===============================================
 const menuBtn = document.querySelector(".menu-toggle");
 const mobileNav = document.querySelector(".mobile-nav");
-const gallery = document.querySelector('.gallery-wrapper');
 const toggles = document.querySelectorAll(".theme-toggle");
 
 
@@ -150,21 +149,38 @@ window.addEventListener("scroll", () => {
 
 
 /* ================================================
-   NEON SCROLLBAR — JEN PRO GALERII
+   NEON SCROLLBAR + FADE — JEN PRO GALERII
 ================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
-    const gallery = document.querySelector(".gallery-wrapper");
-    if (!gallery) return; // stránka bez galerie → ignorujeme
+  const gallery = document.querySelector(".gallery-wrapper");
+  if (!gallery) return; // stránky bez galerie ignorujeme
 
-    let scrollTimeout;
+  let scrollTimeout;
 
-    gallery.addEventListener("scroll", () => {
-        gallery.classList.add("scrolling");
+  const updateFade = () => {
+    const scrollTop = gallery.scrollTop;
+    const maxScroll = gallery.scrollHeight - gallery.clientHeight;
 
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            gallery.classList.remove("scrolling");
-        }, 700); // jemnější fade-out
-    });
+    const atTop = scrollTop <= 2;
+    const atBottom = maxScroll - scrollTop <= 2;
+
+    gallery.classList.toggle("at-top", atTop);
+    gallery.classList.toggle("at-bottom", atBottom);
+  };
+
+  // inicializace
+  updateFade();
+
+  gallery.addEventListener("scroll", () => {
+    // neon scrollbar
+    gallery.classList.add("scrolling");
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      gallery.classList.remove("scrolling");
+    }, 600);
+
+    // fade top/bottom
+    updateFade();
+  });
 });

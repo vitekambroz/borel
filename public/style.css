@@ -855,32 +855,30 @@ html.theme-dark .info-box{
 }
 
 /* ================================================
-   NEON SCROLLBAR — JEN PRO GALERII
-   (objeví se jen při scrollu)
+   GALERIE — vnitřní scroll + neon scrollbar + fade
 ================================================ */
 
-/* GALERIE — wrapper se skrytým scrollbarem */
 .gallery-wrapper {
+    position: relative;
+    max-height: calc(100vh - 220px); /* kdyžtak si doladíš číslo */
     overflow-y: auto;
     overflow-x: hidden;
-    position: relative;
 
-    /* Firefox */
+    /* Firefox – defaultně skryjeme klasický scrollbar */
     scrollbar-width: none;
 }
 
-/* Chrome / Edge / Opera — skrytý výchozí scrollbar */
+/* Chrome / Edge / Opera — základní skrytý scrollbar */
 .gallery-wrapper::-webkit-scrollbar {
     width: 8px;
     background: transparent;
 }
 
-/* Track — neviditelný */
 .gallery-wrapper::-webkit-scrollbar-track {
     background: transparent;
 }
 
-/* Thumb — neon, ale normálně neviditelný */
+/* Thumb – neon, ale normálně skrytý */
 .gallery-wrapper::-webkit-scrollbar-thumb {
     background: linear-gradient(
         180deg,
@@ -888,11 +886,11 @@ html.theme-dark .info-box{
         rgba(255,0,255,0)
     );
     border-radius: 8px;
-    transition: background .35s ease, opacity .35s ease;
     opacity: 0;
+    transition: background .35s ease, opacity .35s ease;
 }
 
-/* ZOBRAZENÍ PŘI SCROLLU NEBO HOVERU */
+/* zobrazí se při hoveru nebo když JS přidá .scrolling */
 .gallery-wrapper:hover::-webkit-scrollbar-thumb,
 .gallery-wrapper.scrolling::-webkit-scrollbar-thumb {
     background: linear-gradient(
@@ -901,8 +899,65 @@ html.theme-dark .info-box{
         rgba(255,0,255,0.7)
     );
     box-shadow:
-        0 0 12px rgba(255,0,200,.8),
-        0 0 22px rgba(255,0,255,.7);
+        0 0 8px rgba(255,0,200,.8),
+        0 0 18px rgba(255,0,255,.7);
+    opacity: 1;
+}
+
+/* ================================================
+   FADE NAHOŘE/DOLE – jen vizuální efekt
+================================================ */
+
+.gallery-wrapper::before,
+.gallery-wrapper::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 40px;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity .3s ease;
+}
+
+/* horní fade – viditelný, když nejsme úplně nahoře */
+.gallery-wrapper::before {
+    top: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(7,0,20,0.95),
+        rgba(7,0,20,0)
+    );
+}
+
+/* spodní fade – viditelný, když nejsme dole */
+.gallery-wrapper::after {
+    bottom: 0;
+    background: linear-gradient(
+        to top,
+        rgba(7,0,20,0.95),
+        rgba(7,0,20,0)
+    );
+}
+
+/* jsme nahoře → horní fade schovat */
+.gallery-wrapper.at-top::before {
+    opacity: 0;
+}
+
+/* nejsme nahoře → horní fade ukázat */
+.gallery-wrapper:not(.at-top)::before {
+    opacity: 1;
+}
+
+/* jsme dole → spodní fade schovat */
+.gallery-wrapper.at-bottom::after {
+    opacity: 0;
+}
+
+/* nejsme dole → spodní fade ukázat */
+.gallery-wrapper:not(.at-bottom)::after {
     opacity: 1;
 }
 
