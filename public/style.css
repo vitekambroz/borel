@@ -769,7 +769,7 @@ html.theme-dark .info-box{
 }
 
 .gallery-page h2{
-  margin:14px 0 18px;
+  margin:6px 0 12px;
   font-size:1.6rem;
   color:var(--brand-strong);
 }
@@ -863,7 +863,7 @@ html.theme-dark .info-box{
     width: 100%;
     max-width: 1500px;
     margin: 0 auto;
-    padding: 0 30px;
+    padding: 0 20px 10px;
     box-sizing: border-box;
 }
 
@@ -874,7 +874,7 @@ html.theme-dark .info-box{
     overflow-x: hidden;
 
     /* Výška = velikost okna - prostor pro header + mezery */
-    max-height: calc(100vh - 220px);
+    max-height: calc(100vh - 180px);
 
     /* Skryj default scrollbar */
     scrollbar-width: none; /* Firefox */
