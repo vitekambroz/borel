@@ -109,95 +109,91 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ===============================================
-// HEADER: Smooth shrink + iOS bounce everywhere
+// HEADER: Smooth shrink + iOS bounce – desktop i mobil
 // ===============================================
 (function () {
   const header = document.querySelector("header");
   const title  = document.querySelector(".site-title");
   const nav    = document.querySelector(".desktop-nav");
   const toggle = document.querySelector(".theme-toggle.desktop-toggle");
-  const menuBtn = document.querySelector(".menu-toggle"); // mobilní hamburger
+  const burger = document.querySelector(".menu-toggle");
 
   if (!header || !title) return;
 
   const maxHeader = 58;
   const minHeader = 48;
-
   const maxFont   = 2.2;
   const minFont   = 1.4;
 
-  function getScrollContainer() {
-    const gallery = document.querySelector(".gallery-wrapper");
-    const desktop = window.matchMedia("(min-width: 1101px)").matches;
-    if (!desktop) return window;    // MOBILE → window scroll
-    if (gallery) return gallery;    // DESKTOP + galerie → gallery scroll
-    return window;
-  }
-
-  let container = getScrollContainer();
   let lastY = 0;
   let bouncing = false;
 
-  // transform pro header
-  function setHeaderShift(px) {
-    header.style.setProperty("--header-shift", `${px}px`);
+  // Zjistí aktuální scroll pozici – na desktopu v galerii podle .gallery-wrapper,
+  // jinak podle window (mobil + ostatní stránky).
+  function getScrollY() {
+    const gallery = document.querySelector(".gallery-wrapper");
+    const desktop = window.matchMedia("(min-width: 1101px)").matches;
+
+    if (gallery && desktop) {
+      return gallery.scrollTop || 0;
+    }
+
+    return window.scrollY || document.documentElement.scrollTop || 0;
   }
 
   function handleScroll() {
-    const isDesktop = window.matchMedia("(min-width:1101px)").matches;
-    const y = container === window ? window.scrollY : container.scrollTop;
+    const y = getScrollY();
+    const t = Math.min(y / 120, 1);   // 0–1 podle toho, jak moc jsi odscrolovaný
 
-    let t = Math.min(y / 120, 1);
+    // Výška headeru
+    const newH = maxHeader - (maxHeader - minHeader) * t;
+    header.style.height = `${newH}px`;
 
-    // ---------------------------
-    // Header výška
-    // ---------------------------
-    header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
-
-    // ---------------------------
-    // Borel shrink
-    // ---------------------------
+    // Font-size „BOREL“
     const newFont = maxFont - (maxFont - minFont) * t;
     title.style.fontSize = `${newFont}rem`;
     title.style.opacity = `${1 - t * 0.08}`;
 
-    // ---------------------------
-    // ONLY DESKTOP → scale nav + theme-toggle
-    // ---------------------------
-    if (isDesktop) {
+    const scale = 1 - t * 0.20; // 0–20 % zmenšení
+
+    // Desktop → zmenšuj nav + theme toggle
+    if (window.matchMedia("(min-width: 1101px)").matches) {
       if (nav) {
-        nav.style.transform = `scale(${1 - t * 0.20})`;
+        nav.style.transform = `scale(${scale})`;
         nav.style.transformOrigin = "right center";
       }
-
       if (toggle) {
-        toggle.style.transform = `translateY(-50%) scale(${1 - t * 0.20})`;
+        toggle.style.transform = `translateY(-50%) scale(${scale})`;
       }
-    } 
-    
-    // ---------------------------
-    // MOBILE → nav & toggle se NEMĚNÍ
-    // ---------------------------
-    else {
-      if (nav) nav.style.transform = "";
-      if (toggle) toggle.style.transform = "translateY(-50%)";
+      // hamburger necháme v klidu
+      if (burger) {
+        burger.style.transform = ""; // jistota
+      }
+    } else {
+      // Mobil → zmenšuj hamburger, ne desktop nav / toggle
+      if (burger) {
+        burger.style.transform = `scale(${scale})`;
+        burger.style.transformOrigin = "left center";
+      }
+      if (nav)    nav.style.transform    = "";
+      if (toggle) toggle.style.transform = "";
     }
 
-    // Nikdy neskrývat header
-    header.style.opacity = "1";
-    setHeaderShift(0);
+    // nikdy neschovávej header
+    header.style.opacity   = "1";
+    header.style.transform = "translateY(0)";
 
-    // Bounce efekt
-    if (!bouncing && y === 0 && lastY > 6) {
+    // iOS bounce efekt na vršku
+    if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
-      setHeaderShift(12);
+      header.style.transform  = "translateY(12px)";
 
       setTimeout(() => {
-        setHeaderShift(0);
+        header.style.transform = "translateY(0)";
         setTimeout(() => {
           header.style.transition =
-            "height .18s linear, opacity .18s linear, transform .18s ease";
+            "height .18s linear, opacity .18s, transform .18s ease";
           bouncing = false;
         }, 250);
       }, 10);
@@ -206,18 +202,20 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     lastY = y;
   }
 
-  container.addEventListener("scroll", handleScroll);
+  // Scroll na window – mobil + ostatní stránky
+  window.addEventListener("scroll", handleScroll, { passive: true });
 
-  window.addEventListener("resize", () => {
-    const newC = getScrollContainer();
-    if (newC !== container) {
-      container.removeEventListener("scroll", handleScroll);
-      container = newC;
-      handleScroll();
-      container.addEventListener("scroll", handleScroll);
-    }
-  });
+  // Navíc posloucháme i galerii na desktopu,
+  // aby shrink fungoval, když scrolluje jenom galerie
+  const gallery = document.querySelector(".gallery-wrapper");
+  if (gallery) {
+    gallery.addEventListener("scroll", handleScroll, { passive: true });
+  }
 
+  // Reakce na otočení / resize
+  window.addEventListener("resize", handleScroll);
+
+  // Inicializace
   handleScroll();
 })();
 
