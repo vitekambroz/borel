@@ -111,10 +111,9 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ======================================================
-// HEADER SHRINK – DESKTOP + MOBIL (FINÁLNÍ VERZE)
+// HEADER SHRINK – DESKTOP + MOBIL (FINÁL)
 // ======================================================
 (function () {
-
   const header = document.querySelector("header");
   const title  = document.querySelector(".site-title");
   const nav    = document.querySelector(".desktop-nav");
@@ -131,24 +130,26 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   let lastY = 0;
   let bouncing = false;
 
-  // zjištění scrollu – funguje na desktopu i mobilu
+  // --- Zjištění scrollu (funguje všude) ---
   function getScrollY() {
-    const gallery = document.querySelector(".gallery-wrapper");
     const desktop = window.innerWidth > 1100;
 
-    // desktop fotogalerie – scrolluje se uvnitř galerie
-    if (desktop && gallery && gallery.scrollHeight > gallery.clientHeight) {
-      return gallery.scrollTop;
+    // DESKTOP FOTOGALERIE – scrolluje se uvnitř .gallery-wrapper
+    if (desktop) {
+      const gallery = document.querySelector(".gallery-wrapper");
+      if (gallery && gallery.scrollHeight > gallery.clientHeight) {
+        return gallery.scrollTop;
+      }
     }
 
-    // jinak klasika – okno (mobil i ostatní stránky)
+    // MOBIL + ostatní stránky – scroll okna / dokumentu
     const doc = document.scrollingElement || document.documentElement;
-    return window.scrollY || doc.scrollTop || 0;
+    return doc.scrollTop || window.pageYOffset || window.scrollY || 0;
   }
 
   function handleScroll() {
     const y = getScrollY();
-    const t = Math.min(y / 120, 1);      // 0–1
+    const t = Math.min(y / 120, 1); // 0–1
     const desktop = window.innerWidth > 1100;
     const scale   = 1 - t * 0.20;
 
@@ -160,7 +161,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     title.style.opacity  = `${1 - t * 0.08}`;
 
     if (desktop) {
-      // DESKTOP: zmenšit NAV + theme-toggle
+      // DESKTOP → zmenšuj NAV + theme-toggle
       if (nav) {
         nav.style.transform = `scale(${scale})`;
         nav.style.transformOrigin = "right center";
@@ -170,7 +171,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       }
       if (burger) burger.style.transform = "";
     } else {
-      // MOBIL: zmenšit HAMBURGER
+      // MOBIL → zmenšuj HAMBURGER
       if (burger) {
         burger.style.transform = `scale(${scale})`;
         burger.style.transformOrigin = "left center";
@@ -179,10 +180,11 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       if (toggle) toggle.style.transform = "";
     }
 
-    // malý "bounce" když sjedeš úplně nahoru
+    // malý „bounce“ efekt, když sjedeš úplně nahoru
     if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
-      header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1), height .18s linear";
+      header.style.transition =
+        "transform .25s cubic-bezier(.25,1.7,.45,1), height .18s linear";
       header.style.transform = "translateY(12px)";
 
       setTimeout(() => {
@@ -198,10 +200,10 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     lastY = y;
   }
 
-  // scroll okna (mobil + desktop)
+  // POSLUCHAČE SCROLLU
   window.addEventListener("scroll", handleScroll, { passive: true });
+  document.addEventListener("scroll", handleScroll, { passive: true });
 
-  // scroll uvnitř galerie (desktop fotogalerie)
   const gallery = document.querySelector(".gallery-wrapper");
   if (gallery) {
     gallery.addEventListener("scroll", handleScroll, { passive: true });
@@ -209,6 +211,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
   window.addEventListener("resize", handleScroll);
 
+  // inicializace
   handleScroll();
 })();
 
