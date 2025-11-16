@@ -795,6 +795,7 @@ html.theme-dark .info-box{
   margin:6px 0 12px;
   font-size:1.6rem;
   color:var(--brand-strong);
+  transition: opacity .25s ease, transform .25s ease;
 }
 
 .gallery-grid,#galleryGrid{

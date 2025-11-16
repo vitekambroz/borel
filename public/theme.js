@@ -112,15 +112,17 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 // ======================================================
 // HEADER SHRINK (desktop + mobil, FIXNUTÁ VERZE)
+// + SCHOVÁVÁNÍ H2 NAD GALERIÍ
 // ======================================================
 (function () {
 
-  const header = document.querySelector("header");
-  const title  = document.querySelector(".site-title");
-  const nav    = document.querySelector(".desktop-nav");
-  const toggle = document.querySelector(".theme-toggle.desktop-toggle");
-  const burger = document.querySelector(".menu-toggle");
+  const header  = document.querySelector("header");
+  const title   = document.querySelector(".site-title");
+  const nav     = document.querySelector(".desktop-nav");
+  const toggle  = document.querySelector(".theme-toggle.desktop-toggle");
+  const burger  = document.querySelector(".menu-toggle");
   const gallery = document.querySelector(".gallery-wrapper");
+  const galleryTitle = document.querySelector(".gallery-page h2");
 
   if (!header || !title) return;
 
@@ -136,12 +138,12 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   function getScrollY() {
     const desktop = window.innerWidth > 1100;
 
-    // DESKTOP FOTOGALERIE – přesně jako dřív
+    // DESKTOP FOTOGALERIE – scroll uvnitř galerie
     if (desktop && gallery) {
       return gallery.scrollTop;
     }
 
-    // MOBIL + ostatní stránky – NE window.scrollY, ale skutečný scroller
+    // MOBIL + ostatní stránky – skutečný scroller
     const scroller = document.scrollingElement || document.documentElement || document.body;
     return scroller.scrollTop || 0;
   }
@@ -150,18 +152,19 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     const y = getScrollY();
     const t = Math.min(y / 120, 1);
     const desktop = window.innerWidth > 1100;
-
     const scale = 1 - t * 0.20;
 
-    // HEIGHT
+    // ==========================================
+    // HEADER SHRINK
+    // ==========================================
+
     header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
 
-    // TITLE SHRINK
     title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
-    title.style.opacity = `${1 - t * 0.08}`;
+    title.style.opacity  = `${1 - t * 0.08}`;
 
-    // DESKTOP → zmenšuj nav a theme-toggle (STEJNÉ jako dřív)
     if (desktop) {
+      // DESKTOP → zmenšení NAV + toggle
       if (nav) {
         nav.style.transform = `scale(${scale})`;
         nav.style.transformOrigin = "right center";
@@ -172,7 +175,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       if (burger) burger.style.transform = "";
     }
 
-    // MOBILE → zmenšuj HAMBURGER + nech title menší
+    // MOBIL → jen necháme title a burger lehounce zmenšit
     else {
       if (burger) {
         burger.style.transform = `scale(${scale})`;
@@ -182,7 +185,26 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       if (toggle) toggle.style.transform = "";
     }
 
-    // bounce efekt
+
+    // ==========================================
+    // SCHOVÁVÁNÍ H2 KDYŽ SCROLLUJU (desktop + mobil)
+    // ==========================================
+    if (galleryTitle) {
+      if (y > 10) {
+        // fade + slide nahoru
+        galleryTitle.style.opacity   = (1 - t * 1.4).toString();
+        galleryTitle.style.transform = `translateY(${-20 * t}px)`;
+      } else {
+        // zpět viditelný
+        galleryTitle.style.opacity   = "1";
+        galleryTitle.style.transform = "translateY(0)";
+      }
+    }
+
+
+    // ==========================================
+    // bounce efekt nahoře
+    // ==========================================
     if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
