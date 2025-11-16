@@ -895,18 +895,6 @@ html, body {
   }
 }
 
-/* ============================================================
-   MOBILE SCROLL TRIGGER – NEVIDITELNÝ FIX PRO SHRINK
-============================================================ */
-@media (max-width: 1100px) {
-  .header-spacer {
-    height: 12px;
-    width: 100%;
-    opacity: 0;
-    pointer-events: none;
-  }
-}
-
 /* Kontejner celé stránky */
 .page {
   min-height: 100vh;
@@ -990,6 +978,18 @@ html, body {
 }
 .gallery-wrapper.overscroll-bottom::after {
     opacity:1;
+}
+
+/* ============================================================
+   MOBILE SCROLL TRIGGER – NEVIDITELNÝ FIX PRO SHRINK
+============================================================ */
+@media (max-width: 1100px) {
+  .header-spacer {
+    height: 12px;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 /* ============================================================

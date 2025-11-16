@@ -111,7 +111,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ======================================================
-// HEADER SHRINK – DESKTOP + MOBIL (JEDNODUCHÁ VERZE)
+// HEADER SHRINK – DESKTOP + MOBIL
 // ======================================================
 (function () {
 
@@ -131,16 +131,17 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   let lastY = 0;
   let bouncing = false;
 
-  // Vrací scroll – mobil i desktop
+  // VŽDY funkční scroll (mobil + desktop)
   function getScrollY() {
     const desktop = window.innerWidth > 1100;
-    let y = 0;
 
-    // 1) normální scroll stránky
-    const doc = document.scrollingElement || document.documentElement;
-    y = doc.scrollTop || window.pageYOffset || window.scrollY || 0;
+    // základ = scroll celé stránky
+    const doc  = document.scrollingElement || document.documentElement;
+    const body = document.body;
 
-    // 2) navíc desktop fotogalerie – vnitřní scroll galerie
+    let y = window.scrollY || doc.scrollTop || body.scrollTop || 0;
+
+    // navíc: na desktopu ve fotogalerii přičti vnitřní scroll galerie
     if (desktop) {
       const galleryEl = document.querySelector(".gallery-wrapper");
       if (galleryEl) y += galleryEl.scrollTop;
@@ -163,7 +164,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     title.style.opacity  = `${1 - t * 0.08}`;
 
     if (desktop) {
-      // DESKTOP → zmenšuj NAV + theme-toggle
+      // DESKTOP – zmenšit NAV + theme-toggle
       if (nav) {
         nav.style.transform = `scale(${scale})`;
         nav.style.transformOrigin = "right center";
@@ -173,7 +174,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       }
       if (burger) burger.style.transform = "";
     } else {
-      // MOBIL → zmenšuj jen hamburger
+      // MOBIL – zmenšit hamburger
       if (burger) {
         burger.style.transform = `scale(${scale})`;
         burger.style.transformOrigin = "left center";
@@ -201,17 +202,10 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     lastY = y;
   }
 
-  // posluchače
   window.addEventListener("scroll", handleScroll, { passive: true });
   document.addEventListener("scroll", handleScroll, { passive: true });
 
   window.addEventListener("resize", handleScroll);
-
-  // kdyby byla galerie s vlastním scrollem, taky ji napojíme
-  const galleryEl = document.querySelector(".gallery-wrapper");
-  if (galleryEl) {
-    galleryEl.addEventListener("scroll", handleScroll, { passive: true });
-  }
 
   // první přepočet
   handleScroll();
