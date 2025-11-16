@@ -895,6 +895,13 @@ html, body {
   }
 }
 
+@media (max-width:1100px){
+  html, body {
+    padding-top: 8px; /* ← TADY FIX */
+  }
+}
+
+
 /* Kontejner celé stránky */
 .page {
   min-height: 100vh;
