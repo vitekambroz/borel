@@ -111,7 +111,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
 
 
 // ======================================================
-// HEADER SHRINK – DESKTOP + MOBIL (FINÁL)
+// HEADER SHRINK – DESKTOP + MOBIL (JEDNODUCHÁ VERZE)
 // ======================================================
 (function () {
 
@@ -131,33 +131,34 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
   let lastY = 0;
   let bouncing = false;
 
-  // DETEKCE SCROLL ZDROJE – FUNGUJE NA DESKTOPU I MOBILU
+  // Vrací scroll – mobil i desktop
   function getScrollY() {
     const desktop = window.innerWidth > 1100;
+    let y = 0;
 
-    // DESKTOP FOTOGALERIE = scroll uvnitř galerie
+    // 1) normální scroll stránky
+    const doc = document.scrollingElement || document.documentElement;
+    y = doc.scrollTop || window.pageYOffset || window.scrollY || 0;
+
+    // 2) navíc desktop fotogalerie – vnitřní scroll galerie
     if (desktop) {
       const galleryEl = document.querySelector(".gallery-wrapper");
-      if (galleryEl && galleryEl.scrollHeight > galleryEl.clientHeight) {
-        return galleryEl.scrollTop;
-      }
+      if (galleryEl) y += galleryEl.scrollTop;
     }
 
-    // MOBIL + ostatní stránky = scroll dokumentu/okna
-    const doc = document.scrollingElement || document.documentElement;
-    return doc.scrollTop || window.pageYOffset || window.scrollY || 0;
+    return y;
   }
 
   function handleScroll() {
     const y = getScrollY();
     const t = Math.min(y / 120, 1);
     const desktop = window.innerWidth > 1100;
-    const scale = 1 - t * 0.20;
+    const scale   = 1 - t * 0.20;
 
-    // HEIGHT
+    // výška headeru
     header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
 
-    // TITLE SHRINK
+    // nápis BOREL
     title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
     title.style.opacity  = `${1 - t * 0.08}`;
 
@@ -172,7 +173,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       }
       if (burger) burger.style.transform = "";
     } else {
-      // MOBILE → zmenšuj HAMBURGER
+      // MOBIL → zmenšuj jen hamburger
       if (burger) {
         burger.style.transform = `scale(${scale})`;
         burger.style.transformOrigin = "left center";
@@ -181,7 +182,7 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       if (toggle) toggle.style.transform = "";
     }
 
-    // bounce efekt
+    // bounce efekt nahoře
     if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
       header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
@@ -200,17 +201,19 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     lastY = y;
   }
 
-  // LISTENERY
+  // posluchače
   window.addEventListener("scroll", handleScroll, { passive: true });
   document.addEventListener("scroll", handleScroll, { passive: true });
 
+  window.addEventListener("resize", handleScroll);
+
+  // kdyby byla galerie s vlastním scrollem, taky ji napojíme
   const galleryEl = document.querySelector(".gallery-wrapper");
   if (galleryEl) {
     galleryEl.addEventListener("scroll", handleScroll, { passive: true });
   }
 
-  window.addEventListener("resize", handleScroll);
-
+  // první přepočet
   handleScroll();
 })();
 
