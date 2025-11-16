@@ -884,10 +884,8 @@ html.theme-dark .info-box{
 ======================================== */
 /* Globální – povol scroll */
 html, body {
-    height: auto;
-    min-height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto; /* povolíme window scroll */
+    height: 100%;
+    overflow: hidden;
 }
 
 /* Kontejner celé stránky */

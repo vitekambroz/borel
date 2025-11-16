@@ -16,6 +16,19 @@ function setVh() {
 window.addEventListener("resize", setVh);
 setVh();
 
+(function () {
+    const path = window.location.pathname;
+
+    // Desktop galerie → okno NESMÍ scrollovat
+    if (path === "/fotogalerie") {
+        document.body.style.overflow = "hidden";
+        return;
+    }
+
+    // Ostatní stránky → povolit window scroll
+    document.body.style.overflow = "auto";
+})();
+
 
 // ===============================================
 // APLIKACE TÉMATU
