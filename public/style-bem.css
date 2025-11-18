@@ -1077,6 +1077,7 @@ html, body {
   transition:transform .25s,background .25s,box-shadow .25s;
 }
 
+/* kontejner pro šipky */
 .lightbox__arrow-icon{
   width:22px;
   height:22px;
@@ -1091,6 +1092,9 @@ html, body {
   width:22px;
   height:22px;
   display:block;
+  pointer-events:none;        /* aby kliky šly na button, ne na svg */
+  stroke:#ffffff;
+  fill:none;
 }
 
 /* levá šipka se otočí z jednoho arrow.svg */
