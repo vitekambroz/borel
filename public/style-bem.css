@@ -558,15 +558,10 @@ html.theme-light .theme-toggle__switch{
     0 0 18px rgba(255,0,200,.3);
 }
 
-/* viditelné sluníčko */
+/* viditelné sluníčko, měsíc schovaný */
 html.theme-light .theme-toggle__icon--sun{
   display:block;
-  fill:#ff008a;
-  stroke:#ff56c1;
-  stroke-width:1.6;
 }
-
-/* v light režimu nechceme zobrazovat moon */
 html.theme-light .theme-toggle__icon--moon{
   display:none;
 }
@@ -590,16 +585,11 @@ html.theme-dark .theme-toggle__switch{
     0 0 28px rgba(255,0,255,.4);
 }
 
-/* viditelný měsíc */
+/* viditelný měsíc, sun schovaný */
 html.theme-dark .theme-toggle__icon--moon{
   display:block;
-  fill:none;
-  stroke:#ffffff;
-  stroke-width:1.8;
   transform:translateY(-1px);
 }
-
-/* v dark režimu schovat sun */
 html.theme-dark .theme-toggle__icon--sun{
   display:none;
 }
@@ -612,7 +602,29 @@ html.theme-dark .theme-toggle.theme-toggle--mobile{
     0 0 45px rgba(120,0,180,.30);
 }
 
-/* mírný bounce při přepnutí */
+/* ============================================================
+   SVG OVERRIDES – přebijeme inline fill/stroke
+============================================================ */
+
+/* SUN – růžová kontura, žádná výplň */
+html.theme-light .theme-toggle__icon--sun,
+html.theme-light .theme-toggle__icon--sun *{
+  stroke:#ff56c1 !important;
+  fill:none !important;
+  stroke-width:1.8 !important;
+}
+
+/* MOON – čistě bílá kontura */
+html.theme-dark .theme-toggle__icon--moon,
+html.theme-dark .theme-toggle__icon--moon *{
+  stroke:#ffffff !important;
+  fill:none !important;
+  stroke-width:1.8 !important;
+}
+
+/* ============================================================
+   ANIMACE – mírný bounce při přepnutí
+============================================================ */
 @keyframes toggle-bounce{
   0%{transform:translateY(-50%) scale(1);}
   50%{transform:translateY(-50%) scale(1.2);}
