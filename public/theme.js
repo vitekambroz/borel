@@ -4,7 +4,7 @@
 const ICON_PATHS = {
   home: "/icons/home.svg",
   gallery: "/icons/gallery.svg",
-  game: "/icons/game.svg",
+  game: "/icons/game.svg"
 };
 
 const svgCache = {};
@@ -50,12 +50,13 @@ async function injectAllIcons() {
   }
 }
 
+
 /* ============================================================
    THEME TOGGLE ICONS (externí soubory + cache)
 ============================================================ */
 const THEME_ICON_PATHS = {
   sun: "/icons/sun.svg",
-  moon: "/icons/moon.svg",
+  moon: "/icons/moon.svg"
 };
 
 const themeSvgCache = {};
@@ -88,50 +89,59 @@ async function loadThemeIcon(name) {
 
 async function injectThemeToggleIcons() {
   const toggles = document.querySelectorAll(".theme-toggle");
+  if (!toggles.length) return;
 
-  const sun = await loadThemeIcon("sun");
-  const moon = await loadThemeIcon("moon");
+  const [sun, moon] = await Promise.all([
+    loadThemeIcon("sun"),
+    loadThemeIcon("moon")
+  ]);
 
-  for (const btn of toggles) {
-    if (btn.querySelector(".thumb")) continue;
+  toggles.forEach(btn => {
+    // už inicializováno
+    if (btn.querySelector(".theme-toggle__thumb")) return;
 
-    btn.innerHTML = `
-      <div class="switch">
-        <div class="thumb"></div>
-      </div>
-    `;
+    const switchEl = document.createElement("div");
+    switchEl.className = "theme-toggle__switch";
 
-    const thumb = btn.querySelector(".thumb");
+    const thumb = document.createElement("div");
+    thumb.className = "theme-toggle__thumb";
 
-    const sunClone = sun.cloneNode(true);
-    const moonClone = moon.cloneNode(true);
+    if (sun) {
+      const s = sun.cloneNode(true);
+      s.classList.add("theme-toggle__icon", "theme-toggle__icon--sun");
+      thumb.appendChild(s);
+    }
 
-    sunClone.classList.add("sun");
-    moonClone.classList.add("moon");
+    if (moon) {
+      const m = moon.cloneNode(true);
+      m.classList.add("theme-toggle__icon", "theme-toggle__icon--moon");
+      thumb.appendChild(m);
+    }
 
-    thumb.appendChild(sunClone);
-    thumb.appendChild(moonClone);
-  }
+    switchEl.appendChild(thumb);
+    btn.textContent = "";
+    btn.appendChild(switchEl);
+  });
 }
 
+
 /* ============================================================
-   SELECTORY (BEM verze)
+   SELECTORY
 ============================================================ */
-const menuBtn = document.querySelector(".header__menu-toggle");
+const menuBtn   = document.querySelector(".header__menu-toggle");
 const mobileNav = document.querySelector(".header__nav--mobile");
-const toggles = document.querySelectorAll(".theme-toggle");
+const toggles   = document.querySelectorAll(".theme-toggle");
+
 
 /* ============================================================
    iOS height fix
 ============================================================ */
 function setVh() {
-  document.documentElement.style.setProperty(
-    "--vh",
-    `${window.innerHeight * 0.01}px`
-  );
+  document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
 }
 window.addEventListener("resize", setVh);
 setVh();
+
 
 /* ============================================================
    LOCK BODY SCROLL (fotogalerie desktop)
@@ -146,8 +156,9 @@ setVh();
   }
 })();
 
+
 /* ============================================================
-   TEMA – LOGIKA
+   TÉMA – LOGIKA
 ============================================================ */
 function prefersDarkQuery() {
   return window.matchMedia("(prefers-color-scheme: dark)");
@@ -167,7 +178,7 @@ function applyTheme(mode, save = false) {
 }
 
 function initTheme() {
-  const savedMode = localStorage.getItem("theme-mode");
+  const savedMode  = localStorage.getItem("theme-mode");
   const savedTheme = localStorage.getItem("theme");
 
   if (savedMode === "manual" && savedTheme) {
@@ -178,20 +189,20 @@ function initTheme() {
   applyTheme(prefersDarkQuery().matches ? "dark" : "light");
 }
 
-prefersDarkQuery().addEventListener("change", (e) => {
+prefersDarkQuery().addEventListener("change", e => {
   if (localStorage.getItem("theme-mode") === "manual") return;
   applyTheme(e.matches ? "dark" : "light");
 });
 
-/* Kliknutí na theme toggly */
-toggles.forEach((toggle) => {
+/* Kliknutí na přepínač */
+toggles.forEach(toggle => {
   toggle.addEventListener("click", () => {
     const html = document.documentElement;
     const nowDark = !html.classList.contains("theme-dark");
 
     applyTheme(nowDark ? "dark" : "light", true);
 
-    const thumb = toggle.querySelector(".thumb");
+    const thumb = toggle.querySelector(".theme-toggle__thumb");
     if (thumb) {
       thumb.classList.remove("bounce");
       void thumb.offsetWidth;
@@ -199,6 +210,7 @@ toggles.forEach((toggle) => {
     }
   });
 });
+
 
 /* ============================================================
    MOBILE NAV
@@ -208,35 +220,34 @@ if (menuBtn && mobileNav) {
     mobileNav.classList.toggle("show");
     menuBtn.classList.toggle("active");
   });
-}
 
-if (mobileNav) {
-  mobileNav.querySelectorAll("a").forEach((link) => {
+  mobileNav.querySelectorAll(".header__nav-link").forEach(link => {
     link.addEventListener("click", () => {
       mobileNav.classList.remove("show");
-      if (menuBtn) menuBtn.classList.remove("active");
+      menuBtn.classList.remove("active");
     });
   });
 }
 
+
 /* ============================================================
-   HEADER SHRINK SYSTEM – BEM verze
+   HEADER SHRINK SYSTEM (BEM)
 ============================================================ */
 (function () {
-  const header = document.querySelector(".header") || document.querySelector("header");
-  const title = document.querySelector(".header__title");
-  const nav = document.querySelector(".header__nav--desktop");
-  const toggle = document.querySelector(".theme-toggle--desktop");
-  const burger = document.querySelector(".header__menu-toggle");
-  const gallery = document.querySelector(".page__gallery-wrapper");
-  const galleryTitle = document.querySelector(".gallery-page__title");
+  const header        = document.querySelector(".header");
+  const title         = document.querySelector(".header__title");
+  const desktopNav    = document.querySelector(".header__nav--desktop");
+  const desktopToggle = document.querySelector(".theme-toggle--desktop");
+  const burger        = document.querySelector(".header__menu-toggle");
+  const galleryScroll = document.querySelector(".page__gallery-wrapper");
+  const galleryTitle  = document.querySelector(".gallery__title");
 
   if (!header || !title) return;
 
   const maxHeader = 58;
   const minHeader = 48;
-  const maxFont = 2.2;
-  const minFont = 1.4;
+  const maxFont   = 2.2;
+  const minFont   = 1.4;
 
   let lastY = 0;
   let bouncing = false;
@@ -244,14 +255,11 @@ if (mobileNav) {
   function getScrollY() {
     const desktop = window.innerWidth > 1100;
 
-    if (desktop && gallery) {
-      return gallery.scrollTop;
+    if (desktop && galleryScroll) {
+      return galleryScroll.scrollTop;
     }
 
-    const scroller =
-      document.scrollingElement ||
-      document.documentElement ||
-      document.body;
+    const scroller = document.scrollingElement || document.documentElement || document.body;
     return scroller.scrollTop || 0;
   }
 
@@ -259,19 +267,19 @@ if (mobileNav) {
     const y = getScrollY();
     const t = Math.min(y / 120, 1);
     const desktop = window.innerWidth > 1100;
-    const scale = 1 - t * 0.2;
+    const scale = 1 - t * 0.20;
 
     header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
     title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
-    title.style.opacity = `${1 - t * 0.08}`;
+    title.style.opacity  = `${1 - t * 0.08}`;
 
     if (desktop) {
-      if (nav) {
-        nav.style.transform = `scale(${scale})`;
-        nav.style.transformOrigin = "right center";
+      if (desktopNav) {
+        desktopNav.style.transform = `scale(${scale})`;
+        desktopNav.style.transformOrigin = "right center";
       }
-      if (toggle) {
-        toggle.style.transform = `translateY(-50%) scale(${scale})`;
+      if (desktopToggle) {
+        desktopToggle.style.transform = `translateY(-50%) scale(${scale})`;
       }
       if (burger) burger.style.transform = "";
     } else {
@@ -279,24 +287,23 @@ if (mobileNav) {
         burger.style.transform = `scale(${scale})`;
         burger.style.transformOrigin = "left center";
       }
-      if (nav) nav.style.transform = "";
-      if (toggle) toggle.style.transform = "";
+      if (desktopNav)    desktopNav.style.transform = "";
+      if (desktopToggle) desktopToggle.style.transform = "";
     }
 
     if (galleryTitle) {
       if (y > 10) {
-        galleryTitle.style.opacity = (1 - t * 1.4).toString();
+        galleryTitle.style.opacity   = (1 - t * 1.4).toString();
         galleryTitle.style.transform = `translateY(${-20 * t}px)`;
       } else {
-        galleryTitle.style.opacity = "1";
+        galleryTitle.style.opacity   = "1";
         galleryTitle.style.transform = "translateY(0)";
       }
     }
 
     if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
-      header.style.transition =
-        "transform .25s cubic-bezier(.25,1.7,.45,1)";
+      header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
       header.style.transform = "translateY(12px)";
       setTimeout(() => {
         header.style.transform = "translateY(0)";
@@ -312,13 +319,12 @@ if (mobileNav) {
   }
 
   window.addEventListener("scroll", handleScroll, { passive: true });
-  if (gallery) {
-    gallery.addEventListener("scroll", handleScroll, { passive: true });
-  }
+  if (galleryScroll) galleryScroll.addEventListener("scroll", handleScroll, { passive: true });
   window.addEventListener("resize", handleScroll);
 
   handleScroll();
 })();
+
 
 /* ============================================================
    ACTIVE LINK
@@ -327,10 +333,12 @@ if (mobileNav) {
   let page = window.location.pathname.replace(/\/+$/, "").replace("/", "");
   if (page === "") page = "/";
 
-  document.querySelectorAll("a[data-page]").forEach((a) => {
-    if (a.dataset.page === page) a.classList.add("active");
-  });
+  document.querySelectorAll(".header__nav-link[data-page]")
+    .forEach(a => {
+      if (a.dataset.page === page) a.classList.add("active");
+    });
 })();
+
 
 /* ============================================================
    START – DOMContentLoaded

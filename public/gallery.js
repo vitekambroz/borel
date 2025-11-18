@@ -13,30 +13,32 @@ const galleryPhotos = [
 let currentImageIndex = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
-  const grid        = document.querySelector(".gallery-page__grid");
+  const grid        = document.querySelector(".gallery__grid");
   const lightbox    = document.querySelector(".lightbox");
-  const lightboxImg = document.querySelector(".lightbox__img");
+  const lightboxImg = document.querySelector(".lightbox__image");
   const counter     = document.querySelector(".lightbox__counter");
   const btnClose    = document.querySelector(".lightbox__close");
-  const btnPrev     = document.querySelector(".lightbox__prev");
-  const btnNext     = document.querySelector(".lightbox__next");
+  const btnPrev     = document.querySelector(".lightbox__nav-button--prev");
+  const btnNext     = document.querySelector(".lightbox__nav-button--next");
 
-  if (!grid || !lightbox || !lightboxImg || !counter) return;
+  if (!grid || !lightbox || !lightboxImg) return;
 
-  /* === FIX FADE-IN === */
+  /* === Fade-in fix pro lightbox === */
   lightboxImg.addEventListener("load", () => {
     lightboxImg.classList.add("loaded");
   });
 
-  /* === 1) Generate thumbnails === */
+  /* === 1) Vygenerování náhledů === */
   galleryPhotos.forEach((src, index) => {
     const wrapper = document.createElement("div");
-    wrapper.className = "gallery-page__item";
+    wrapper.className = "gallery__item";
 
     const img = document.createElement("img");
     img.src = `foto/thumbnails/${src}`;
     img.alt = `Fotka ${index + 1}`;
     img.dataset.index = index;
+    img.loading = "lazy";
+    img.classList.add("gallery__image");
 
     img.addEventListener("load", () => img.classList.add("loaded"));
 
@@ -44,28 +46,27 @@ document.addEventListener("DOMContentLoaded", () => {
     grid.appendChild(wrapper);
   });
 
-  /* === 2) Click thumbnail === */
+  /* === 2) Klik na thumbnail === */
   grid.addEventListener("click", (e) => {
     const img = e.target.closest("img[data-index]");
     if (!img) return;
+
     const index = parseInt(img.dataset.index, 10);
-    if (!isNaN(index)) openLightbox(index, true);
+    if (!Number.isNaN(index)) openLightbox(index, true);
   });
 
   /* === OPEN LIGHTBOX === */
   function openLightbox(index, pushHash = false) {
     currentImageIndex = index;
 
-    // reset fade-in stavu
     lightboxImg.classList.remove("loaded");
-
-    // load img
     lightboxImg.src = `foto/originals/${galleryPhotos[index]}`;
 
-    // update counter
-    counter.textContent = `${index + 1} / ${galleryPhotos.length}`;
+    if (counter) {
+      counter.textContent = `${index + 1} / ${galleryPhotos.length}`;
+    }
 
-    lightbox.classList.add("lightbox--visible");
+    lightbox.classList.add("lightbox--show");
     document.body.style.overflow = "hidden";
 
     if (pushHash) {
@@ -75,14 +76,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* === CLOSE === */
   function closeLightbox() {
-    lightbox.classList.remove("lightbox--visible");
+    lightbox.classList.remove("lightbox--show");
     document.body.style.overflow = "";
     history.replaceState(null, "", window.location.pathname);
   }
 
   /* === CHANGE SLIDE === */
   function changeSlide(dir) {
-    if (!lightbox.classList.contains("lightbox--visible")) return;
+    if (!lightbox.classList.contains("lightbox--show")) return;
 
     let next = currentImageIndex + dir;
     if (next < 0) next = galleryPhotos.length - 1;
@@ -92,7 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
     lightboxImg.classList.remove("loaded");
     lightboxImg.src = `foto/originals/${galleryPhotos[next]}`;
 
-    counter.textContent = `${next + 1} / ${galleryPhotos.length}`;
+    if (counter) {
+      counter.textContent = `${next + 1} / ${galleryPhotos.length}`;
+    }
+
     history.replaceState(null, "", `#${next + 1}`);
   }
 
@@ -103,23 +107,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* === Keyboard === */
   document.addEventListener("keydown", (e) => {
-    if (!lightbox.classList.contains("lightbox--visible")) return;
+    if (!lightbox.classList.contains("lightbox--show")) return;
     if (e.key === "Escape") closeLightbox();
     if (e.key === "ArrowLeft") changeSlide(-1);
     if (e.key === "ArrowRight") changeSlide(1);
   });
 
-  /* === Close by clicking background === */
+  /* === Close klikem na background === */
   lightbox.addEventListener("click", (e) => {
     if (e.target === lightbox) closeLightbox();
   });
 
-  /* === Swipe === */
+  /* === Swipe na mobilech === */
   let touchStartX = null;
   lightbox.addEventListener("touchstart", (e) => {
     if (e.touches.length === 1) touchStartX = e.touches[0].clientX;
   });
-
   lightbox.addEventListener("touchend", (e) => {
     if (touchStartX === null) return;
     const dx = e.changedTouches[0].clientX - touchStartX;
@@ -128,10 +131,10 @@ document.addEventListener("DOMContentLoaded", () => {
     dx < 0 ? changeSlide(1) : changeSlide(-1);
   });
 
-  /* === Open directly via #hash === */
+  /* === Open přímo přes #hash === */
   const hash = window.location.hash.replace("#", "");
   const num = parseInt(hash, 10);
-  if (!isNaN(num) && num >= 1 && num <= galleryPhotos.length) {
+  if (!Number.isNaN(num) && num >= 1 && num <= galleryPhotos.length) {
     openLightbox(num - 1, false);
   }
 });
