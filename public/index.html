@@ -1,285 +1,134 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- 🌈 Barvy motivu -->
-  <meta name="theme-color" content="#e5006a" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1a1020" media="(prefers-color-scheme: dark)">
+  <!-- Color schemes -->
   <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e5006a">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1a1020">
 
-  <!-- 📄 Meta informace -->
+  <!-- SEO -->
   <title>BOREL – Neonový webový projekt</title>
   <meta name="description" content="BOREL – moderní neonový webový projekt s fotogalerií, minihrou a interaktivním designem.">
-  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.borel.cz/">
 
-  <!-- 🌐 Open Graph -->
-  <meta property="og:url" content="https://www.borel.cz/">
-  <meta property="og:type" content="website">
+  <!-- Open Graph -->
   <meta property="og:site_name" content="BOREL">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.borel.cz/">
   <meta property="og:title" content="BOREL – Neonový webový projekt">
-  <meta property="og:description" content="BOREL – moderní neonový webový projekt s fotogalerií, minihrou a interaktivním designem.">
+  <meta property="og:description" content="BOREL – moderní neonový projekt.">
   <meta property="og:image" content="https://www.borel.cz/logo.png">
-  <meta property="og:locale" content="cs_CZ">
 
-  <!-- 🐦 Twitter Cards -->
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta property="twitter:domain" content="www.borel.cz">
-  <meta property="twitter:url" content="https://www.borel.cz/">
-  <meta name="twitter:title" content="BOREL – Neonový webový projekt">
-  <meta name="twitter:description" content="BOREL – moderní neonový webový projekt s fotogalerií, minihrou a interaktivním designem.">
   <meta name="twitter:image" content="https://www.borel.cz/logo.png">
 
-  <!-- 📘 Schema.org (BEZ inline scriptu) -->
-  <script src="/schema.js" defer></script>
+  <!-- Prefetch / prerender -->
+  <link rel="prefetch" href="/fotogalerie" as="document">
+  <link rel="prefetch" href="/minihra" as="document">
+  <link rel="prerender" href="/fotogalerie">
+  <link rel="prerender" href="/minihra">
 
-  <!-- 🖋️ Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <!-- Auto metadata -->
+  <script src="/auto-meta.js" defer></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- ⚡ Preload + hlavní styl -->
-  <link rel="preload" href="/style.css?v=500" as="style" crossorigin="use-credentials">
-  <link rel="stylesheet" href="/style.css?v=500" crossorigin="use-credentials">
+  <!-- CSS -->
+  <link rel="preload" href="/style-bem.css" as="style" fetchpriority="high">
+  <link rel="stylesheet" href="/style-bem.css">
 
-  <!-- 📱 PWA -->
+  <!-- PWA -->
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#e5006a">
 
-  <!-- 📲 iOS -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="BOREL">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-  <!-- 🪟 Windows -->
-  <meta name="msapplication-TileColor" content="#e5006a">
-  <meta name="msapplication-config" content="/browserconfig.xml">
-
-  <!-- 🖼️ Favicons -->
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
-<link rel="shortcut icon" href="/favicon.ico">
-
-<!-- Apple iOS Home Screen Icon -->
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-
-<!-- Android / PWA App Icons -->
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#e5006a">
-
-<!-- Maskable icon fallback for Android -->
-<link rel="icon" sizes="192x192" href="/icon-192.png">
-<link rel="icon" sizes="192x192" href="/icon-192.png">
-
-<!-- PWA iOS fix (forces standalone mode) -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
+  <!-- Icons -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" sizes="16x16" href="/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" sizes="192x192" href="/icon-192.png">
 </head>
 
-<body>
+<body class="page page--home">
 
-<header>
-
-  <!-- MOBILE HAMBURGER -->
-  <button class="menu-toggle" aria-label="Menu">
-    <span></span>
-    <span></span>
-    <span></span>
+<header class="header">
+  <button class="header__menu-toggle" aria-label="Otevřít menu">
+    <span></span><span></span><span></span>
   </button>
 
-  <!-- CENTER TITLE -->
-  <div class="title-wrap">
-    <h1 class="site-title">
+  <div class="header__title-wrap">
+    <h1 class="header__title">
       <span>B</span><span>O</span><span>R</span><span>E</span><span>L</span>
     </h1>
   </div>
 
-  <!-- RIGHT SIDE (DESKTOP NAV + DESKTOP TOGGLE) -->
-  <div class="right-side">
-
-    <nav class="desktop-nav">
-
-      <!-- Domů -->
-      <a href="/" data-page="/">
-        <span class="icon svg-wrap">
-          <svg viewBox="0 0 24 24" class="nav-icon">
-            <path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-6v-6H10v6H4a1 1 0 0 1-1-1V10.5z"
-              fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linejoin="round"></path>
-          </svg>
-        </span>
-        <span class="label">Domů</span>
+  <div class="header__right">
+    <nav class="header__nav header__nav--desktop" aria-label="Hlavní navigace">
+      <a href="/" class="header__nav-link active" data-page="/">
+        <span class="header__nav-icon" data-icon="home"></span>
+        <span class="header__nav-label">Domů</span>
       </a>
-
-      <!-- Fotogalerie -->
-      <a href="/fotogalerie" data-page="fotogalerie">
-        <span class="icon svg-wrap">
-          <svg viewBox="0 0 24 24" class="nav-icon">
-            <rect x="3" y="3" width="18" height="18" rx="4"
-              fill="none" stroke="currentColor" stroke-width="2"></rect>
-            <circle cx="9" cy="9" r="2" fill="currentColor"></circle>
-            <path d="M21 16l-5-4-3 3-4-3-6 6"
-              fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-        </span>
-        <span class="label">Fotogalerie</span>
+      <a href="/fotogalerie" class="header__nav-link" data-page="fotogalerie">
+        <span class="header__nav-icon" data-icon="gallery"></span>
+        <span class="header__nav-label">Fotogalerie</span>
       </a>
-
-      <!-- Minihra -->
-      <a href="/minihra" data-page="minihra">
-        <span class="icon svg-wrap">
-          <svg viewBox="0 0 24 24" class="nav-icon">
-            <rect x="2.5" y="9" width="19" height="10" rx="4"
-              fill="none" stroke="currentColor" stroke-width="2"></rect>
-            <circle cx="9" cy="14" r="1.5" fill="currentColor"></circle>
-            <circle cx="15" cy="12.5" r="1.3" fill="currentColor"></circle>
-            <circle cx="15" cy="15.5" r="1.3" fill="currentColor"></circle>
-          </svg>
-        </span>
-        <span class="label">Minihra</span>
+      <a href="/minihra" class="header__nav-link" data-page="minihra">
+        <span class="header__nav-icon" data-icon="game"></span>
+        <span class="header__nav-label">Minihra</span>
       </a>
-
     </nav>
 
-    <!-- DESKTOP THEME TOGGLE -->
-    <div class="theme-toggle desktop-toggle">
-      <div class="switch">
-        <div class="thumb">
-
-          <svg class="sun" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1"  x2="12" y2="4"></line>
-            <line x1="12" y1="20" x2="12" y2="23"></line>
-            <line x1="1"  y1="12" x2="4" y2="12"></line>
-            <line x1="20" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"></line>
-            <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"></line>
-            <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"></line>
-            <line x1="17.66" y1="6.34"  x2="19.78" y2="4.22"></line>
-          </svg>
-
-          <svg class="moon" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3
-                     7 7 0 0 0 21 12.79z"></path>
-          </svg>
-
-        </div>
-      </div>
-    </div>
-
+    <button class="theme-toggle theme-toggle--desktop" aria-label="Přepnout světlý/tmavý režim"></button>
   </div>
 
-
-  <!-- MOBILE NAVIGATION -->
-  <div class="mobile-nav">
-
-    <a href="/" data-page="/">
-      <span class="icon svg-wrap">
-        <svg viewBox="0 0 24 24" class="nav-icon">
-          <path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-6v-6H10v6H4a1 1 0 0 1-1-1V10.5z"
-            fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linejoin="round"></path>
-        </svg>
-      </span>
-      <span class="label">Domů</span>
+  <!-- Mobilní navigace -->
+  <nav class="header__nav header__nav--mobile" aria-label="Hlavní navigace">
+    <a href="/" class="header__nav-link" data-page="/">
+      <span class="header__nav-icon" data-icon="home"></span>
+      <span class="header__nav-label">Domů</span>
+    </a>
+    <a href="/fotogalerie" class="header__nav-link" data-page="fotogalerie">
+      <span class="header__nav-icon" data-icon="gallery"></span>
+      <span class="header__nav-label">Fotogalerie</span>
+    </a>
+    <a href="/minihra" class="header__nav-link" data-page="minihra">
+      <span class="header__nav-icon" data-icon="game"></span>
+      <span class="header__nav-label">Minihra</span>
     </a>
 
-    <a href="/fotogalerie" data-page="fotogalerie">
-      <span class="icon svg-wrap">
-        <svg viewBox="0 0 24 24" class="nav-icon">
-          <rect x="3" y="3" width="18" height="18" rx="4"
-            fill="none" stroke="currentColor" stroke-width="2"></rect>
-          <circle cx="9" cy="9" r="2" fill="currentColor"></circle>
-          <path d="M21 16l-5-4-3 3-4-3-6 6"
-            fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-      </span>
-      <span class="label">Fotogalerie</span>
-    </a>
+    <hr class="header__mobile-separator">
 
-    <a href="/minihra" data-page="minihra">
-      <span class="icon svg-wrap">
-        <svg viewBox="0 0 24 24" class="nav-icon">
-          <rect x="2.5" y="9" width="19" height="10" rx="4"
-            fill="none" stroke="currentColor" stroke-width="2"></rect>
-          <circle cx="9" cy="14" r="1.5" fill="currentColor"></circle>
-          <circle cx="15" cy="12.5" r="1.3" fill="currentColor"></circle>
-          <circle cx="15" cy="15.5" r="1.3" fill="currentColor"></circle>
-        </svg>
-      </span>
-      <span class="label">Minihra</span>
-    </a>
-
-    <hr class="mobile-separator">
-
-    <!-- MOBILE THEME TOGGLE -->
-    <div class="mobile-theme-row">
-      <span class="mobile-theme-label">Téma</span>
-
-      <div class="theme-toggle mobile-toggle">
-        <div class="switch">
-          <div class="thumb">
-          <svg class="sun" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1"  x2="12" y2="4"></line>
-            <line x1="12" y1="20" x2="12" y2="23"></line>
-            <line x1="1"  y1="12" x2="4" y2="12"></line>
-            <line x1="20" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"></line>
-            <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"></line>
-            <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"></line>
-            <line x1="17.66" y1="6.34"  x2="19.78" y2="4.22"></line>
-          </svg>
-
-            <svg class="moon" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3
-                       7 7 0 0 0 21 12.79z"></path>
-            </svg>
-
-          </div>
-        </div>
-      </div>
+    <div class="header__mobile-theme-row">
+      <span class="header__mobile-theme-label">Vzhled</span>
+      <button class="theme-toggle theme-toggle--mobile" aria-label="Přepnout režim vzhledu"></button>
     </div>
-
-  </div>
-
+  </nav>
 </header>
 
-  <main>
-    <section class="widget">
-      <h2>Nejnovější fotografie</h2>
-      <div class="widget-gallery" id="widgetGallery">
-        <!-- Fotky vloží JS -->
-      </div>
-    </section>
+<main class="page__content">
+  <section class="home-widget home-widget--latest-photos">
+    <h2 class="home-widget__title">Nejnovější fotografie</h2>
+    <div class="home-widget__gallery"></div>
+  </section>
 
-    <div class="info-box">
-      Vlastním vlastní politickou stranu.
-    </div>
-  </main>
+  <div class="info-banner">
+    Vlastním vlastní politickou stranu.
+  </div>
+</main>
 
-  <footer>
-    <span>&copy; Vítek Ambrož</span>
-  </footer>
+<footer class="footer">
+  <span class="footer__copy">&copy; Vítek Ambrož</span>
+</footer>
 
-  <!-- 📜 Skripty -->
-  <script src="/sw-register.js?v=3" defer></script>
-  <script src="/theme.js?v=6" defer></script>
-  <script src="/main.js?v=100" defer></script>
+<script src="/sw-register.js?v=3" defer></script>
+<script src="/theme.js?v=7" defer></script>
+<script src="/main.js?v=120" defer></script>
 
 </body>
 </html>

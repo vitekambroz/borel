@@ -1,40 +1,154 @@
-// ===============================================
-// SELECTORY
-// ===============================================
-const menuBtn = document.querySelector(".menu-toggle");
-const mobileNav = document.querySelector(".mobile-nav");
+/* ============================================================
+   SVG NAV ICON LOADER (externí soubory + cache)
+============================================================ */
+const ICON_PATHS = {
+  home: "/icons/home.svg",
+  gallery: "/icons/gallery.svg",
+  game: "/icons/game.svg",
+};
+
+const svgCache = {};
+
+async function loadSvgIcon(name) {
+  if (svgCache[name]) return svgCache[name].cloneNode(true);
+
+  const cached = sessionStorage.getItem("svg-" + name);
+  if (cached) {
+    const tmp = document.createElement("div");
+    tmp.innerHTML = cached.trim();
+    const svg = tmp.firstElementChild;
+    svgCache[name] = svg;
+    return svg.cloneNode(true);
+  }
+
+  const path = ICON_PATHS[name];
+  if (!path) return null;
+
+  const resp = await fetch(path);
+  if (!resp.ok) return null;
+
+  const text = await resp.text();
+  const wrap = document.createElement("div");
+  wrap.innerHTML = text.trim();
+  const svg = wrap.firstElementChild;
+
+  svgCache[name] = svg;
+  sessionStorage.setItem("svg-" + name, svg.outerHTML);
+
+  return svg.cloneNode(true);
+}
+
+async function injectAllIcons() {
+  const targets = document.querySelectorAll("[data-icon]");
+  for (const t of targets) {
+    const icon = t.dataset.icon;
+    const svg = await loadSvgIcon(icon);
+    if (!svg) continue;
+
+    t.innerHTML = "";
+    t.appendChild(svg);
+  }
+}
+
+/* ============================================================
+   THEME TOGGLE ICONS (externí soubory + cache)
+============================================================ */
+const THEME_ICON_PATHS = {
+  sun: "/icons/sun.svg",
+  moon: "/icons/moon.svg",
+};
+
+const themeSvgCache = {};
+
+async function loadThemeIcon(name) {
+  if (themeSvgCache[name]) return themeSvgCache[name].cloneNode(true);
+
+  const cached = sessionStorage.getItem("themeicon-" + name);
+  if (cached) {
+    const wrap = document.createElement("div");
+    wrap.innerHTML = cached.trim();
+    const svg = wrap.firstElementChild;
+    themeSvgCache[name] = svg;
+    return svg.cloneNode(true);
+  }
+
+  const resp = await fetch(THEME_ICON_PATHS[name]);
+  if (!resp.ok) return null;
+
+  const text = await resp.text();
+  const wrap = document.createElement("div");
+  wrap.innerHTML = text.trim();
+  const svg = wrap.firstElementChild;
+
+  themeSvgCache[name] = svg;
+  sessionStorage.setItem("themeicon-" + name, svg.outerHTML);
+
+  return svg.cloneNode(true);
+}
+
+async function injectThemeToggleIcons() {
+  const toggles = document.querySelectorAll(".theme-toggle");
+
+  const sun = await loadThemeIcon("sun");
+  const moon = await loadThemeIcon("moon");
+
+  for (const btn of toggles) {
+    if (btn.querySelector(".thumb")) continue;
+
+    btn.innerHTML = `
+      <div class="switch">
+        <div class="thumb"></div>
+      </div>
+    `;
+
+    const thumb = btn.querySelector(".thumb");
+
+    const sunClone = sun.cloneNode(true);
+    const moonClone = moon.cloneNode(true);
+
+    sunClone.classList.add("sun");
+    moonClone.classList.add("moon");
+
+    thumb.appendChild(sunClone);
+    thumb.appendChild(moonClone);
+  }
+}
+
+/* ============================================================
+   SELECTORY (BEM verze)
+============================================================ */
+const menuBtn = document.querySelector(".header__menu-toggle");
+const mobileNav = document.querySelector(".header__nav--mobile");
 const toggles = document.querySelectorAll(".theme-toggle");
 
-
-// ===============================================
-// iOS height fix
-// ===============================================
+/* ============================================================
+   iOS height fix
+============================================================ */
 function setVh() {
-  document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
+  document.documentElement.style.setProperty(
+    "--vh",
+    `${window.innerHeight * 0.01}px`
+  );
 }
 window.addEventListener("resize", setVh);
 setVh();
 
-
-// ===============================================
-// LOCK/UNLOCK BODY SCROLL (opravena galerie)
-// ===============================================
+/* ============================================================
+   LOCK BODY SCROLL (fotogalerie desktop)
+============================================================ */
 (function () {
   const path = window.location.pathname;
 
   if (path === "/fotogalerie" && window.innerWidth > 1100) {
-    // DESKTOP = scroll jen v galerii
     document.body.style.overflow = "hidden";
   } else {
-    // MOBILE = scroll vždy window
     document.body.style.overflow = "auto";
   }
 })();
 
-
-// ===============================================
-// THEMA
-// ===============================================
+/* ============================================================
+   TEMA – LOGIKA
+============================================================ */
 function prefersDarkQuery() {
   return window.matchMedia("(prefers-color-scheme: dark)");
 }
@@ -64,18 +178,13 @@ function initTheme() {
   applyTheme(prefersDarkQuery().matches ? "dark" : "light");
 }
 
-document.addEventListener("DOMContentLoaded", initTheme);
-
-prefersDarkQuery().addEventListener("change", e => {
+prefersDarkQuery().addEventListener("change", (e) => {
   if (localStorage.getItem("theme-mode") === "manual") return;
   applyTheme(e.matches ? "dark" : "light");
 });
 
-
-// ===============================================
-// TEMA – kliknutí
-// ===============================================
-toggles.forEach(toggle => {
+/* Kliknutí na theme toggly */
+toggles.forEach((toggle) => {
   toggle.addEventListener("click", () => {
     const html = document.documentElement;
     const nowDark = !html.classList.contains("theme-dark");
@@ -91,10 +200,9 @@ toggles.forEach(toggle => {
   });
 });
 
-
-// ===============================================
-// MOBILE NAV
-// ===============================================
+/* ============================================================
+   MOBILE NAV
+============================================================ */
 if (menuBtn && mobileNav) {
   menuBtn.addEventListener("click", () => {
     mobileNav.classList.toggle("show");
@@ -102,79 +210,33 @@ if (menuBtn && mobileNav) {
   });
 }
 
-document.querySelectorAll(".mobile-nav a").forEach(link => {
-  link.addEventListener("click", () => {
-    mobileNav.classList.remove("show");
-    menuBtn.classList.remove("active");
+if (mobileNav) {
+  mobileNav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileNav.classList.remove("show");
+      if (menuBtn) menuBtn.classList.remove("active");
+    });
   });
-});
+}
 
-
-// ======================================================
-// HEADER SHRINK (desktop + mobil, FIXNUTÁ VERZE)
-// + SCHOVÁVÁNÍ H2 NAD GALERIÍ
-// ======================================================
+/* ============================================================
+   HEADER SHRINK SYSTEM – BEM verze
+============================================================ */
 (function () {
-
-  const header  = document.querySelector("header");
-  const title   = document.querySelector(".site-title");
-  const nav     = document.querySelector(".desktop-nav");
-  const toggle  = document.querySelector(".theme-toggle.desktop-toggle");
-  const burger  = document.querySelector(".menu-toggle");
-  const gallery = document.querySelector(".gallery-wrapper");
-  const galleryTitle = document.querySelector(".gallery-page h2");
+  const header = document.querySelector(".header") || document.querySelector("header");
+  const title = document.querySelector(".header__title");
+  const nav = document.querySelector(".header__nav--desktop");
+  const toggle = document.querySelector(".theme-toggle--desktop");
+  const burger = document.querySelector(".header__menu-toggle");
+  const gallery = document.querySelector(".page__gallery-wrapper");
+  const galleryTitle = document.querySelector(".gallery-page__title");
 
   if (!header || !title) return;
 
   const maxHeader = 58;
   const minHeader = 48;
-  const maxFont   = 2.2;
-  const minFont   = 1.4;
-
-  let lastY = 0;
-  let bouncing = false;
-});
-
-  // DETEKCE SCROLL ZDROJE
-  function getScrollY() {
-    const desktop = window.innerWidth > 1100;
-
-    // DESKTOP FOTOGALERIE – scroll uvnitř galerie
-    if (desktop && gallery) {
-      return gallery.scrollTop;
-    }
-
-    // MOBIL + ostatní stránky – skutečný scroller
-    const scroller = document.scrollingElement || document.documentElement || document.body;
-    return scroller.scrollTop || 0;
-  }
-
-  function handleScroll() {
-    const y = getScrollY();
-    const t = Math.min(y / 120, 1);
-    const desktop = window.innerWidth > 1100;
-    const scale = 1 - t * 0.20;
-  }
-
-// ======================================================
-// HEADER SHRINK
-// ======================================================
-(function () {
-
-  const header  = document.querySelector("header");
-  const title   = document.querySelector(".site-title");
-  const nav     = document.querySelector(".desktop-nav");
-  const toggle  = document.querySelector(".theme-toggle.desktop-toggle");
-  const burger  = document.querySelector(".menu-toggle");
-  const gallery = document.querySelector(".gallery-wrapper");
-  const galleryTitle = document.querySelector(".gallery-page h2"); // ✔️ CHYBĚLO
-
-  if (!header || !title) return;
-
-  const maxHeader = 58;
-  const minHeader = 48;
-  const maxFont   = 2.2;
-  const minFont   = 1.4;
+  const maxFont = 2.2;
+  const minFont = 1.4;
 
   let lastY = 0;
   let bouncing = false;
@@ -186,7 +248,10 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
       return gallery.scrollTop;
     }
 
-    const scroller = document.scrollingElement || document.documentElement || document.body;
+    const scroller =
+      document.scrollingElement ||
+      document.documentElement ||
+      document.body;
     return scroller.scrollTop || 0;
   }
 
@@ -194,15 +259,12 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     const y = getScrollY();
     const t = Math.min(y / 120, 1);
     const desktop = window.innerWidth > 1100;
+    const scale = 1 - t * 0.2;
 
-    const scale = 1 - t * 0.20;
-
-    // HEADER SHRINK
     header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
     title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
-    title.style.opacity  = `${1 - t * 0.08}`;
+    title.style.opacity = `${1 - t * 0.08}`;
 
-    // DESKTOP SHRINK
     if (desktop) {
       if (nav) {
         nav.style.transform = `scale(${scale})`;
@@ -212,47 +274,29 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
         toggle.style.transform = `translateY(-50%) scale(${scale})`;
       }
       if (burger) burger.style.transform = "";
-    }
-
-    // MOBILE SHRINK
-    else {
+    } else {
       if (burger) {
         burger.style.transform = `scale(${scale})`;
         burger.style.transformOrigin = "left center";
       }
-      if (nav)    nav.style.transform = "";
+      if (nav) nav.style.transform = "";
       if (toggle) toggle.style.transform = "";
     }
 
-    // ==========================================
-    // OPRAVA: ODSTRANĚNÍ MEZERY POD HEADEREM
-    // ==========================================
-    const page = document.querySelector(".gallery-page");
-    if (page) {
-      if (y > 5) {
-        page.style.marginTop = "0px";      // scroll → žádná mezera
-      } else {
-        page.style.marginTop = "58px";     // nahoře → původní mezera
-      }
-    }
-
-    // ==========================================
-    // SCHOVÁVÁNÍ H2
-    // ==========================================
     if (galleryTitle) {
       if (y > 10) {
-        galleryTitle.style.opacity   = (1 - t * 1.4).toString();
+        galleryTitle.style.opacity = (1 - t * 1.4).toString();
         galleryTitle.style.transform = `translateY(${-20 * t}px)`;
       } else {
-        galleryTitle.style.opacity   = "1";
+        galleryTitle.style.opacity = "1";
         galleryTitle.style.transform = "translateY(0)";
       }
     }
 
-    // BOUNCE
     if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
-      header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
+      header.style.transition =
+        "transform .25s cubic-bezier(.25,1.7,.45,1)";
       header.style.transform = "translateY(12px)";
       setTimeout(() => {
         header.style.transform = "translateY(0)";
@@ -267,22 +311,32 @@ document.querySelectorAll(".mobile-nav a").forEach(link => {
     lastY = y;
   }
 
-  // LISTENERS
   window.addEventListener("scroll", handleScroll, { passive: true });
-  if (gallery) gallery.addEventListener("scroll", handleScroll, { passive: true });
+  if (gallery) {
+    gallery.addEventListener("scroll", handleScroll, { passive: true });
+  }
   window.addEventListener("resize", handleScroll);
 
   handleScroll();
 })();
 
-// ===============================================
-// ACTIVE LINK
-// ===============================================
+/* ============================================================
+   ACTIVE LINK
+============================================================ */
 (function setActiveLink() {
   let page = window.location.pathname.replace(/\/+$/, "").replace("/", "");
   if (page === "") page = "/";
 
-  document.querySelectorAll("a[data-page]").forEach(a => {
+  document.querySelectorAll("a[data-page]").forEach((a) => {
     if (a.dataset.page === page) a.classList.add("active");
   });
-  })();
+})();
+
+/* ============================================================
+   START – DOMContentLoaded
+============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  injectAllIcons();
+  injectThemeToggleIcons();
+  initTheme();
+});
