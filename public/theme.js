@@ -1,10 +1,12 @@
 /* ============================================================
-   SVG NAV ICON LOADER (externí soubory + cache)
+   SVG NAV / UI ICON LOADER (externí soubory + cache)
 ============================================================ */
 const ICON_PATHS = {
-  home: "/icons/home.svg",
-  gallery: "/icons/gallery.svg",
-  game: "/icons/game.svg"
+  home:   "/icons/home.svg",
+  gallery:"/icons/gallery.svg",
+  game:   "/icons/game.svg",
+  close:  "/icons/close.svg",
+  arrow:  "/icons/arrow.svg"   // základní šipka (doprava)
 };
 
 const svgCache = {};
@@ -40,22 +42,33 @@ async function loadSvgIcon(name) {
 
 async function injectAllIcons() {
   const targets = document.querySelectorAll("[data-icon]");
+
   for (const t of targets) {
-    const icon = t.dataset.icon;
-    const svg = await loadSvgIcon(icon);
+    const requested = t.dataset.icon;          // např. "home", "arrow-left", "arrow-right", "close"
+    if (!requested) continue;
+
+    // aliasy → všechno se kreslí z jednoho arrow.svg
+    let baseName = requested;
+    if (requested === "arrow-left" || requested === "arrow-right") {
+      baseName = "arrow";
+    }
+
+    const svg = await loadSvgIcon(baseName);
     if (!svg) continue;
+
+    // společné classy + info co to bylo za alias
+    svg.classList.add("icon", `icon--${requested}`);
 
     t.innerHTML = "";
     t.appendChild(svg);
   }
 }
 
-
 /* ============================================================
    THEME TOGGLE ICONS (externí soubory + cache)
 ============================================================ */
 const THEME_ICON_PATHS = {
-  sun: "/icons/sun.svg",
+  sun:  "/icons/sun.svg",
   moon: "/icons/moon.svg"
 };
 
@@ -97,7 +110,7 @@ async function injectThemeToggleIcons() {
   ]);
 
   toggles.forEach(btn => {
-    // už inicializováno
+    // Už inicializováno
     if (btn.querySelector(".theme-toggle__thumb")) return;
 
     const switchEl = document.createElement("div");

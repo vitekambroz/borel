@@ -496,10 +496,11 @@ html.theme-light .header__nav-link.active{
   align-items:center;
   border-radius:999px;
   cursor:pointer;
-  background:var(--switch-bg);
-  /* základní stín, když není žádný theme specifický */
+  background:transparent;
   box-shadow:0 0 16px rgba(0,0,0,.35);
   transition:background .35s, box-shadow .35s, transform .35s;
+  border:none;
+  padding:0;
 }
 
 .theme-toggle__switch{
@@ -510,7 +511,7 @@ html.theme-light .header__nav-link.active{
   position:relative;
   display:flex;
   align-items:center;
-  background:var(--switch-bg) !important;
+  background:var(--switch-bg);
 }
 
 .theme-toggle__thumb{
@@ -528,17 +529,23 @@ html.theme-light .header__nav-link.active{
   transition:transform .3s,background .3s,box-shadow .3s;
 }
 
+/* základní stav ikon */
 .theme-toggle__icon{
   width:20px;
   height:20px;
+  display:none;
+  transition:transform .25s, opacity .25s;
 }
 
-.theme-toggle__thumb .theme-toggle__icon--sun,
-.theme-toggle__thumb .theme-toggle__icon--moon{display:none;}
-
-/* thumb position */
-html.theme-light .theme-toggle__thumb{left:3px;right:auto;}
-html.theme-dark  .theme-toggle__thumb{right:3px;left:auto;}
+/* thumb pozice – víc ke krajům */
+html.theme-light .theme-toggle__thumb{
+  left:2px;
+  right:auto;
+}
+html.theme-dark .theme-toggle__thumb{
+  right:2px;
+  left:auto;
+}
 
 /* ============================================================
    LIGHT MODE
@@ -551,22 +558,25 @@ html.theme-light .theme-toggle__switch{
     0 0 18px rgba(255,0,200,.3);
 }
 
-/* neon aura za CELÝM přepínačem v light režimu */
+/* viditelné sluníčko */
+html.theme-light .theme-toggle__icon--sun{
+  display:block;
+  fill:#ff008a;
+  stroke:#ff56c1;
+  stroke-width:1.6;
+}
+
+/* v light režimu nechceme zobrazovat moon */
+html.theme-light .theme-toggle__icon--moon{
+  display:none;
+}
+
+/* neon aura za přepínačem */
 html.theme-light .theme-toggle.theme-toggle--desktop,
 html.theme-light .theme-toggle.theme-toggle--mobile{
   box-shadow:
     0 0 20px rgba(255,0,140,.30),
     0 0 40px rgba(255,160,220,.25);
-}
-
-html.theme-light .theme-toggle__thumb .theme-toggle__icon--sun{
-  display:block;
-  stroke-width:1.4 !important;
-}
-
-html.theme-light .theme-toggle__icon{
-  fill:#000 !important;
-  stroke:#000 !important;
 }
 
 /* ============================================================
@@ -580,26 +590,26 @@ html.theme-dark .theme-toggle__switch{
     0 0 28px rgba(255,0,255,.4);
 }
 
-/* neon aura za CELÝM přepínačem v dark režimu
-   – přesně tvůj styl: 0 0 30px + 0 0 60px */
+/* viditelný měsíc */
+html.theme-dark .theme-toggle__icon--moon{
+  display:block;
+  fill:none;
+  stroke:#ffffff;
+  stroke-width:1.8;
+  transform:translateY(-1px);
+}
+
+/* v dark režimu schovat sun */
+html.theme-dark .theme-toggle__icon--sun{
+  display:none;
+}
+
+/* aura přepínače v dark režimu */
 html.theme-dark .theme-toggle.theme-toggle--desktop,
 html.theme-dark .theme-toggle.theme-toggle--mobile{
   box-shadow:
     0 0 24px rgba(229,0,106,.35),
     0 0 45px rgba(120,0,180,.30);
-}
-
-html.theme-dark .theme-toggle__thumb .theme-toggle__icon--moon{
-  display:block;
-  stroke-width:1.4 !important;
-  transform:translateY(-1px);
-  opacity:1 !important;
-}
-
-html.theme-dark .theme-toggle__icon{
-  fill:#fff !important;
-  stroke:#fff !important;
-  opacity:1 !important;
 }
 
 /* mírný bounce při přepnutí */
@@ -609,7 +619,9 @@ html.theme-dark .theme-toggle__icon{
   100%{transform:translateY(-50%) scale(1);}
 }
 
-.bounce{animation:toggle-bounce .3s ease;}
+.bounce{
+  animation:toggle-bounce .3s ease;
+}
 
 /* ============================================================
    DESKTOP VARIANTA
@@ -622,12 +634,6 @@ html.theme-dark .theme-toggle__icon{
   width:62px;
   height:34px;
   padding:4px;
-  transition: transform .18s ease;
-}
-
-.theme-toggle.theme-toggle--desktop .theme-toggle__thumb{
-  width:26px;
-  height:26px;
 }
 
 /* ============================================================
@@ -654,33 +660,6 @@ html.theme-dark .theme-toggle__icon{
   padding:3px;
 }
 
-.theme-toggle.theme-toggle--mobile .theme-toggle__switch{padding:3px;}
-
-.theme-toggle.theme-toggle--mobile .theme-toggle__thumb{
-  width:24px;
-  height:24px;
-}
-
-/* oddělovací čára dole v menu */
-.header__mobile-separator{
-  width:100%;
-  height:1px;
-  margin:10px 0 6px;
-  border:none;
-  background:rgba(255,255,255,.12);
-}
-
-html.theme-light .header__mobile-separator{
-  background:rgba(255,0,140,.28);
-  box-shadow:0 0 6px rgba(255,0,140,.18);
-}
-
-html.theme-dark .header__mobile-separator{
-  background:rgba(255,100,255,.22);
-  box-shadow:0 0 6px rgba(255,100,255,.18);
-}
-
-/* responsivita */
 @media(max-width:1100px){
   .theme-toggle.theme-toggle--desktop{display:none;}
 }
@@ -993,7 +972,7 @@ html, body {
 }
 
 /* ============================================================
-   LIGHTBOX
+   LIGHTBOX (s SVG ikonami)
 ============================================================ */
 .lightbox{
   position:fixed;
@@ -1008,21 +987,27 @@ html, body {
   z-index:9999;
 }
 
-.lightbox.lightbox--show{display:flex;}
+.lightbox.lightbox--show{
+  display:flex;
+}
 
 .lightbox__image{
   max-width:min(92vw,1200px);
   max-height:80vh;
   border-radius:18px;
   object-fit:contain;
-  box-shadow:0 0 30px rgba(229,0,106,.9),
-             0 0 60px rgba(120,0,180,.8);
+  box-shadow:
+    0 0 30px rgba(229,0,106,.9),
+    0 0 60px rgba(120,0,180,.8);
   opacity:0;
   transition:opacity .35s,transform .35s;
 }
 
-.lightbox__image.loaded{opacity:1;}
+.lightbox__image.loaded{
+  opacity:1;
+}
 
+/* animace při přechodu snímků (pokud používáš) */
 .is-exiting-left{opacity:0;transform:translateX(-40px);}
 .is-exiting-right{opacity:0;transform:translateX(40px);}
 .is-entering-left{animation:slideInLeft .35s forwards;}
@@ -1038,12 +1023,14 @@ html, body {
   to  {opacity:1;transform:translateX(0);}
 }
 
+/* zavírací tlačítko – pro SVG */
 .lightbox__close{
   position:fixed;
   top:22px;
   right:22px;
   width:44px;
   height:44px;
+  padding:0;
   border-radius:999px;
   border:none;
   background:rgba(0,0,0,.55);
@@ -1054,15 +1041,15 @@ html, body {
   transition:transform .25s,background .25s,box-shadow .25s;
 }
 
-.lightbox__close-icon{width:22px;height:22px;}
-
-.lightbox__close:hover{
-  background:var(--brand-strong);
-  transform:scale(1.1);
-  box-shadow:0 0 14px rgba(255,0,200,.45),
-             0 0 30px rgba(255,100,255,.3);
+.lightbox__close-icon{
+  width:22px;
+  height:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
+/* wrapper pro šipky */
 .lightbox__nav{
   position:absolute;
   inset:0;
@@ -1073,10 +1060,12 @@ html, body {
   pointer-events:none;
 }
 
+/* tlačítka šipek – SVG verze */
 .lightbox__nav-button{
   pointer-events:auto;
   width:56px;
   height:56px;
+  padding:0;
   border-radius:999px;
   border:none;
   background:rgba(0,0,0,.55);
@@ -1084,21 +1073,42 @@ html, body {
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:2.2rem;
-  color:#fff;
   box-shadow:0 0 18px rgba(0,0,0,.7);
   transition:transform .25s,background .25s,box-shadow .25s;
 }
 
+.lightbox__arrow-icon{
+  width:22px;
+  height:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* samotné SVG z injectAllIcons */
+.lightbox__close-icon svg,
+.lightbox__arrow-icon svg{
+  width:22px;
+  height:22px;
+  display:block;
+}
+
+/* levá šipka se otočí z jednoho arrow.svg */
+.icon--arrow-left{
+  transform:scaleX(-1);
+}
+
+/* hover efekty */
+.lightbox__close:hover,
 .lightbox__nav-button:hover{
   background:var(--brand-strong);
   transform:scale(1.1);
-  box-shadow:0 0 14px rgba(255,0,200,.45),
-             0 0 30px rgba(255,100,255,.3);
+  box-shadow:
+    0 0 14px rgba(255,0,200,.45),
+    0 0 30px rgba(255,100,255,.3);
 }
 
-.lightbox__arrow-icon{width:22px;height:22px;}
-
+/* čítač snímků */
 .lightbox__counter{
   position:absolute;
   bottom:22px;
@@ -1111,10 +1121,11 @@ html, body {
   font-size:.9rem;
 }
 
+/* na mobilu schovat šipky i křížek */
 @media(max-width:820px){
   .lightbox__nav,
   .lightbox__nav-button,
-  .lightbox__close {
+  .lightbox__close{
     display:none !important;
     pointer-events:none !important;
     visibility:hidden !important;

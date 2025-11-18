@@ -126,22 +126,31 @@
 </main>
 
 <div class="lightbox" role="dialog" aria-modal="true" aria-label="Zvětšená fotografie">
-  <button class="lightbox__close" aria-label="Zavřít obrázek">
-    ✕
+  <button class="lightbox__close" type="button" aria-label="Zavřít obrázek">
+    <span class="lightbox__close-icon" data-icon="close"></span>
   </button>
 
   <img
     class="lightbox__image"
     alt="Zvětšená fotografie"
     loading="lazy"
-  >
+  />
 
   <div class="lightbox__nav">
-    <button class="lightbox__nav-button lightbox__nav-button--prev" aria-label="Předchozí obrázek">
-      ❮
+    <button
+      class="lightbox__nav-button lightbox__nav-button--prev"
+      type="button"
+      aria-label="Předchozí obrázek"
+    >
+      <span class="lightbox__arrow-icon" data-icon="arrow-left"></span>
     </button>
-    <button class="lightbox__nav-button lightbox__nav-button--next" aria-label="Další obrázek">
-      ❯
+
+    <button
+      class="lightbox__nav-button lightbox__nav-button--next"
+      type="button"
+      aria-label="Další obrázek"
+    >
+      <span class="lightbox__arrow-icon" data-icon="arrow-right"></span>
     </button>
   </div>
 
