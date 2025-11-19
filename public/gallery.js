@@ -10,7 +10,7 @@ const galleryPhotos = [
   "foto41.jpg","foto42.jpg","foto43.jpg","foto44.jpg","foto45.jpg",
   "foto46.jpg","foto47.jpg","foto48.jpg","foto49.jpg","foto50.jpg",
   "foto51.jpg","foto52.jpg","foto53.jpg","foto54.jpg","foto55.jpg",
-];
+].reverse();
 
 let currentImageIndex = 0;
 
