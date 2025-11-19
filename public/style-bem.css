@@ -780,6 +780,111 @@ html.theme-dark .info-banner{
 
 
 /* ============================================================
+   ABOUT PAGE
+============================================================ */
+
+.about {
+  max-width: 960px;
+  margin: 28px auto 40px;
+  padding: 22px 20px 26px;
+  border-radius: 22px;
+  background-color: var(--glass-light);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(14px);
+}
+
+html.theme-dark .about {
+  background: var(--glass-dark);
+  border: 1px solid rgba(255,170,255,.5);
+  box-shadow:
+    0 0 26px rgba(255,0,255,.45),
+    0 0 50px rgba(120,0,170,.8);
+}
+
+.about__title {
+  margin: 0 0 10px;
+  font-size: 1.8rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--brand-strong);
+}
+
+.about__lead {
+  margin: 0 0 18px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--brand-strong);
+  text-shadow:
+    0 0 10px rgba(255,120,200,.65),
+    0 0 18px rgba(255,0,140,.55);
+}
+
+.about__content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* jednotlivé řádky typu "Vlastním vlastní politickou stranu." */
+.about__content p {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 500;
+  position: relative;
+}
+
+/* světlej režim – jemná neon pilulka */
+html.theme-light .about__content p {
+  color: var(--nav-light);
+  background: linear-gradient(
+    135deg,
+    rgba(255,230,248,.96),
+    rgba(255,245,255,.94)
+  );
+  box-shadow:
+    0 0 14px rgba(255,182,212,.85),
+    0 0 28px rgba(255,150,255,.55);
+}
+
+/* dark mode – víc cyberpunk */
+html.theme-dark .about__content p {
+  color: #ffe7ff;
+  background: radial-gradient(
+    circle at top,
+    rgba(80,0,110,.96),
+    rgba(10,0,18,.97)
+  );
+  border: 1px solid rgba(255,170,255,.55);
+  box-shadow:
+    0 0 20px rgba(255,0,255,.55),
+    0 0 40px rgba(120,0,170,.8);
+}
+
+/* mobil – trochu menší mezery, aby to nebyly obří kostky */
+@media (max-width: 640px) {
+  .about {
+    margin: 22px auto 32px;
+    padding: 18px 16px 22px;
+  }
+
+  .about__title {
+    font-size: 1.6rem;
+  }
+
+  .about__lead {
+    font-size: 1.2rem;
+  }
+
+  .about__content p {
+    font-size: .98rem;
+    padding: 9px 12px;
+  }
+}
+
+
+/* ============================================================
    GALLERY GRID & IMAGES
 ============================================================ */
 .gallery{
