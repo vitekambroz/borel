@@ -89,10 +89,45 @@ let level = 1;
 let distanceSinceLastPipe = 0;
 
 // =====================================================
-//  Persistentní stav
+//  Persistentní stav zvuku / vibrací (napojeno na theme.js)
 // =====================================================
-let isMuted = localStorage.getItem('mutedState') === '1';
-let hapticsEnabled = localStorage.getItem('hapticsEnabled') !== '0';
+let isMuted;
+let hapticsEnabled;
+
+function initSoundAndHapticsState() {
+  // Preferuj data-state z tlačítek (nastavuje theme.js → initGameToggles)
+  const btnSoundState = muteBtn?.dataset.state;   // "on" / "off"
+  const btnVibState   = vibBtn?.dataset.state;    // "on" / "off"
+
+  if (btnSoundState === 'on' || btnSoundState === 'off') {
+    isMuted = btnSoundState === 'off';
+  } else {
+    const storedSound = localStorage.getItem('game-sound'); // "on" / "off"
+    isMuted = storedSound === 'off';
+  }
+
+  if (btnVibState === 'on' || btnVibState === 'off') {
+    hapticsEnabled = btnVibState === 'on';
+  } else {
+    const storedVib = localStorage.getItem('game-vibrate'); // "on" / "off"
+    hapticsEnabled = storedVib !== 'off'; // default: zapnuto
+  }
+}
+
+// inicializuj hned na začátku
+initSoundAndHapticsState();
+
+// posluchače na custom eventy z theme.js
+document.addEventListener('game-sound-toggle', (e) => {
+  if (!e.detail) return;
+  // detail.enabled = true → zvuk zapnutý → isMuted = false
+  isMuted = !e.detail.enabled;
+});
+
+document.addEventListener('game-vibrate-toggle', (e) => {
+  if (!e.detail) return;
+  hapticsEnabled = !!e.detail.enabled;
+});
 
 // =====================================================
 //  Vibrace helper
@@ -102,41 +137,6 @@ function doHaptic(ms) {
   if (!('vibrate' in navigator)) return;
   if (!(window.matchMedia && matchMedia('(pointer: coarse)').matches)) return;
   navigator.vibrate(ms);
-}
-
-// =====================================================
-//  Mute toggle – přepínáme obsah tlačítka
-// =====================================================
-function applyMuteState() {
-  if (!muteBtn) return;
-  muteBtn.textContent = isMuted ? '🔇' : '🔊';
-}
-applyMuteState();
-
-if (muteBtn) {
-  muteBtn.addEventListener('click', () => {
-    isMuted = !isMuted;
-    localStorage.setItem('mutedState', isMuted ? '1' : '0');
-    applyMuteState();
-  });
-}
-
-// =====================================================
-//  Vibrace toggle – přepínáme obsah tlačítka
-// =====================================================
-function applyVibrationState() {
-  if (!vibBtn) return;
-  vibBtn.textContent = hapticsEnabled ? '📳' : '🚫';
-}
-applyVibrationState();
-
-if (vibBtn) {
-  vibBtn.addEventListener('click', () => {
-    hapticsEnabled = !hapticsEnabled;
-    localStorage.setItem('hapticsEnabled', hapticsEnabled ? '1' : '0');
-    applyVibrationState();
-    if (hapticsEnabled) doHaptic(35);
-  });
 }
 
 // =====================================================
@@ -491,3 +491,4 @@ birdImg.onload = () => {
   reset();
   requestAnimationFrame(loop);
 };
+```0
