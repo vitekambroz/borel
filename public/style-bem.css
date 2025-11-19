@@ -388,6 +388,27 @@ html.theme-light .header__nav-link.active{
   color:var(--brand-strong);
 }
 
+/* tenká oddělovací čára mezi nav a "Vzhled" */
+.header__mobile-separator{
+  width:100%;
+  height:1px;
+  margin:10px 0 6px;
+  border:none;
+  background:rgba(255,255,255,.16);
+}
+
+/* jemně růžová ve světlém režimu */
+html.theme-light .header__mobile-separator{
+  background:rgba(255,0,140,.25);
+  box-shadow:0 0 6px rgba(255,0,140,.18);
+}
+
+/* fialovější v dark režimu */
+html.theme-dark .header__mobile-separator{
+  background:rgba(255,100,255,.22);
+  box-shadow:0 0 6px rgba(255,100,255,.18);
+}
+
 
 /* ============================================================
    MOBILE MENU TOGGLE
@@ -453,7 +474,8 @@ html.theme-light .header__nav-link.active{
 
   .header__title:hover{
     transform:scale(1.03);
-    text-shadow:0 0 12px rgba(255,170,220,.7),0 0 26px rgba(255,150,255,.5);
+    text-shadow:0 0 12px rgba(255,170,220,.7),
+                 0 0 26px rgba(255,150,255,.5);
   }
 
   .header__nav{
