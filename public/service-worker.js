@@ -7,12 +7,12 @@ const urlsToCache = [
   "/o-mne",
 
   // CSS + JS (BEM verze s verzováním)
-  "/style-bem.css?v=1500",
-  "/theme-bem.js?v=17",
-  "/main-bem.js?v=1120",
-  "/gallery-bem.js?v=1500",
-  "/minihra-bem.js?v=1400",
-  "/sw-register.js?v=13",
+  "/style-bem.css?v=1",
+  "/theme-bem.js?v=1",
+  "/main-bem.js?v=1",
+  "/gallery-bem.js?v=1",
+  "/minihra-bem.js?v=1",
+  "/sw-register.js?v=1",
 
   // Ikony pro nav + theme toggle
   "/icons/home.svg",
