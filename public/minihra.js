@@ -138,15 +138,13 @@
   });
 
   // =====================================================
-  //  Vibrace helper
+  //  Vibrace helper – zpátky „původní“ verze
   // =====================================================
-  function doHaptic(pattern) {
+  function doHaptic(msOrPattern) {
     if (!hapticsEnabled) return;
-
-    const nav = navigator;
-    if (!nav || typeof nav.vibrate !== 'function') return;
-
-    nav.vibrate(pattern);
+    if (!('vibrate' in navigator)) return;
+    if (!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches)) return;
+    navigator.vibrate(msOrPattern);
   }
 
   // =====================================================
