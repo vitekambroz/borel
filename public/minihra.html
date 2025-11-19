@@ -119,21 +119,25 @@
       <span class="game__difficulty-value">Obtížnost: 1</span>
     </div>
 
-    <button
-      class="game__button game__button--mute"
-      aria-label="Přepnout zvuk"
-      type="button"
-    >
-      🔊
-    </button>
+<button
+  id="mute"
+  class="game__button game__button--mute"
+  aria-label="Přepnout zvuk"
+  type="button"
+>
+  <span class="game__icon game__icon--sound-on" data-icon="sound-on"></span>
+  <span class="game__icon game__icon--sound-off" data-icon="sound-off"></span>
+</button>
 
-    <button
-      class="game__button game__button--vibrate game__mobile-only"
-      aria-label="Přepnout vibrace"
-      type="button"
-    >
-      📳
-    </button>
+<button
+  id="vibrate"
+  class="game__button game__button--vibrate game__mobile-only"
+  aria-label="Přepnout vibrace"
+  type="button"
+>
+  <span class="game__icon game__icon--vib-on" data-icon="vib-on"></span>
+  <span class="game__icon game__icon--vib-off" data-icon="vib-off"></span>
+</button>
 
     <div class="game__center-message">
       Stiskni mezerník nebo klikni pro start

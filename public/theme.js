@@ -2,11 +2,17 @@
    SVG NAV / UI ICON LOADER (externí soubory + cache)
 ============================================================ */
 const ICON_PATHS = {
-  home:   "/icons/home.svg",
-  gallery:"/icons/gallery.svg",
-  game:   "/icons/game.svg",
-  close:  "/icons/close.svg",
-  arrow:  "/icons/arrow.svg"   // základní šipka (doprava)
+  home:      "/icons/home.svg",
+  gallery:   "/icons/gallery.svg",
+  game:      "/icons/game.svg",
+  close:     "/icons/close.svg",
+  arrow:     "/icons/arrow.svg",      // základní šipka (doprava)
+
+  // nové ikonky pro hru:
+  "sound-on": "/icons/sound-on.svg",
+  "sound-off": "/icons/sound-off.svg",
+  "vib-on": "/icons/vib-on.svg",
+  "vib-off": "/icons/vib-off.svg"
 };
 
 const svgCache = {};
@@ -44,10 +50,10 @@ async function injectAllIcons() {
   const targets = document.querySelectorAll("[data-icon]");
 
   for (const t of targets) {
-    const requested = t.dataset.icon;          // např. "home", "arrow-left", "arrow-right", "close"
+    const requested = t.dataset.icon; // např. "home", "arrow-left", "sound-on"...
     if (!requested) continue;
 
-    // aliasy → všechno se kreslí z jednoho arrow.svg
+    // aliasy → šipky se kreslí z jednoho arrow.svg
     let baseName = requested;
     if (requested === "arrow-left" || requested === "arrow-right") {
       baseName = "arrow";
@@ -56,13 +62,13 @@ async function injectAllIcons() {
     const svg = await loadSvgIcon(baseName);
     if (!svg) continue;
 
-    // společné classy + info co to bylo za alias
     svg.classList.add("icon", `icon--${requested}`);
 
     t.innerHTML = "";
     t.appendChild(svg);
   }
 }
+
 
 /* ============================================================
    THEME TOGGLE ICONS (externí soubory + cache)
@@ -110,7 +116,7 @@ async function injectThemeToggleIcons() {
   ]);
 
   toggles.forEach(btn => {
-    // Už inicializováno
+    // už inicializováno
     if (btn.querySelector(".theme-toggle__thumb")) return;
 
     const switchEl = document.createElement("div");
@@ -150,7 +156,9 @@ const toggles   = document.querySelectorAll(".theme-toggle");
    iOS height fix
 ============================================================ */
 function setVh() {
-  document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
+  document.documentElement
+    .style
+    .setProperty("--vh", `${window.innerHeight * 0.01}px`);
 }
 window.addEventListener("resize", setVh);
 setVh();
@@ -207,7 +215,7 @@ prefersDarkQuery().addEventListener("change", e => {
   applyTheme(e.matches ? "dark" : "light");
 });
 
-/* Kliknutí na přepínač */
+/* Kliknutí na přepínač motivu */
 toggles.forEach(toggle => {
   toggle.addEventListener("click", () => {
     const html = document.documentElement;
@@ -223,6 +231,85 @@ toggles.forEach(toggle => {
     }
   });
 });
+
+
+/* ============================================================
+   GAME – PERSISTENT SOUND / VIBRATION
+============================================================ */
+function updateGameIconVisibility(btn, onSelector, offSelector, isOn) {
+  if (!btn) return;
+  const onEl  = btn.querySelector(onSelector);
+  const offEl = btn.querySelector(offSelector);
+
+  if (onEl)  onEl.style.display  = isOn ? "block" : "none";
+  if (offEl) offEl.style.display = isOn ? "none"  : "block";
+}
+
+function initGameToggles() {
+  const soundBtn = document.querySelector(".game__button--mute");
+  const vibBtn   = document.querySelector(".game__button--vibrate");
+
+  // ===== SOUND =====
+  if (soundBtn) {
+    let soundOn = localStorage.getItem("game-sound") !== "off"; // default ON
+
+    soundBtn.dataset.state = soundOn ? "on" : "off";
+    updateGameIconVisibility(
+      soundBtn,
+      ".game__icon--sound-on",
+      ".game__icon--sound-off",
+      soundOn
+    );
+
+    soundBtn.addEventListener("click", () => {
+      soundOn = !soundOn;
+      soundBtn.dataset.state = soundOn ? "on" : "off";
+      localStorage.setItem("game-sound", soundOn ? "on" : "off");
+      updateGameIconVisibility(
+        soundBtn,
+        ".game__icon--sound-on",
+        ".game__icon--sound-off",
+        soundOn
+      );
+
+      // Notifikace pro minihra.js (pokud chceš reagovat)
+      soundBtn.dispatchEvent(new CustomEvent("game-sound-toggle", {
+        detail: { enabled: soundOn },
+        bubbles: true
+      }));
+    });
+  }
+
+  // ===== VIBRATION =====
+  if (vibBtn) {
+    let vibOn = localStorage.getItem("game-vibrate") !== "off"; // default ON
+
+    vibBtn.dataset.state = vibOn ? "on" : "off";
+    updateGameIconVisibility(
+      vibBtn,
+      ".game__icon--vib-on",
+      ".game__icon--vib-off",
+      vibOn
+    );
+
+    vibBtn.addEventListener("click", () => {
+      vibOn = !vibOn;
+      vibBtn.dataset.state = vibOn ? "on" : "off";
+      localStorage.setItem("game-vibrate", vibOn ? "on" : "off");
+      updateGameIconVisibility(
+        vibBtn,
+        ".game__icon--vib-on",
+        ".game__icon--vib-off",
+        vibOn
+      );
+
+      vibBtn.dispatchEvent(new CustomEvent("game-vibrate-toggle", {
+        detail: { enabled: vibOn },
+        bubbles: true
+      }));
+    });
+  }
+}
 
 
 /* ============================================================
@@ -272,7 +359,9 @@ if (menuBtn && mobileNav) {
       return galleryScroll.scrollTop;
     }
 
-    const scroller = document.scrollingElement || document.documentElement || document.body;
+    const scroller = document.scrollingElement ||
+                     document.documentElement ||
+                     document.body;
     return scroller.scrollTop || 0;
   }
 
@@ -282,8 +371,10 @@ if (menuBtn && mobileNav) {
     const desktop = window.innerWidth > 1100;
     const scale = 1 - t * 0.20;
 
-    header.style.height = `${maxHeader - (maxHeader - minHeader) * t}px`;
-    title.style.fontSize = `${maxFont - (maxFont - minFont) * t}rem`;
+    header.style.height =
+      `${maxHeader - (maxHeader - minHeader) * t}px`;
+    title.style.fontSize =
+      `${maxFont - (maxFont - minFont) * t}rem`;
     title.style.opacity  = `${1 - t * 0.08}`;
 
     if (desktop) {
@@ -292,7 +383,8 @@ if (menuBtn && mobileNav) {
         desktopNav.style.transformOrigin = "right center";
       }
       if (desktopToggle) {
-        desktopToggle.style.transform = `translateY(-50%) scale(${scale})`;
+        desktopToggle.style.transform =
+          `translateY(-50%) scale(${scale})`;
       }
       if (burger) burger.style.transform = "";
     } else {
@@ -316,7 +408,8 @@ if (menuBtn && mobileNav) {
 
     if (!bouncing && y === 0 && lastY > 5) {
       bouncing = true;
-      header.style.transition = "transform .25s cubic-bezier(.25,1.7,.45,1)";
+      header.style.transition =
+        "transform .25s cubic-bezier(.25,1.7,.45,1)";
       header.style.transform = "translateY(12px)";
       setTimeout(() => {
         header.style.transform = "translateY(0)";
@@ -332,7 +425,9 @@ if (menuBtn && mobileNav) {
   }
 
   window.addEventListener("scroll", handleScroll, { passive: true });
-  if (galleryScroll) galleryScroll.addEventListener("scroll", handleScroll, { passive: true });
+  if (galleryScroll) {
+    galleryScroll.addEventListener("scroll", handleScroll, { passive: true });
+  }
   window.addEventListener("resize", handleScroll);
 
   handleScroll();
@@ -360,4 +455,5 @@ document.addEventListener("DOMContentLoaded", () => {
   injectAllIcons();
   injectThemeToggleIcons();
   initTheme();
+  initGameToggles();      // <– tady se načte stav mute / vibrací
 });

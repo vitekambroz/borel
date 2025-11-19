@@ -1182,33 +1182,37 @@ html, body {
   background:linear-gradient(#ffe6f0,#fff0fa);
   border-radius:16px;
   border:2px solid rgba(255,182,212,.7);
-  box-shadow:0 0 25px rgba(229,0,106,.4),
-             0 0 50px rgba(255,182,212,.3),
-             inset 0 0 20px rgba(255,255,255,.25);
+  box-shadow:
+    0 0 25px rgba(229,0,106,.4),
+    0 0 50px rgba(255,182,212,.3),
+    inset 0 0 20px rgba(255,255,255,.25);
   position:relative;
   overflow:hidden;
   transition:box-shadow .5s,border .5s;
 }
 
 .game:hover{
-  box-shadow:0 0 35px rgba(229,0,106,.6),
-             0 0 70px rgba(255,182,212,.45),
-             inset 0 0 25px rgba(255,255,255,.3);
+  box-shadow:
+    0 0 35px rgba(229,0,106,.6),
+    0 0 70px rgba(255,182,212,.45),
+    inset 0 0 25px rgba(255,255,255,.3);
   border-color:rgba(229,0,106,.8);
 }
 
 html.theme-dark .game{
   background:linear-gradient(#1a0023,#2a0045);
   border:2px solid rgba(255,0,255,.4);
-  box-shadow:0 0 30px rgba(255,0,255,.35),
-             0 0 60px rgba(255,150,255,.25),
-             inset 0 0 20px rgba(255,255,255,.08);
+  box-shadow:
+    0 0 30px rgba(255,0,255,.35),
+    0 0 60px rgba(255,150,255,.25),
+    inset 0 0 20px rgba(255,255,255,.08);
 }
 
 html.theme-dark .game:hover{
-  box-shadow:0 0 40px rgba(255,0,255,.6),
-             0 0 80px rgba(255,150,255,.35),
-             inset 0 0 25px rgba(255,255,255,.1);
+  box-shadow:
+    0 0 40px rgba(255,0,255,.6),
+    0 0 80px rgba(255,150,255,.35),
+    inset 0 0 25px rgba(255,255,255,.1);
   border-color:rgba(255,0,255,.55);
 }
 
@@ -1219,6 +1223,7 @@ canvas{
   background:linear-gradient(#87CEEB,#bde7ff);
 }
 
+/* HUD */
 .game__hud{
   position:absolute;
   left:12px;
@@ -1236,104 +1241,10 @@ html.theme-dark .game__hud{
   color:#fff;
 }
 
-/* ==========================
-   UNIFIKOVANÉ UI BUTTONS
-========================== */
-.game__button {
-    position: absolute;
-    right: 12px;
-    width: 48px;
-    height: 48px;
-    padding: 0;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255,255,255,.35);
-    border: 1px solid rgba(255,255,255,.45);
-    backdrop-filter: blur(10px);
-    box-shadow:
-        0 4px 14px rgba(255,182,212,.55),
-        inset 0 0 10px rgba(255,255,255,.35);
-    color: #e5006a;
-    cursor: pointer;
-    z-index: 50;
-    transition: .25s;
-}
-
-/* hover efekt */
-.game__button:hover {
-    transform: scale(1.06);
-    box-shadow:
-        0 8px 22px rgba(255,182,212,.8),
-        inset 0 0 12px rgba(255,255,255,.45);
-}
-
-
-/* ==========================
-   DARK MODE
-========================== */
-html.theme-dark .game__button {
-    background: rgba(255,255,255,.08);
-    border-color: rgba(255,255,255,.18);
-    color: #fff;
-    box-shadow:
-        0 4px 14px rgba(255,0,255,.25),
-        inset 0 0 10px rgba(255,255,255,.08);
-}
-
-html.theme-dark .game__button:hover {
-    background: rgba(255,255,255,.12);
-    box-shadow:
-        0 8px 22px rgba(255,0,255,.35),
-        inset 0 0 12px rgba(255,255,255,.12);
-}
-
-/* ==========================
-   IKONY – stabilní layout + FLIP
-========================== */
-.game__button svg {
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
-
-    transition: transform .35s ease, opacity .25s ease;
-
-    /* Fix proti poskakování */
-    position: absolute;
-}
-
-/* skrytá ikona (pro případ použití) */
-.game__button svg.hidden {
-    opacity: 0;
-    transform: rotateY(90deg);
-    display: none;
-}
-
-/* viditelná ikona */
-.game__button svg.visible {
-    opacity: 1;
-    transform: rotateY(0deg);
-    display: block;
-}
-
-/* ==========================
-   MOBIL ONLY (vibrace)
-========================== */
-.game__mobile-only {
-    display: none;
-}
-
-@media (max-width: 820px) {
-    .game__mobile-only {
-        display: flex;
-    }
-}
-
 .game__score{top:10px;}
 .game__difficulty{top:54px;}
 
-/* Neon puls okolo celé pilulky */
+/* Neon puls okolo level pilulky */
 @keyframes levelUpPulse {
   0% {
     transform: scale(1);
@@ -1358,122 +1269,113 @@ html.theme-dark .game__button:hover {
   }
 }
 
-.game__difficulty--pulse {
-  animation: levelUpPulse .45s ease-out;
-  border-radius: inherit; /* ← respektuje pilulku */
+.game__difficulty--pulse{
+  animation:levelUpPulse .45s ease-out;
+  border-radius:inherit;
 }
 
-/* OBA BUTTONY – stejný vzhled, stejné rozměry, stejný layout */
-.game__button--mute,
-.game__button--vibrate {
-  position: absolute;
-  right: 12px;
-  width: 44px;
-  height: 44px;
+/* ============================================================
+   GAME BUTTONS (mute / vibrate)
+============================================================ */
+.game__button{
+  position:absolute;
+  right:12px;
+  width:44px;
+  height:44px;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:14px;
+  font-weight:600;
+  cursor:pointer;
+  z-index:50;
 
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  z-index: 50;
-
-  border: 1px solid rgba(255,255,255,.45);
-  background: rgba(255,255,255,.35);
-  color: #fff;
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(255,255,255,.35);
+  color:#fff;
 
   box-shadow:
     0 4px 14px rgba(255,182,212,.55),
     inset 0 0 10px rgba(255,255,255,.35);
 
-  backdrop-filter: blur(10px);
-  transition: .25s;
+  backdrop-filter:blur(10px);
+  transition:.25s;
 }
 
-/* Hover */
-.game__button--mute:hover,
-.game__button--vibrate:hover {
-  transform: scale(1.06);
+/* pozice */
+.game__button--mute{ top:10px; }
+.game__button--vibrate{ top:64px; }
+
+/* hover */
+.game__button:hover{
+  transform:scale(1.06);
   box-shadow:
     0 8px 22px rgba(255,182,212,.8),
     inset 0 0 12px rgba(255,255,255,.45);
 }
 
-/*** POZICE ***/
-.game__button--mute { top: 10px; }
-.game__button--vibrate { top: 64px; }
-
-/*** TMAVÝ REŽIM ***/
-html.theme-dark .game__button--mute,
-html.theme-dark .game__button--vibrate {
-  background: rgba(255,255,255,.08);
-  border-color: rgba(255,255,255,.18);
+/* dark theme */
+html.theme-dark .game__button{
+  background:rgba(255,255,255,.08);
+  border-color:rgba(255,255,255,.18);
   box-shadow:
     0 4px 14px rgba(255,0,255,.25),
     inset 0 0 10px rgba(255,255,255,.08);
 }
 
-html.theme-dark .game__button--mute:hover,
-html.theme-dark .game__button--vibrate:hover {
-  background: rgba(255,255,255,.12);
+html.theme-dark .game__button:hover{
+  background:rgba(255,255,255,.12);
   box-shadow:
     0 8px 22px rgba(255,0,255,.35),
     inset 0 0 12px rgba(255,255,255,.12);
 }
 
-/*** SVG IKONY – fix výpadků ***/
-.game__button--mute svg,
-.game__button--vibrate svg {
-  width: 22px;
-  height: 22px;
-  display: block;
+/* ============================================================
+   IKONY UVNITŘ BUTTONŮ (SVG přes data-icon)
+============================================================ */
+.game__icon{
+  position:absolute;
+  width:22px;
+  height:22px;
+  pointer-events:none;
+  display:none;          /* základ – vše skryté */
 }
 
-/*** ON/OFF se schovává jen ikona, ne celý button ***/
-.game__icon--sound-on, .game__icon--sound-off,
-.game__icon--vib-on, .game__icon--vib-off {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  pointer-events: none;
+/* defaultně je ON varianta vidět */
+.game__icon--sound-on,
+.game__icon--vib-on{
+  display:block;
 }
 
-/* Základní stav: vše skryté, JS zapíná správnou */
-.game__icon--sound-on, .game__icon--sound-off,
-.game__icon--vib-on, .game__icon--vib-off {
-  display: none;
+/* samotné SVG */
+.game__icon svg{
+  width:22px;
+  height:22px;
+  display:block;
+  stroke:currentColor;
+  fill:none;
+  transition:transform .25s,opacity .25s;
 }
 
-/*** DESKTOP – schovat vibrace ***/
-@media (pointer: fine) {
-  .game__button--vibrate {
-    display: none !important;
+.game__button:hover .game__icon svg{
+  transform:scale(1.1);
+}
+
+/* mobil-only tlačítko vibrací */
+.game__mobile-only{
+  display:none;
+}
+
+@media (max-width:820px){
+  .game__mobile-only{
+    display:flex;
   }
 }
 
-.game__button--mute .icon-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.game__button--mute svg,
-.game__button--vibrate svg {
-  stroke: currentColor;
-  width: 22px;
-  height: 22px;
-  display: block;
-  transition: transform .25s, opacity .25s;
-  position:absolute;
-}
-
-.game__button--mute:hover svg {
-  transform: scale(1.12);
-}
-
+/* ============================================================
+   START MESSAGE
+============================================================ */
 .game__center-message{
   position:absolute;
   left:50%;
