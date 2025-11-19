@@ -10,25 +10,24 @@ const galleryPhotos = [
   "foto41.jpg", "foto42.jpg", "foto43.jpg", "foto44.jpg", "foto45.jpg",
   "foto46.jpg","foto47.jpg","foto48.jpg","foto49.jpg","foto50.jpg",
   "foto51.jpg","foto52.jpg","foto53.jpg","foto54.jpg","foto55.jpg",
-];
+].reverse();
 
 // === 1) Widget galerie na hlavní stránce (BEM verze) ===
 document.addEventListener("DOMContentLoaded", () => {
   const widgetGallery = document.querySelector(".home-widget__gallery");
   if (!widgetGallery) return;
 
-  const startIndex = galleryPhotos.length - 5;
-
-  galleryPhotos.slice(-5).forEach((img, i) => {
+  // vezmeme prvních 5
+  galleryPhotos.slice(0, 5).forEach((img, i) => {
     const el = document.createElement("img");
     el.src = `foto/thumbnails/${img}`;
     el.alt = "Fotogalerie";
     el.loading = "lazy";
     el.classList.add("home-widget__photo");
 
-    // Přesměrování do galerie s hash indexem (#xx)
+    // index = 1..5, stejné číslování jako ve /fotogalerie
     el.addEventListener("click", () => {
-      const index = startIndex + i + 1;
+      const index = i + 1;
       window.location.href = `/fotogalerie#${index}`;
     });
 
