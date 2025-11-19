@@ -1,39 +1,32 @@
 export async function onRequest(context) {
   const url = new URL(context.request.url);
 
-  // === 1️⃣ Přesměrování z borel.cz → www.borel.cz ===
+  // 1) Přesměrování borel.cz -> www.borel.cz
   if (url.hostname === "borel.cz") {
     url.hostname = "www.borel.cz";
     return Response.redirect(url.toString(), 301);
   }
 
-  // === 2️⃣ Pokračování (už jsme na www.borel.cz) ===
+  // 2) Pokračování
   const response = await context.next();
 
-  // === 3️⃣ Klonování hlaviček pro úpravy ===
+  // 3) Klon hlaviček
   const newHeaders = new Headers(response.headers);
 
-  // === 4️⃣ CACHE FIX PRO CLOUDFLARE ===
+  // 4) Cache
   const contentType = response.headers.get("content-type") || "";
 
   if (contentType.includes("text/html")) {
-    // HTML se NESMÍ cacheovat – jinak neuvidíš změny
     newHeaders.set("Cache-Control", "no-cache, no-store, must-revalidate");
-  }
-  else if (url.pathname.endsWith(".css") || url.pathname.endsWith(".js")) {
-    // CSS a JS – krátká cache (10 minut)
+  } else if (url.pathname.endsWith(".css") || url.pathname.endsWith(".js")) {
     newHeaders.set("Cache-Control", "public, max-age=600");
-  }
-  else if (url.pathname.match(/\.(png|jpg|jpeg|gif|webp|ico|svg)$/)) {
-    // Obrázky – dlouhá cache, protože se skoro nikdy nemění
+  } else if (url.pathname.match(/\.(png|jpg|jpeg|gif|webp|ico|svg)$/)) {
     newHeaders.set("Cache-Control", "public, max-age=31536000, immutable");
-  }
-  else {
-    // Ostatní soubory – krátká cache
+  } else {
     newHeaders.set("Cache-Control", "public, max-age=300");
   }
 
-  // === 5️⃣ Bezpečnostní hlavičky ===
+  // 5) Bezpečnost
   newHeaders.set(
     "Strict-Transport-Security",
     "max-age=63072000; includeSubDomains; preload"
@@ -43,7 +36,8 @@ export async function onRequest(context) {
   newHeaders.set("Referrer-Policy", "strict-origin-when-cross-origin");
 
   newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
-  newHeaders.set("Cross-Origin-Embedder-Policy", "require-corp");
+  // COEP: require-corp by blokovalo GA → raději vypnout
+  newHeaders.set("Cross-Origin-Embedder-Policy", "unsafe-none");
   newHeaders.set("Cross-Origin-Resource-Policy", "same-origin");
 
   newHeaders.set(
@@ -51,21 +45,30 @@ export async function onRequest(context) {
     "geolocation=(), camera=(), microphone=()"
   );
 
-  // === 6️⃣ Canonical URL ===
+  // 6) Canonical
   if (url.hostname === "www.borel.cz") {
     const canonicalUrl = `${url.origin}${url.pathname}`;
     newHeaders.set("Link", `<${canonicalUrl}>; rel="canonical"`);
   }
 
-  // === 7️⃣ Content Security Policy ===
+  // 7) CSP – bez inline skriptů, s GA
   const cspDirectives = [
     "default-src 'self';",
-    "script-src 'self' 'unsafe-inline';",
+
+    // žádné 'unsafe-inline', ale povolíme GA skripty
+    "script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com;",
+
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;",
     "font-src 'self' https://fonts.gstatic.com data:;",
+
+    // GA používá i obrazové beacony → https: je ok
     "img-src 'self' data: blob: https:;",
+
     "media-src 'self' data:;",
-    "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;",
+
+    // povolíme xhr/fetch na GA domény
+    "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://www.google-analytics.com https://www.googletagmanager.com https://stats.g.doubleclick.net;",
+
     "worker-src 'self';",
     "frame-ancestors 'none';",
     "object-src 'none';",
@@ -75,7 +78,7 @@ export async function onRequest(context) {
 
   newHeaders.set("Content-Security-Policy", cspDirectives.join(" "));
 
-  // === 8️⃣ Vrácení odpovědi ===
+  // 8) Výsledek
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,

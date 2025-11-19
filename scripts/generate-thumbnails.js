@@ -2,9 +2,9 @@ import fs from "fs";
 import path from "path";
 import sharp from "sharp"; // npm install sharp
 
-const originalsDir = path.resolve("foto/originals");
-const thumbnailsDir = path.resolve("foto/thumbnails");
-const size = 800; // max šířka miniatury v px
+const originalsDir  = path.resolve("public/foto/originals");
+const thumbnailsDir = path.resolve("public/foto/thumbnails");
+const size = 800;
 
 // zajisti, že výstupní složka existuje
 if (!fs.existsSync(thumbnailsDir)) {
