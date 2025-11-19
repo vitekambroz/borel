@@ -7,7 +7,9 @@ const galleryPhotos = [
   "foto26.jpg", "foto27.jpg", "foto28.jpg", "foto29.jpg", "foto30.jpg",
   "foto31.jpg", "foto32.jpg", "foto33.jpg", "foto34.jpg", "foto35.jpg",
   "foto36.jpg", "foto37.jpg", "foto38.jpg", "foto39.jpg", "foto40.jpg",
-  "foto41.jpg", "foto42.jpg", "foto43.jpg", "foto44.jpg", "foto45.jpg"
+  "foto41.jpg", "foto42.jpg", "foto43.jpg", "foto44.jpg", "foto45.jpg",
+  "foto46.jpg","foto47.jpg","foto48.jpg","foto49.jpg","foto50.jpg",
+  "foto51.jpg","foto52.jpg","foto53.jpg","foto54.jpg","foto55.jpg",
 ];
 
 // === 1) Widget galerie na hlavní stránce (BEM verze) ===

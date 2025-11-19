@@ -6,22 +6,25 @@ echo   Cíl: public/foto/originals
 echo ==============================================
 echo.
 
-REM === Absolutní cesta ke složce s originály ===
+REM === Relativní cesta ke složce s originály (vůči tomuhle .bat) ===
 set "PHOTO_DIR=public\foto\originals"
-set "EXIFTOOL=%PHOTO_DIR%\exiftool.exe"
+
+REM === Přepni se do složky, kde leží tenhle .bat (kořen projektu) ===
+cd /d "%~dp0"
 
 REM === Ověření, že exiftool existuje ===
-if not exist "%EXIFTOOL%" (
+if not exist "%PHOTO_DIR%\exiftool.exe" (
     echo ❌ CHYBA: Nenalezen exiftool.exe v "%PHOTO_DIR%"
     pause
     exit /b
 )
 
+REM === Přepni se do složky s fotkami ===
 cd /d "%PHOTO_DIR%"
 
 REM === Čištění všech JPG souborů ===
 echo Spouštím ExifTool...
-"%EXIFTOOL%" -overwrite_original -P ^
+exiftool.exe -overwrite_original -P ^
   -MotionPhoto -MotionPhotoVersion -MotionPhotoPresentationTimestamp ^
   -MotionPhotoMovieLength -MotionPhotoMovieMimeType -MotionPhotoMovieOffset ^
   -SamsungTrailerLength -TrailerLength -MPImageStart -MPImageLength ^
