@@ -270,7 +270,7 @@ html.theme-dark .header__nav-link.active .icon {
 
 .header__nav-link[data-page="minihra"] .header__nav-icon {
   position: relative;
-  top: -2.5px !important;
+  top: -1.5px !important;
 }
 
 .header__nav-link[data-page="about"] .header__nav-icon {
