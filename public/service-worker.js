@@ -1,4 +1,4 @@
-const CACHE_NAME = "borel-cache-v14";
+const CACHE_NAME = "borel-cache-v1";
 
 const urlsToCache = [
   "/",
