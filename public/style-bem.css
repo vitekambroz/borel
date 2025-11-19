@@ -780,36 +780,19 @@ html.theme-dark .info-banner{
 
 
 /* ============================================================
-   ABOUT PAGE – NEON TIMELINE
+   ABOUT PAGE – TIMELINE (match s home-widget)
 ============================================================ */
 
 .about {
   max-width: 960px;
   margin: 28px auto 40px;
-  padding: 22px 24px 28px;
+  padding: 22px 24px 26px;
   border-radius: 20px;
 
-  /* STEJNÝ NEON JAKO MINIHRA (.game) – LIGHT */
-  border: 2px solid rgba(255,182,212,.7);
-  background: linear-gradient(#ffe6f0,#fff0fa);
-  box-shadow:
-    0 0 25px rgba(229,0,106,.4),
-    0 0 50px rgba(255,182,212,.3),
-    inset 0 0 20px rgba(255,255,255,.25);
-
+  /* stejný základ jako .home-widget */
+  background-color: var(--glass-light);
+  box-shadow: var(--shadow-soft);
   backdrop-filter: blur(12px);
-  position: relative;
-  overflow: hidden;
-}
-
-html.theme-dark .about {
-  /* STEJNÝ NEON JAKO MINIHRA – DARK */
-  background: radial-gradient(circle at top,rgba(80,0,110,.9),rgba(10,0,18,.97));
-  border-color: rgba(255,0,255,.4);
-  box-shadow:
-    0 0 30px rgba(255,0,255,.7),
-    0 0 70px rgba(255,150,255,.45),
-    inset 0 0 16px rgba(255,255,255,.12);
 }
 
 .about__title {
@@ -826,42 +809,42 @@ html.theme-dark .about {
   font-weight: 600;
   color: var(--brand-strong);
   text-shadow:
-    0 0 10px rgba(255,120,200,.65),
-    0 0 18px rgba(255,0,140,.55);
+    0 0 10px rgba(255,120,200,.55),
+    0 0 16px rgba(255,0,140,.45);
 }
 
 /* timeline kontejner */
 .about__content {
   position: relative;
   margin-top: 6px;
-  padding-left: 44px;
+  padding-left: 44px;              /* místo pro linku + bubliny */
   display: flex;
   flex-direction: column;
   gap: 12px;
   counter-reset: about;
 }
 
-/* vertikální neonová linka */
+/* vertikální linka – zarovnaná na střed bublin */
 .about__content::before {
   content: "";
   position: absolute;
-  left: 18px;
+  left: 25px;                      /* dřív 18px – teď sedí na střed 01/02/03 */
   top: 0;
   bottom: 0;
   width: 2px;
   border-radius: 999px;
   background: linear-gradient(
     to bottom,
-    rgba(255,0,180,.9),
-    rgba(255,150,255,.5),
-    rgba(120,0,255,.7)
+    rgba(255,0,180,.85),
+    rgba(255,150,255,.45),
+    rgba(120,0,255,.6)
   );
   box-shadow:
-    0 0 16px rgba(255,0,200,.7),
-    0 0 30px rgba(120,0,255,.5);
+    0 0 10px rgba(255,0,200,.5),
+    0 0 18px rgba(120,0,255,.35);  /* jemnější než předtím */
 }
 
-/* jednotlivé "fakta" */
+/* jednotlivé fakty */
 .about__content p {
   position: relative;
   margin: 0;
@@ -871,15 +854,15 @@ html.theme-dark .about {
   font-weight: 500;
 }
 
-/* FAKTA – O TROŠKU JEMNĚJŠÍ NEON NEŽ RÁM */
+/* světlej režim – jen lehký glow (trochu jemnější než fotky) */
 html.theme-light .about__content p {
   color: var(--nav-light);
   background: rgba(255,255,255,.96);
   box-shadow:
-    0 0 16px rgba(229,0,106,.45),
-    0 0 32px rgba(255,150,255,.35);
+    0 0 14px rgba(229,0,106,.25);
 }
 
+/* dark mode – taky stažený neon */
 html.theme-dark .about__content p {
   color: #ffe7ff;
   background: radial-gradient(
@@ -887,10 +870,10 @@ html.theme-dark .about__content p {
     rgba(80,0,110,.96),
     rgba(10,0,18,.97)
   );
-  border: 1px solid rgba(255,170,255,.55);
+  border: 1px solid rgba(255,170,255,.35);
   box-shadow:
-    0 0 18px rgba(255,0,255,.5),
-    0 0 36px rgba(120,0,170,.7);
+    0 0 16px rgba(255,0,255,.35),
+    0 0 30px rgba(120,0,170,.45);
 }
 
 /* očíslované bubliny 01 / 02 / 03… */
@@ -904,20 +887,23 @@ html.theme-dark .about__content p {
   width: 30px;
   height: 30px;
   border-radius: 999px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   font-size: 0.8rem;
   font-weight: 700;
   color: #fff;
   letter-spacing: .05em;
+
   background: radial-gradient(circle at top, #ff4bd1, #ff0080);
   box-shadow:
-    0 0 12px rgba(255,60,200,.9),
-    0 0 26px rgba(255,0,160,.9);
+    0 0 10px rgba(255,60,200,.8),
+    0 0 22px rgba(255,0,160,.8);
 }
 
-/* mobil */
+/* mobil – lehké doladění zarovnání */
 @media (max-width: 640px) {
   .about {
     margin: 22px auto 32px;
@@ -935,6 +921,10 @@ html.theme-dark .about__content p {
   .about__content {
     padding-left: 38px;
     gap: 10px;
+  }
+
+  .about__content::before {
+    left: 22px;
   }
 
   .about__content p {
