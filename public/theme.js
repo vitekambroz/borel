@@ -303,6 +303,15 @@ function initGameToggles() {
         vibOn
       );
 
+      // krátké potvrzení při zapnutí vibrací
+      if (
+        vibOn &&
+        typeof navigator !== "undefined" &&
+        typeof navigator.vibrate === "function"
+      ) {
+        try { navigator.vibrate(30); } catch (_) {}
+      }
+
       vibBtn.dispatchEvent(new CustomEvent("game-vibrate-toggle", {
         detail: { enabled: vibOn },
         bubbles: true
@@ -310,7 +319,6 @@ function initGameToggles() {
     });
   }
 }
-
 
 /* ============================================================
    MOBILE NAV

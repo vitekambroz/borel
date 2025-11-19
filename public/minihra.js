@@ -63,15 +63,12 @@
   const levelUpSound = new Audio('sounds/levelup.mp3');
   levelUpSound.volume = 0.7;
 
-  // helpery: čteme přímo localStorage nastavené z theme.js
   function isSoundOn() {
-    // default ON (pokud v localStorage nic není)
-    return localStorage.getItem('game-sound') !== 'off';
+    return localStorage.getItem('game-sound') !== 'off'; // default ON
   }
 
   function isVibrationOn() {
-    // default ON
-    return localStorage.getItem('game-vibrate') !== 'off';
+    return localStorage.getItem('game-vibrate') !== 'off'; // default ON
   }
 
   // =====================================================
@@ -104,7 +101,7 @@
   const FIXED_STEP = 1000 / 60;
 
   // =====================================================
-  //  Vibrace helper – žádné matchMedia, jen čistý vibrate
+  //  Vibrace helper
   // =====================================================
   function doHaptic(pattern) {
     if (!isVibrationOn()) return;
@@ -114,7 +111,7 @@
     try {
       navigator.vibrate(pattern);
     } catch (_) {
-      // ticho, když to prohlížeč zablokuje
+      // ticho
     }
   }
 
@@ -144,6 +141,7 @@
   });
 
   cvs.addEventListener('mousedown', flapOrRestart);
+  cvs.addEventListener('click', flapOrRestart);
   cvs.addEventListener(
     'touchstart',
     (e) => {
@@ -236,7 +234,6 @@
           if (newLevel !== level) {
             level = newLevel;
 
-            // zvuk
             if (isSoundOn()) {
               levelUpSound.currentTime = 0;
               levelUpSound.play();
@@ -469,7 +466,7 @@
   }
 
   // =====================================================
-  //  Start hry – bez čekání na sprite
+  //  Start hry
   // =====================================================
   function startGame() {
     reset();
