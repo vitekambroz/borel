@@ -7,7 +7,7 @@
   const gameEl = document.querySelector('.game');
   if (!gameEl) return;
 
-  // plátno – vezmeme .game__canvas, nebo fallback na první <canvas> uvnitř .game
+  // Plátno – vezmeme .game__canvas, nebo fallback na první <canvas> uvnitř .game
   const cvs =
     gameEl.querySelector('.game__canvas') ||
     gameEl.querySelector('canvas');
@@ -47,7 +47,7 @@
   //  Obrázky
   // =====================================================
   const birdImgAlive = new Image();
-  birdImgAlive.src = 'foto/bird.png';       // relativní cesta jako dřív
+  birdImgAlive.src = 'foto/bird.png';
 
   const birdImgDead = new Image();
   birdImgDead.src = 'foto/bird_dead.png';
@@ -104,13 +104,18 @@
   const FIXED_STEP = 1000 / 60;
 
   // =====================================================
-  //  Vibrace helper – jednoduché, ale pořád respektuje toggle
+  //  Vibrace helper – žádné matchMedia, jen čistý vibrate
   // =====================================================
-  function doHaptic(msOrPattern) {
+  function doHaptic(pattern) {
     if (!isVibrationOn()) return;
-    if (!('vibrate' in navigator)) return;
-    if (!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches)) return;
-    navigator.vibrate(msOrPattern);
+    if (typeof navigator === 'undefined') return;
+    if (typeof navigator.vibrate !== 'function') return;
+
+    try {
+      navigator.vibrate(pattern);
+    } catch (_) {
+      // ticho, když to prohlížeč zablokuje
+    }
   }
 
   // =====================================================
@@ -231,7 +236,7 @@
           if (newLevel !== level) {
             level = newLevel;
 
-            // zvuk – sáhneme do localStorage
+            // zvuk
             if (isSoundOn()) {
               levelUpSound.currentTime = 0;
               levelUpSound.play();
