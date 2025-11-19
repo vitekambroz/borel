@@ -8,7 +8,10 @@
   const gameEl = document.querySelector('.game');
   if (!gameEl) return;
 
-  const cvs = gameEl.querySelector('.game__canvas');
+  // plátno – vezmeme .game__canvas, nebo fallback na první <canvas> uvnitř .game
+  const cvs =
+    gameEl.querySelector('.game__canvas') ||
+    gameEl.querySelector('canvas');
   if (!cvs) return;
 
   const ctx = cvs.getContext('2d');
@@ -31,7 +34,7 @@
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 
     const rect = cvs.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
+    const dpr  = window.devicePixelRatio || 1;
 
     cvs.width  = rect.width * dpr;
     cvs.height = rect.height * dpr;
@@ -48,20 +51,20 @@
   //  Obrázky
   // =====================================================
   const birdImgAlive = new Image();
-  birdImgAlive.src = '/foto/bird.png';       // uprav pokud máš jinou cestu
+  birdImgAlive.src = 'foto/bird.png';       // relativní cesta jako dřív
 
   const birdImgDead = new Image();
-  birdImgDead.src = '/foto/bird_dead.png';   // uprav pokud máš jinou cestu
+  birdImgDead.src = 'foto/bird_dead.png';
 
   let birdImg = birdImgAlive;
 
   // =====================================================
   //  Zvuky
   // =====================================================
-  const deathSound = new Audio('/sounds/dead.mp3');
+  const deathSound = new Audio('sounds/dead.mp3');
   deathSound.volume = 0.8;
 
-  const levelUpSound = new Audio('/sounds/levelup.mp3');
+  const levelUpSound = new Audio('sounds/levelup.mp3');
   levelUpSound.volume = 0.7;
 
   // =====================================================
@@ -94,7 +97,7 @@
   const FIXED_STEP = 1000 / 60;
 
   // =====================================================
-  //  Persistentní stav zvuku / vibrací (napojeno na theme.js)
+  //  Persistentní stav zvuku / vibrací
   // =====================================================
   let isMuted;
   let hapticsEnabled;
@@ -122,11 +125,10 @@
 
   initSoundAndHapticsState();
 
-  // posluchače na custom eventy z theme.js
+  // posluchače na custom eventy z theme.js (pokud je používáš)
   document.addEventListener('game-sound-toggle', (e) => {
     if (!e.detail) return;
-    // detail.enabled = true → zvuk zapnutý → isMuted = false
-    isMuted = !e.detail.enabled;
+    isMuted = !e.detail.enabled; // enabled true => zvuk zap → isMuted false
   });
 
   document.addEventListener('game-vibrate-toggle', (e) => {
@@ -135,7 +137,7 @@
   });
 
   // =====================================================
-  //  Vibrace helper – tolerantní, bez console.log
+  //  Vibrace helper – bez console.log
   // =====================================================
   function doHaptic(pattern) {
     if (!hapticsEnabled) return;
@@ -149,7 +151,7 @@
     try {
       window.navigator.vibrate(pattern);
     } catch (e) {
-      // ticho, jen fallback – žádné logy
+      // nic – jen v tichosti selže
     }
   }
 
@@ -397,7 +399,7 @@
     level = 1;
 
     if (scoreValueEl) {
-      scoreValueEl.textContent = `Skóre: 0 | Nej nejlepší: ${bestScore}`;
+      scoreValueEl.textContent = `Skóre: 0 | Nejlepší: ${bestScore}`;
     }
     if (difficultyValueEl) {
       difficultyValueEl.textContent = 'Obtížnost: 1';
@@ -465,7 +467,7 @@
       ctx.fillRect(p.x - 3, p.bottom, PIPE_WIDTH + 6, 20);
     }
 
-    if (birdImg.complete) {
+    if (birdImg && birdImg.complete) {
       ctx.save();
       let angle = Math.max(-0.4, Math.min(0.4, bird.vy / 18));
       if (gameOver) angle = bird.rotation;
@@ -503,7 +505,7 @@
   }
 
   // =====================================================
-  //  Start hry (i když sprite selže, hra jede)
+  //  Start hry – bez čekání na sprite
   // =====================================================
   function startGame() {
     reset();
@@ -511,11 +513,5 @@
     requestAnimationFrame(loop);
   }
 
-  if (birdImgAlive.complete) {
-    // kdyby byl už načtený z cache
-    startGame();
-  } else {
-    birdImgAlive.onload = startGame;
-  }
+  startGame();
 })();
-```0
