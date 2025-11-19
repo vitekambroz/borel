@@ -9,13 +9,10 @@
     stroke-linejoin="round"
   />
 
-  <path
-    d="M15.5 18.1 L19.2 20.2 L18 16"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+  <circle
+    cx="21" cy="18"
+    r="1.1"
+    fill="currentColor"
   />
 
   <circle cx="12" cy="8.5" r="0.8" fill="currentColor" />
