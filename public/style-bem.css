@@ -265,7 +265,7 @@ html.theme-dark .header__nav-link.active .icon {
 
 .header__nav-link[data-page="fotogalerie"] .header__nav-icon {
   position: relative;
-  top: -1.5px !important;
+  top: -0.5px !important;
 }
 
 .header__nav-link[data-page="minihra"] .header__nav-icon {
