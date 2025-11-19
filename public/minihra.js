@@ -89,7 +89,7 @@
   let level     = 1;
   let distanceSinceLastPipe = 0;
 
-  let lastTime   = 0;
+  let lastTime    = 0;
   let accumulator = 0;
   const FIXED_STEP = 1000 / 60;
 
@@ -135,13 +135,22 @@
   });
 
   // =====================================================
-  //  Vibrace helper
+  //  Vibrace helper – tolerantní, bez console.log
   // =====================================================
-  function doHaptic(ms) {
+  function doHaptic(pattern) {
     if (!hapticsEnabled) return;
-    if (!('vibrate' in navigator)) return;
-    if (!(window.matchMedia && matchMedia('(pointer: coarse)').matches)) return;
-    navigator.vibrate(ms);
+
+    if (typeof window === 'undefined' ||
+        !window.navigator ||
+        typeof window.navigator.vibrate !== 'function') {
+      return;
+    }
+
+    try {
+      window.navigator.vibrate(pattern);
+    } catch (e) {
+      // ticho, jen fallback – žádné logy
+    }
   }
 
   // =====================================================
@@ -388,7 +397,7 @@
     level = 1;
 
     if (scoreValueEl) {
-      scoreValueEl.textContent = `Skóre: 0 | Nejlepší: ${bestScore}`;
+      scoreValueEl.textContent = `Skóre: 0 | Nej nejlepší: ${bestScore}`;
     }
     if (difficultyValueEl) {
       difficultyValueEl.textContent = 'Obtížnost: 1';
@@ -509,3 +518,4 @@
     birdImgAlive.onload = startGame;
   }
 })();
+```0
