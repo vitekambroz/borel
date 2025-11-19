@@ -1,6 +1,5 @@
 // =====================================================
-//  Minihra.js – BEM verze (bez ID) + napojení na
-//  game-sound-toggle / game-vibrate-toggle
+//  Minihra.js – BEM verze (bez ID) + persistent sound/vibrate
 // =====================================================
 
 (function () {
@@ -21,9 +20,6 @@
   const difficultyValueEl = gameEl.querySelector('.game__difficulty-value');
   const difficultyPillEl  = gameEl.querySelector('.game__difficulty');
   const msgBox            = gameEl.querySelector('.game__center-message');
-
-  const muteBtn = gameEl.querySelector('.game__button--mute');
-  const vibBtn  = gameEl.querySelector('.game__button--vibrate');
 
   let W, H;
 
@@ -67,6 +63,17 @@
   const levelUpSound = new Audio('sounds/levelup.mp3');
   levelUpSound.volume = 0.7;
 
+  // helpery: čteme přímo localStorage nastavené z theme.js
+  function isSoundOn() {
+    // default ON (pokud v localStorage nic není)
+    return localStorage.getItem('game-sound') !== 'off';
+  }
+
+  function isVibrationOn() {
+    // default ON
+    return localStorage.getItem('game-vibrate') !== 'off';
+  }
+
   // =====================================================
   //  Herní proměnné
   // =====================================================
@@ -97,51 +104,10 @@
   const FIXED_STEP = 1000 / 60;
 
   // =====================================================
-  //  Persistentní stav zvuku / vibrací
-  // =====================================================
-  let isMuted;
-  let hapticsEnabled;
-
-  function initSoundAndHapticsState() {
-    const btnSoundState = muteBtn?.dataset.state; // "on" / "off"
-    const btnVibState   = vibBtn?.dataset.state;  // "on" / "off"
-
-    // SOUND
-    if (btnSoundState === 'on' || btnSoundState === 'off') {
-      isMuted = (btnSoundState === 'off');
-    } else {
-      const storedSound = localStorage.getItem('game-sound'); // "on" / "off"
-      isMuted = (storedSound === 'off');
-    }
-
-    // VIBRACE
-    if (btnVibState === 'on' || btnVibState === 'off') {
-      hapticsEnabled = (btnVibState === 'on');
-    } else {
-      const storedVib = localStorage.getItem('game-vibrate'); // "on" / "off"
-      hapticsEnabled = (storedVib !== 'off'); // default ON
-    }
-  }
-
-  initSoundAndHapticsState();
-
-  // posluchače na custom eventy z theme.js
-  document.addEventListener('game-sound-toggle', (e) => {
-    if (!e.detail) return;
-    // enabled true => zvuk zap → isMuted false
-    isMuted = !e.detail.enabled;
-  });
-
-  document.addEventListener('game-vibrate-toggle', (e) => {
-    if (!e.detail) return;
-    hapticsEnabled = !!e.detail.enabled;
-  });
-
-  // =====================================================
-  //  Vibrace helper – zpátky „původní“ verze
+  //  Vibrace helper – jednoduché, ale pořád respektuje toggle
   // =====================================================
   function doHaptic(msOrPattern) {
-    if (!hapticsEnabled) return;
+    if (!isVibrationOn()) return;
     if (!('vibrate' in navigator)) return;
     if (!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches)) return;
     navigator.vibrate(msOrPattern);
@@ -265,7 +231,8 @@
           if (newLevel !== level) {
             level = newLevel;
 
-            if (!isMuted) {
+            // zvuk – sáhneme do localStorage
+            if (isSoundOn()) {
               levelUpSound.currentTime = 0;
               levelUpSound.play();
             }
@@ -346,7 +313,7 @@
     birdImg = birdImgDead;
     bird.rotation = Math.PI;
 
-    if (!isMuted) {
+    if (isSoundOn()) {
       deathSound.currentTime = 0;
       deathSound.play();
     }
