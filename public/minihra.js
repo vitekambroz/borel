@@ -1,5 +1,6 @@
 // =====================================================
-//  Minihra.js – BEM verze (bez ID) + persistent sound/vibrate
+//  Minihra.js – BEM verze (bez ID)
+//  Zvuk / vibrace čtené přímo z localStorage
 // =====================================================
 
 (function () {
@@ -7,7 +8,7 @@
   const gameEl = document.querySelector('.game');
   if (!gameEl) return;
 
-  // Plátno – vezmeme .game__canvas, nebo fallback na první <canvas> uvnitř .game
+  // plátno – .game__canvas nebo fallback na první <canvas> uvnitř .game
   const cvs =
     gameEl.querySelector('.game__canvas') ||
     gameEl.querySelector('canvas');
@@ -63,14 +64,6 @@
   const levelUpSound = new Audio('sounds/levelup.mp3');
   levelUpSound.volume = 0.7;
 
-  function isSoundOn() {
-    return localStorage.getItem('game-sound') !== 'off'; // default ON
-  }
-
-  function isVibrationOn() {
-    return localStorage.getItem('game-vibrate') !== 'off'; // default ON
-  }
-
   // =====================================================
   //  Herní proměnné
   // =====================================================
@@ -101,17 +94,32 @@
   const FIXED_STEP = 1000 / 60;
 
   // =====================================================
-  //  Vibrace helper
+  //  Helpers pro zvuk / vibrace – čtou přímo localStorage
+  // =====================================================
+  function isSoundOn() {
+    // theme.js ukládá "on"/"off", default ON
+    return localStorage.getItem('game-sound') !== 'off';
+  }
+
+  function isVibrateOn() {
+    // theme.js ukládá "on"/"off", default ON
+    return localStorage.getItem('game-vibrate') !== 'off';
+  }
+
+  // =====================================================
+  //  Vibrace helper – žádné logy
   // =====================================================
   function doHaptic(pattern) {
-    if (!isVibrationOn()) return;
-    if (typeof navigator === 'undefined') return;
-    if (typeof navigator.vibrate !== 'function') return;
+    if (!isVibrateOn()) return;
+
+    if (typeof navigator === 'undefined' || typeof navigator.vibrate !== 'function') {
+      return;
+    }
 
     try {
       navigator.vibrate(pattern);
-    } catch (_) {
-      // ticho
+    } catch (e) {
+      // v tichosti selže
     }
   }
 
@@ -141,7 +149,6 @@
   });
 
   cvs.addEventListener('mousedown', flapOrRestart);
-  cvs.addEventListener('click', flapOrRestart);
   cvs.addEventListener(
     'touchstart',
     (e) => {
@@ -234,6 +241,7 @@
           if (newLevel !== level) {
             level = newLevel;
 
+            // zvuk levelup podle localStorage
             if (isSoundOn()) {
               levelUpSound.currentTime = 0;
               levelUpSound.play();
