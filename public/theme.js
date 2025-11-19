@@ -9,10 +9,10 @@ const ICON_PATHS = {
   arrow:     "/icons/arrow.svg",      // základní šipka (doprava)
 
   // nové ikonky pro hru:
-  "sound-on": "/icons/sound-on.svg",
+  "sound-on":  "/icons/sound-on.svg",
   "sound-off": "/icons/sound-off.svg",
-  "vib-on": "/icons/vib-on.svg",
-  "vib-off": "/icons/vib-off.svg"
+  "vib-on":    "/icons/vib-on.svg",
+  "vib-off":   "/icons/vib-off.svg"
 };
 
 const svgCache = {};
@@ -272,7 +272,7 @@ function initGameToggles() {
         soundOn
       );
 
-      // Notifikace pro minihra.js (pokud chceš reagovat)
+      // Notifikace pro minihra.js
       soundBtn.dispatchEvent(new CustomEvent("game-sound-toggle", {
         detail: { enabled: soundOn },
         bubbles: true

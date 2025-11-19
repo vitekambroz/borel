@@ -125,10 +125,11 @@
 
   initSoundAndHapticsState();
 
-  // posluchače na custom eventy z theme.js (pokud je používáš)
+  // posluchače na custom eventy z theme.js
   document.addEventListener('game-sound-toggle', (e) => {
     if (!e.detail) return;
-    isMuted = !e.detail.enabled; // enabled true => zvuk zap → isMuted false
+    // enabled true => zvuk zap → isMuted false
+    isMuted = !e.detail.enabled;
   });
 
   document.addEventListener('game-vibrate-toggle', (e) => {
@@ -137,22 +138,15 @@
   });
 
   // =====================================================
-  //  Vibrace helper – bez console.log
+  //  Vibrace helper
   // =====================================================
   function doHaptic(pattern) {
     if (!hapticsEnabled) return;
 
-    if (typeof window === 'undefined' ||
-        !window.navigator ||
-        typeof window.navigator.vibrate !== 'function') {
-      return;
-    }
+    const nav = navigator;
+    if (!nav || typeof nav.vibrate !== 'function') return;
 
-    try {
-      window.navigator.vibrate(pattern);
-    } catch (e) {
-      // nic – jen v tichosti selže
-    }
+    nav.vibrate(pattern);
   }
 
   // =====================================================
