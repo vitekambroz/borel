@@ -4,39 +4,31 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Color schemes -->
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#e5006a" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1a1020" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e5006a">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1a1020">
 
-  <title>Fotogalerie – BOREL</title>
-  <meta name="description" content="Neonová fotogalerie projektu BOREL – moderní fotografie, světelné efekty a interaktivní galerie.">
-  <link rel="canonical" href="https://www.borel.cz/fotogalerie">
+  <!-- SEO -->
+  <title>O mně – BOREL</title>
+  <meta name="description" content="Stránka O mně – kdo stojí za projektem BOREL, jak vznikl a na čem pracuji.">
+  <link rel="canonical" href="https://www.borel.cz/o-mne">
 
   <!-- Open Graph -->
   <meta property="og:site_name" content="BOREL">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.borel.cz/fotogalerie">
-  <meta property="og:title" content="Fotogalerie – BOREL">
-  <meta property="og:description" content="Prohlédni si neonovou fotogalerii BOREL.">
-  <meta property="og:image" content="https://www.borel.cz/foto/foto1.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:locale" content="cs_CZ">
+  <meta property="og:url" content="https://www.borel.cz/o-mne">
+  <meta property="og:title" content="O mně – BOREL">
+  <meta property="og:description" content="Poznej autora projektu BOREL a příběh tohoto neonového webu.">
+  <meta property="og:image" content="https://www.borel.cz/logo.png">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Fotogalerie – BOREL">
-  <meta name="twitter:description" content="Moderní neonová fotogalerie BOREL.">
-  <meta name="twitter:image" content="https://www.borel.cz/foto/foto1.jpg">
+  <meta name="twitter:title" content="O mně – BOREL">
+  <meta name="twitter:description" content="Poznej autora projektu BOREL a příběh tohoto neonového webu.">
+  <meta name="twitter:image" content="https://www.borel.cz/logo.png">
 
-  <!-- Prefetch / prerender -->
-  <link rel="prefetch" href="/" as="document">
-  <link rel="prefetch" href="/minihra" as="document">
-  <link rel="prefetch" href="/fotogalerie" as="document">
-  <link rel="prerender" href="/">
-  <link rel="prerender" href="/minihra">
-
-  <!-- Auto metadata -->
+  <!-- Auto metadata (doharmonizuje title/OG podle path) -->
   <script src="/auto-meta.js" defer></script>
 
   <!-- Fonts -->
@@ -59,7 +51,7 @@
   <link rel="icon" sizes="192x192" href="/icon-192.png">
 </head>
 
-<body class="page page--gallery">
+<body class="page page--about">
 
 <header class="header">
   <button class="header__menu-toggle" aria-label="Otevřít menu">
@@ -78,7 +70,7 @@
         <span class="header__nav-icon" data-icon="home"></span>
         <span class="header__nav-label">Domů</span>
       </a>
-      <a href="/fotogalerie" class="header__nav-link active" data-page="fotogalerie">
+      <a href="/fotogalerie" class="header__nav-link" data-page="fotogalerie">
         <span class="header__nav-icon" data-icon="gallery"></span>
         <span class="header__nav-label">Fotogalerie</span>
       </a>
@@ -86,13 +78,13 @@
         <span class="header__nav-icon" data-icon="game"></span>
         <span class="header__nav-label">Minihra</span>
       </a>
-      <a href="/o-mne" class="header__nav-link" data-page="o-mne">
+      <a href="/o-mne" class="header__nav-link active" data-page="o-mne">
         <span class="header__nav-icon" data-icon="about"></span>
         <span class="header__nav-label">O mně</span>
       </a>
     </nav>
 
-    <button class="theme-toggle theme-toggle--desktop" aria-label="Přepnout tmavý / světlý mód"></button>
+    <button class="theme-toggle theme-toggle--desktop" aria-label="Přepnout režim vzhledu"></button>
   </div>
 
   <!-- Mobilní navigace -->
@@ -109,7 +101,7 @@
       <span class="header__nav-icon" data-icon="game"></span>
       <span class="header__nav-label">Minihra</span>
     </a>
-    <a href="/o-mne" class="header__nav-link" data-page="o-mne">
+    <a href="/o-mne" class="header__nav-link active" data-page="o-mne">
       <span class="header__nav-icon" data-icon="about"></span>
       <span class="header__nav-label">O mně</span>
     </a>
@@ -124,38 +116,19 @@
 </header>
 
 <main class="page__content">
-  <section class="gallery">
-    <h2 class="gallery__title">Fotogalerie</h2>
+  <section class="about">
+    <h2 class="about__title">O mně</h2>
+    <p class="about__lead">
+      Jsem Vítek Ambrož a BOREL je můj neonový experiment s webem,
+      fotkami a minihrou.
+    </p>
 
-    <div class="page__gallery-wrapper">
-      <div class="gallery__grid"></div>
+    <div class="about__content">
+      <p>Sem si napiš, kdo jsi, proč jsi dělal BOREL, co tě baví atd.</p>
+      <p>Můžeš přidat i fotku, timeline, stack, cokoliv.</p>
     </div>
   </section>
 </main>
-
-<div class="lightbox" role="dialog" aria-modal="true" aria-label="Zvětšená fotografie">
-  <button class="lightbox__close" aria-label="Zavřít obrázek">
-    <span class="lightbox__close-icon" data-icon="close"></span>
-  </button>
-
-  <img
-    class="lightbox__image"
-    alt="Zvětšená fotografie"
-    loading="lazy"
-  >
-
-  <div class="lightbox__nav">
-    <button class="lightbox__nav-button lightbox__nav-button--prev" aria-label="Předchozí obrázek">
-      <span class="lightbox__arrow-icon icon--arrow-left" data-icon="arrow"></span>
-    </button>
-
-    <button class="lightbox__nav-button lightbox__nav-button--next" aria-label="Další obrázek">
-      <span class="lightbox__arrow-icon" data-icon="arrow"></span>
-    </button>
-  </div>
-
-  <div class="lightbox__counter"></div>
-</div>
 
 <footer class="footer">
   <span class="footer__copy">&copy; Vítek Ambrož</span>
@@ -163,7 +136,6 @@
 
 <script src="/sw-register.js?v=3" defer></script>
 <script src="/theme.js?v=7" defer></script>
-<script src="/gallery.js?v=500" defer></script>
 
 </body>
 </html>

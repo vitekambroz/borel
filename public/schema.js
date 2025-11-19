@@ -90,7 +90,23 @@ document.addEventListener("DOMContentLoaded", () => {
         "logo": `${baseUrl}/logo.png`
       }
     });
-  }
+  } else if (path === "/o-mne") {
+  graph.push({
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "@id": `${baseUrl}/o-mne#about`,
+    "url": `${baseUrl}/o-mne`,
+    "name": "O mně – BOREL",
+    "description": "Stránka O mně – informace o autorovi projektu BOREL.",
+    "isPartOf": { "@id": `${baseUrl}#website` },
+    "inLanguage": "cs",
+    "author": {
+      "@type": "Person",
+      "name": "Vítek Ambrož"
+    }
+  });
+}
+
 
   // === 3) Finální JSON-LD ===
   const ld = {

@@ -5,10 +5,9 @@ const ICON_PATHS = {
   home:      "/icons/home.svg",
   gallery:   "/icons/gallery.svg",
   game:      "/icons/game.svg",
+  about:     "/icons/about.svg",
   close:     "/icons/close.svg",
-  arrow:     "/icons/arrow.svg",      // základní šipka (doprava)
-
-  // nové ikonky pro hru:
+  arrow:     "/icons/arrow.svg",
   "sound-on":  "/icons/sound-on.svg",
   "sound-off": "/icons/sound-off.svg",
   "vib-on":    "/icons/vib-on.svg",

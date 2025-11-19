@@ -273,6 +273,11 @@ html.theme-dark .header__nav-link.active .icon {
   top: -2.5px !important;
 }
 
+.header__nav-link[data-page="about"] .header__nav-icon {
+  position: relative;
+  top: -2px !important; /* doladíš podle oka */
+}
+
 
 
 /* ============================================================

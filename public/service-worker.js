@@ -4,6 +4,7 @@ const urlsToCache = [
   "/",
   "/fotogalerie",
   "/minihra",
+  "/o-mne",
 
   // CSS + JS (BEM verze s verzováním)
   "/style-bem.css?v=500",

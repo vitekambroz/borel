@@ -4,6 +4,7 @@
     { "pattern": "/", "serve": "/index.html" },
     { "pattern": "/fotogalerie", "serve": "/fotogalerie.html" },
     { "pattern": "/minihra", "serve": "/minihra.html" },
+    { "pattern": "/o-mne", "serve": "/o-mne.html" },
     { "pattern": "/*", "serve": "/index.html" }
   ]
 }

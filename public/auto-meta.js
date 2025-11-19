@@ -21,6 +21,12 @@
       description: "Zahraj si neonovou minihru BOREL. Rychlá akce a skvělá zábava přímo v prohlížeči.",
       image: BASE_URL + "/foto/minihra-preview.png",
       type: "website"
+    },
+    "/o-mne": {
+    title: "O mně – BOREL",
+    description: "Kdo stojí za projektem BOREL, jak vznikl a co chystám dál.",
+    image: BASE_URL + "/logo.png",
+    type: "website"
     }
   };
 
