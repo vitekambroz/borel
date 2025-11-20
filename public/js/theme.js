@@ -181,6 +181,9 @@ setVh();
    TÉMA – LOGIKA
 ============================================================ */
 function prefersDarkQuery() {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return null;
+  }
   return window.matchMedia("(prefers-color-scheme: dark)");
 }
 
@@ -198,6 +201,13 @@ function applyTheme(mode, save = false) {
 }
 
 function initTheme() {
+  const html = document.documentElement;
+
+  // když už theme-boot.js nastavil režim, necháme ho být
+  if (html.classList.contains("theme-dark") || html.classList.contains("theme-light")) {
+    return;
+  }
+
   const savedMode  = localStorage.getItem("theme-mode");
   const savedTheme = localStorage.getItem("theme");
 
@@ -206,7 +216,8 @@ function initTheme() {
     return;
   }
 
-  applyTheme(prefersDarkQuery().matches ? "dark" : "light");
+  const mq = prefersDarkQuery && prefersDarkQuery();
+  applyTheme(mq && mq.matches ? "dark" : "light");
 }
 
 prefersDarkQuery().addEventListener("change", e => {
