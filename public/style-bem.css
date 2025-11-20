@@ -341,6 +341,23 @@ html.theme-dark .header__nav-link:hover .header__nav-label::after {
   .header__nav.header__nav--mobile{display:flex !important;}
 }
 
+/* Force mobile nav i na velkých šířkách, když se to začne tlouct */
+.header.header--force-mobile .header__nav--desktop {
+  display: none !important;
+}
+
+.header.header--force-mobile .header__menu-toggle {
+  display: flex !important;
+}
+
+.header.header--force-mobile .header__right {
+  display: none !important;
+}
+
+.header.header--force-mobile .header__nav--mobile {
+  display: flex !important;
+}
+
 .header__nav.header__nav--mobile{
   display:none;
   flex-direction:column;
