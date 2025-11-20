@@ -440,6 +440,38 @@ if (menuBtn && mobileNav) {
   handleScroll();
 })();
 
+/* ============================================================
+   AUTO přepnutí na hamburger podle reálného překryvu
+============================================================ */
+function updateHeaderLayout() {
+  const header     = document.querySelector(".header");
+  const titleWrap  = document.querySelector(".header__title-wrap");
+  const desktopNav = document.querySelector(".header__nav--desktop");
+
+  if (!header || !titleWrap || !desktopNav) return;
+
+  // Na mobilech necháváme čistě CSS breakpointy
+  if (window.innerWidth <= 1100) {
+    header.classList.remove("header--force-mobile");
+    return;
+  }
+
+  const titleRect = titleWrap.getBoundingClientRect();
+  const navRect   = desktopNav.getBoundingClientRect();
+  const buffer    = 12; // mezera mezi logem a menu
+
+  const overlaps = titleRect.right + buffer > navRect.left;
+
+  if (overlaps) {
+    header.classList.add("header--force-mobile");
+  } else {
+    header.classList.remove("header--force-mobile");
+  }
+}
+
+window.addEventListener("load", updateHeaderLayout);
+window.addEventListener("resize", updateHeaderLayout);
+
 
 /* ============================================================
    ACTIVE LINK
@@ -458,9 +490,10 @@ if (menuBtn && mobileNav) {
 /* ============================================================
    START – DOMContentLoaded
 ============================================================ */
-document.addEventListener("DOMContentLoaded", () => {
-  injectAllIcons();
+document.addEventListener("DOMContentLoaded", async () => {
+  await injectAllIcons();        // počkáme, až se ikony natáhnou
   injectThemeToggleIcons();
   initTheme();
-  initGameToggles();      // <– tady se načte stav mute / vibrací
+  initGameToggles();             // <– stav mute / vibrací
+  updateHeaderLayout();          // a hned přepočteme header
 });
