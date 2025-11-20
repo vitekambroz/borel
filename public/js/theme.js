@@ -334,6 +334,19 @@ if (menuBtn && mobileNav) {
       menuBtn.classList.remove("active");
     });
   });
+
+  // zavřít menu při kliku mimo něj
+  document.addEventListener("click", (e) => {
+    if (!mobileNav.classList.contains("show")) return;
+
+    const clickInMenu = mobileNav.contains(e.target);
+    const clickOnBtn  = menuBtn.contains(e.target);
+
+    if (!clickInMenu && !clickOnBtn) {
+      mobileNav.classList.remove("show");
+      menuBtn.classList.remove("active");
+    }
+  });
 }
 
 
