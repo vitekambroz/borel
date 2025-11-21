@@ -52,29 +52,32 @@ export async function onRequest(context) {
   }
 
   // 7) CSP – bez inline skriptů, s GA
-  const cspDirectives = [
-    "default-src 'self';",
+const cspDirectives = [
+  "default-src 'self';",
 
-    // žádné 'unsafe-inline', ale povolíme GA skripty
-    "script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com;",
+  "script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com;",
 
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;",
-    "font-src 'self' https://fonts.gstatic.com data:;",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;",
+  "font-src 'self' https://fonts.gstatic.com data:;",
 
-    // GA používá i obrazové beacony → https: je ok
-    "img-src 'self' data: blob: https:;",
+  "img-src 'self' data: blob: https:;",
 
-    "media-src 'self' data:;",
+  "media-src 'self' data:;",
 
-    // povolíme xhr/fetch na GA domény
-    "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://www.google-analytics.com https://www.googletagmanager.com https://stats.g.doubleclick.net;",
+  "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://stats.g.doubleclick.net;",
 
-    "worker-src 'self';",
-    "frame-ancestors 'none';",
-    "object-src 'none';",
-    "base-uri 'self';",
-    "form-action 'self';"
-  ];
+  "frame-src 'self' https://www.googletagmanager.com;",
+
+  "worker-src 'self';",
+
+  "frame-ancestors 'none';",
+
+  "object-src 'none';",
+
+  "base-uri 'self';",
+
+  "form-action 'self';"
+];
 
   newHeaders.set("Content-Security-Policy", cspDirectives.join(" "));
 
