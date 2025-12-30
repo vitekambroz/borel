@@ -12,7 +12,8 @@ const galleryPhotos = [
   "foto51.jpg","foto52.jpg","foto53.jpg","foto54.jpg","foto55.jpg",
   "foto56.jpg","foto57.jpg","foto58.jpg","foto59.jpg","foto60.jpg",
   "foto61.jpg","foto62.jpg","foto63.jpg","foto64.jpg","foto65.jpg",
-  "foto66.jpg",
+  "foto66.jpg","foto67.jpg","foto68.jpg","foto69.jpg","foto70.jpg",
+  "foto71.jpg","foto72.jpg","foto73.jpg","foto74.jpg","foto75.jpg",
 ].reverse();
 
 // === 1) Widget galerie na hlavní stránce (BEM verze) ===
